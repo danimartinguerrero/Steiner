@@ -1,0 +1,101 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Piezas de dibujo del péndulo de torsión en perspectiva (TikZ)
+%
+% Proyección oblicua sencilla: un punto (x,y,z) del espacio se dibuja en
+%   (x, \kp*y + z),
+% de modo que el plano horizontal se ve «tumbado» (como las órbitas de la
+% portada de Cosmosofía) y el eje vertical conserva su longitud.
+% Se usan en la portada y en la figura del montaje experimental.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\kp{0.40}   % factor de achatamiento del plano horizontal
+
+% --- Muelle espiral (espiral de Arquímedes en el plano z = #4) -------------
+% \muelle{r_min}{r_max}{vueltas}{z}: cada vuelta se dibuja como una cinta
+% metálica (trazo oscuro con alma clara), algo más intensa hacia fuera.
+\newcommand{\muelle}[4]{%
+  \pgfmathsetmacro{\mb}{(#2-#1)/(2*pi*#3)}%
+  \pgfmathtruncatemacro{\mn}{ceil(#3)-1}%
+  \foreach \k in {0,...,\mn}{%
+    \pgfmathsetmacro{\ta}{2*pi*\k}%
+    \pgfmathsetmacro{\tb}{min(2*pi*(\k+1),2*pi*#3)}%
+    \pgfmathsetmacro{\pc}{45+55*\k/max(\mn,1)}%
+    \draw[azulprof!\pc!azulclaro, line width=2.3pt, line cap=round]
+      plot[domain=\ta:\tb, samples=90, variable=\t, smooth]
+      ({(#1+\mb*\t)*cos(\t r)}, {\kp*(#1+\mb*\t)*sin(\t r)+#4});
+    \draw[white, line width=0.8pt, line cap=round, opacity=0.85]
+      plot[domain=\ta:\tb, samples=90, variable=\t, smooth]
+      ({(#1+\mb*\t)*cos(\t r)}, {\kp*(#1+\mb*\t)*sin(\t r)+#4});
+  }}
+
+% --- Elipse horizontal (circunferencia de radio #1 en el plano z = #2) ----
+\newcommand{\anillo}[3][]{%
+  \draw[#1] (0,#3) ellipse [x radius=#2, y radius=\kp*#2];}
+
+% --- Cilindro ensartado en la varilla -------------------------------------
+% \cilindro{s}{theta}{h}{rho}{l}: cilindro de radio rho y semilongitud l,
+% con su eje a lo largo de la dirección theta del plano z = h y centro a
+% distancia s del eje de giro.  Se dibuja la cara oculta, el cuerpo (entre
+% las dos generatrices de contorno) y la cara visible.
+\newcommand{\cilindro}[5]{%
+  \pgfmathsetmacro{\cs}{cos(#2)}\pgfmathsetmacro{\sn}{sin(#2)}%
+  \pgfmathsetmacro{\cx}{#1*\cs}\pgfmathsetmacro{\cy}{\kp*#1*\sn+#3}%
+  \pgfmathsetmacro{\dx}{#5*\cs}\pgfmathsetmacro{\dy}{#5*\kp*\sn}%
+  % semiejes conjugados de las caras: u = rho(-sin, k cos), v = rho(0, 1)
+  \pgfmathsetmacro{\ua}{-#4*\sn}\pgfmathsetmacro{\ub}{#4*\kp*\cs}%
+  % parámetro de las generatrices de contorno: tan t0 = cos(theta)/k
+  \pgfmathsetmacro{\tz}{atan2(\cs,\kp)}%
+  \pgfmathsetmacro{\ex}{\ua*cos(\tz)}\pgfmathsetmacro{\ey}{\ub*cos(\tz)+#4*sin(\tz)}%
+  % cara visible: la que mira hacia el observador (normal con y < 0)
+  \pgfmathsetmacro{\sv}{ifthenelse(\sn>0,-1,1)}%
+  \coordinate (cV) at ({\cx+\sv*\dx},{\cy+\sv*\dy});
+  \coordinate (cO) at ({\cx-\sv*\dx},{\cy-\sv*\dy});
+  \draw[azulprof, line width=0.5pt, fill=azulclaro!70]
+    [cm={\ua,\ub,0,#4,(cO)}] (0,0) circle (1);
+  \fill[azulclaro!70]
+    ($(cO)+(\ex,\ey)$) -- ($(cV)+(\ex,\ey)$) -- ($(cV)-(\ex,\ey)$) -- ($(cO)-(\ex,\ey)$) -- cycle;
+  \draw[azulprof, line width=0.5pt] ($(cO)+(\ex,\ey)$) -- ($(cV)+(\ex,\ey)$);
+  \draw[azulprof, line width=0.5pt] ($(cO)-(\ex,\ey)$) -- ($(cV)-(\ex,\ey)$);
+  \draw[azulprof, line width=0.6pt, fill=azulfondo]
+    [cm={\ua,\ub,0,#4,(cV)}] (0,0) circle (1);
+  \fill[azulprof] [cm={\ua,\ub,0,#4,(cV)}] (0,0) circle (0.16);
+}
+
+% --- Tramo de varilla en el plano z = h, a lo largo de la dirección theta --
+% \varilla{theta}{s1}{s2}{h}
+\newcommand{\varilla}[4]{%
+  \pgfmathsetmacro{\va}{#2}\pgfmathsetmacro{\vb}{#3}%
+  \draw[grispizarra, line width=2.1pt, line cap=round]
+    ({\va*cos(#1)},{\kp*\va*sin(#1)+#4}) -- ({\vb*cos(#1)},{\kp*\vb*sin(#1)+#4});
+  \draw[grisclaro, line width=0.7pt, line cap=round]
+    ({\va*cos(#1)},{\kp*\va*sin(#1)+#4+0.012}) -- ({\vb*cos(#1)},{\kp*\vb*sin(#1)+#4+0.012});}
+
+% --- Péndulo de torsión completo -------------------------------------------
+% \pendulotorsion{phi}{h}{R}{L}: muelle en z = 0, varilla de semilongitud L
+% girada un ángulo phi en el plano z = h y cilindros a distancia R del eje.
+% El orden de trazado resuelve las ocultaciones: tramo exterior trasero,
+% cilindro trasero, tramo central, eje y tuerca, cilindro delantero y tramo
+% exterior delantero.
+\newcommand{\pendulotorsion}[4]{%
+  \def\rc{0.52}\def\lc{0.62}%
+  % eje de giro bajo el muelle (hacia el soporte) y muelle espiral
+  \draw[grispizarra!70, line width=2.4pt] (0,-1.9) -- (0,0);
+  \muelle{0.42}{4.3}{4}{0}
+  % sujeción del extremo exterior del muelle
+  \fill[grispizarra] (4.18,-0.16) rectangle (4.52,0.20);
+  \draw[grispizarra!70, line width=1.4pt] (4.35,-0.16) -- (4.35,-1.25);
+  % cubo central y eje hasta la varilla
+  \draw[azulprof, fill=white, line width=0.5pt] (0,0) ellipse [x radius=0.42, y radius=\kp*0.42];
+  \draw[grispizarra, line width=2.6pt] (0,0) -- (0,#2);
+  \draw[grisclaro, line width=0.8pt] (-0.02,0.05) -- (-0.02,#2);
+  % varilla y cilindros
+  \varilla{#1}{#3+\lc}{#4}{#2}
+  \cilindro{#3}{#1}{#2}{\rc}{\lc}
+  \varilla{#1}{#3-\lc}{-#3+\lc}{#2}
+  % tuerca de sujeción sobre el eje
+  \fill[grispizarra!90] (-0.17,#2) rectangle (0.17,#2+0.42);
+  \fill[grispizarra!90] (0,#2+0.42) ellipse [x radius=0.17, y radius=\kp*0.17];
+  \fill[grispizarra!60] (0,#2+0.42) ellipse [x radius=0.10, y radius=\kp*0.10];
+  \cilindro{#3}{#1+180}{#2}{\rc}{\lc}
+  \varilla{#1+180}{#3+\lc}{#4}{#2}
+}

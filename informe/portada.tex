@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Portada — estilo artículo científico, motivo: péndulo de torsión
+% Misma cabecera y pie que el informe del efecto Doppler; el dibujo, en
+% perspectiva tumbada, rinde homenaje a las órbitas de Cosmosofía.
+% Requiere (definidos en main.tex): colores azulprof, azulacero, azulclaro,
+% grispizarra, grisclaro, azulfondo; macros \Universidad, \Facultad,
+% \Titulacion, \Asignatura, \NumPractica, \TituloPractica,
+% \SubtituloPractica, \tipotrabajo, \miNombre, \miTutor, \miUbicacion;
+% y figuras/torsion.tex.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\thispagestyle{empty}
+\pagecolor{white}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (O) at (current page.south west);
+
+  % ----------------------------------------------------------------
+  % Cabecera: logotipos y filete
+  % ----------------------------------------------------------------
+  \node[anchor=north west, inner sep=0] at ($(O)+(2.2cm,27.9cm)$)
+    {\includegraphics[height=1.42cm]{figuras/logo-usal.png}};
+  \node[anchor=north east, inner sep=0] at ($(O)+(18.8cm,27.9cm)$)
+    {\includegraphics[height=1.42cm]{figuras/logo-ciencias.png}};
+  \draw[grispizarra!60, line width=0.4pt]
+    ($(O)+(2.2cm,26.0cm)$) -- ($(O)+(18.8cm,26.0cm)$);
+  \node[anchor=north west, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(2.2cm,25.75cm)$)
+    {\textls[80]{\Universidad\ \textbar\ \Facultad}};
+  \node[anchor=north east, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(18.8cm,25.75cm)$)
+    {\textls[80]{\Titulacion}};
+
+  % ----------------------------------------------------------------
+  % Motivo gráfico: péndulo de torsión visto en perspectiva.
+  % Muelle espiral en el plano inferior; varilla con dos cilindros
+  % girada un ángulo phi respecto a su posición de equilibrio
+  % (discontinua); escala angular y trayectoria de los cilindros.
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={($(O)+(10.5cm,17.7cm)$)}, x=1cm, y=1cm]
+    \def\phiP{24}\def\hP{2.5}\def\RP{5.0}\def\LP{7.1}
+    % órbitas tenues y escala angular en el plano de la varilla
+    \anillo[azulclaro!55, line width=0.35pt]{7.75}{\hP}
+    \anillo[azulclaro!40, line width=0.3pt]{8.35}{\hP}
+    \foreach \a in {0,5,...,355}{
+      \pgfmathsetmacro{\lt}{ifthenelse(mod(\a,30)==0,0.32,0.14)}
+      \draw[azulclaro!90!azulacero, line width=0.35pt]
+        ({7.75*cos(\a)},{\kp*7.75*sin(\a)+\hP}) --
+        ({(7.75-\lt)*cos(\a)},{\kp*(7.75-\lt)*sin(\a)+\hP});}
+    % trayectoria de los centros de los cilindros
+    \anillo[azulacero!70, line width=0.5pt, densely dotted]{\RP}{\hP}
+    % posición de equilibrio (phi = 0)
+    \draw[grispizarra!55, line width=0.6pt, dashed]
+      (-\LP,\hP) -- (\LP,\hP);
+    % ángulo girado
+    \draw[azulacero, line width=0.7pt, -{Stealth[length=5pt]}]
+      plot[domain=2:\phiP-1.5, samples=30, variable=\t]
+      ({6.55*cos(\t)},{\kp*6.55*sin(\t)+\hP});
+    \node[azulprof, font=\large] at ({7.05*cos(\phiP/2)},{\kp*7.05*sin(\phiP/2)+\hP+0.05}) {$\varphi$};
+    % el péndulo
+    \pendulotorsion{\phiP}{\hP}{\RP}{\LP}
+    % distancia R de los cilindros al eje
+    \draw[grispizarra, line width=0.45pt, |<->|]
+      (0,\hP+1.25) -- ({-\RP*cos(\phiP)},{-\kp*\RP*sin(\phiP)+\hP+1.25})
+      node[midway, above=1pt, text=azulprof, fill=white, inner sep=1.5pt] {$R$};
+    \draw[grispizarra!50, line width=0.3pt, densely dotted]
+      ({-\RP*cos(\phiP)},{-\kp*\RP*sin(\phiP)+\hP+0.6}) --
+      ({-\RP*cos(\phiP)},{-\kp*\RP*sin(\phiP)+\hP+1.25});
+    % rótulos discretos, al modo de «tú estás aquí»
+    \draw[grispizarra!70, line width=0.35pt] (3.2,-0.55) -- (5.3,-1.75);
+    \fill[azulacero] (3.2,-0.55) circle (1.3pt);
+    \node[anchor=west, text=grispizarra, font=\itshape\small]
+      at (5.35,-1.78) {muelle espiral, $D$};
+    \draw[grispizarra!70, line width=0.35pt] (0,-1.2) -- (-2.6,-2.05);
+    \fill[azulacero] (0,-1.2) circle (1.3pt);
+    \node[anchor=east, text=grispizarra, font=\itshape\small]
+      at (-2.65,-2.08) {eje de giro};
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Escala de ejes paralelos: I_r = I_CM + m r^2 crece con r^2
+  % (como la línea del tiempo de Cosmosofía)
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={($(O)+(0,13.45cm)$)}, x=1cm, y=1cm]
+    \draw[grispizarra!60, line width=0.4pt] (2.2,0) -- (18.8,0);
+    \draw[azulacero!60, line width=0.4pt, densely dashed, domain=0:5.25, samples=40]
+      plot ({3.0+2.85*\x},{0.22+0.052*\x*\x});
+    \foreach \k in {0,...,5}{
+      \pgfmathsetmacro{\xk}{3.0+2.85*\k}
+      \pgfmathsetmacro{\yk}{0.22+0.052*\k*\k}
+      \pgfmathsetmacro{\pc}{30+14*\k}
+      \draw[azulprof!\pc!azulclaro, line width=1.3pt] (\xk,0) -- (\xk,\yk);
+      \fill[azulprof!\pc!azulclaro] (\xk,\yk) circle (2.1pt);
+      \fill[azulprof] (\xk,0) circle (1.2pt);}
+    \node[anchor=north, text=grispizarra, font=\itshape\footnotesize] at (3.0,-0.12) {eje por el CM};
+    \foreach \k in {1,...,4}{
+      \node[anchor=north, text=grispizarra, font=\footnotesize] at ({3.0+2.85*\k},-0.12) {$r_{\k}$};}
+    \node[anchor=north, text=grispizarra, font=\itshape\footnotesize] at (17.25,-0.12) {borde del disco};
+    \node[anchor=north, text=grispizarra, font=\scshape\scriptsize] at (10.5,-0.62)
+      {\textls[160]{momento de inercia respecto a ejes paralelos}};
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Bloque del título
+  % ----------------------------------------------------------------
+  \node[anchor=north west, inner sep=0, text width=16.6cm, align=left]
+    at ($(O)+(2.2cm,11.35cm)$)
+    {{\color{azulacero}\scshape\large\textls[120]{\Asignatura\ \textbar\ \NumPractica}}\\[12pt]
+     {\color{azulprof}\fontsize{33}{38}\selectfont\bfseries\spaceskip=0.28em\relax\TituloPractica}\\[10pt]
+     {\color{azulprof}\itshape\Large\SubtituloPractica}\\[12pt]
+     {\color{azulacero}\rule{2.5cm}{1.4pt}}\\[9pt]
+     {\color{grispizarra}\large
+      $T=2\pi\sqrt{I/D}$
+      \quad\textperiodcentered\quad
+      $I_{r}=I_{\mathrm{CM}}+m\,r^{2}$}};
+
+  % ----------------------------------------------------------------
+  % Pie: tipo de trabajo, autores, tutores, lugar y fecha
+  % ----------------------------------------------------------------
+  \draw[grispizarra!60, line width=0.4pt]
+    ($(O)+(2.2cm,4.6cm)$) -- ($(O)+(18.8cm,4.6cm)$);
+
+  \node[anchor=north west, inner sep=0, text width=4.6cm, align=left]
+    at ($(O)+(2.2cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Documento}}\\[3pt]
+     {\large\bfseries\color{azulprof}\tipotrabajo}};
+
+  \node[anchor=north west, inner sep=0, text width=5.6cm, align=left]
+    at ($(O)+(7.2cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Autores}}\\[3pt]
+     {\large\color{black!85}\miNombre}};
+
+  \node[anchor=north west, inner sep=0, text width=5cm, align=left]
+    at ($(O)+(13.8cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Tutores}}\\[3pt]
+     {\large\color{black!85}\miTutor}};
+
+  \node[anchor=south east, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(18.8cm,1.2cm)$)
+    {\textls[100]{\miUbicacion, \number\year}};
+  \fill[azulprof] ($(O)+(0,0)$) rectangle ($(O)+(21cm,0.45cm)$);
+  \fill[azulacero] ($(O)+(0,0)$) rectangle ($(O)+(7cm,0.45cm)$);
+  \fill[azulclaro] ($(O)+(0,0)$) rectangle ($(O)+(3cm,0.45cm)$);
+\end{tikzpicture}
+
+\end{titlepage}

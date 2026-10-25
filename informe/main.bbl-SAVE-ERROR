@@ -1,0 +1,231 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{FI-FAB}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=bd43d62f8546292d890e8fa43c03ca37}{%
+           family={Atrio\bibnamedelima Barandela},
+           familyi={A\bibinitperiod\bibinitdelim B\bibinitperiod},
+           given={Fernando},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{bd43d62f8546292d890e8fa43c03ca37}
+      \strng{fullhash}{bd43d62f8546292d890e8fa43c03ca37}
+      \strng{bibnamehash}{bd43d62f8546292d890e8fa43c03ca37}
+      \strng{authorbibnamehash}{bd43d62f8546292d890e8fa43c03ca37}
+      \strng{authornamehash}{bd43d62f8546292d890e8fa43c03ca37}
+      \strng{authorfullhash}{bd43d62f8546292d890e8fa43c03ca37}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Apuntes de la asignatura Física I, capítulo 9: Sólido rígido. Departamento de Física Fundamental, Universidad de Salamanca}
+      \field{title}{Física I: Mecánica newtoniana}
+      \field{year}{2021}
+    \endentry
+    \entry{FI-DMG}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=9a23d6d2fbef007af88afa3e2797f64c}{%
+           family={Martín\bibnamedelima Guerrero},
+           familyi={M\bibinitperiod\bibinitdelim G\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \strng{fullhash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \strng{bibnamehash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \strng{authorbibnamehash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \strng{authornamehash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \strng{authorfullhash}{9a23d6d2fbef007af88afa3e2797f64c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Resumen teórico y práctico: rotación, momentos de inercia y rodadura. Apuntes de la asignatura Física I (prof. Mario Amado), Facultad de Ciencias, Universidad de Salamanca}
+      \field{title}{Física I: Mecánica newtoniana. Capítulo 9: Física del sólido rígido}
+      \field{year}{2025}
+    \endentry
+    \entry{GUION-P1}{report}{}
+      \name{author}{1}{}{%
+        {{hash=55134cc695f557834effa6f3efcde7d4}{%
+           family={{Departamento de Física Fundamental}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Universidad de Salamanca}%
+      }
+      \strng{namehash}{55134cc695f557834effa6f3efcde7d4}
+      \strng{fullhash}{55134cc695f557834effa6f3efcde7d4}
+      \strng{bibnamehash}{55134cc695f557834effa6f3efcde7d4}
+      \strng{authorbibnamehash}{55134cc695f557834effa6f3efcde7d4}
+      \strng{authornamehash}{55134cc695f557834effa6f3efcde7d4}
+      \strng{authorfullhash}{55134cc695f557834effa6f3efcde7d4}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Laboratorio de Mecánica y Ondas, curso 2025/2026, primer semestre}
+      \field{title}{Práctica 1: Momento de inercia. Teorema de Steiner}
+      \field{type}{Guion de laboratorio}
+      \field{year}{2025}
+    \endentry
+    \entry{ALONSO}{book}{}
+      \name{author}{2}{}{%
+        {{hash=98a6001a2b90429e9bb2c68de81b973d}{%
+           family={Alonso},
+           familyi={A\bibinitperiod},
+           given={Marcelo},
+           giveni={M\bibinitperiod}}}%
+        {{hash=b72932d532c8a3bc4b226f8c87517662}{%
+           family={Finn},
+           familyi={F\bibinitperiod},
+           given={Edward\bibnamedelima J.},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Bogotá}%
+      }
+      \list{publisher}{1}{%
+        {Fondo Educativo Interamericano}%
+      }
+      \strng{namehash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \strng{fullhash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \strng{bibnamehash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \strng{authorbibnamehash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \strng{authornamehash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \strng{authorfullhash}{5d2c9bff8d43dfd49ae97daef267c505}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Física. Volumen I: Mecánica}
+      \field{year}{1970}
+    \endentry
+    \entry{GUM}{report}{}
+      \name{author}{1}{}{%
+        {{hash=06bfa51bd1bb8240fcaa1ae04d2c5d59}{%
+           family={{Joint Committee for Guides in Metrology}},
+           familyi={J\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {BIPM}%
+      }
+      \strng{namehash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \strng{fullhash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \strng{bibnamehash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \strng{authorbibnamehash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \strng{authornamehash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \strng{authorfullhash}{06bfa51bd1bb8240fcaa1ae04d2c5d59}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{100:2008}
+      \field{title}{Evaluation of measurement data --- Guide to the expression of uncertainty in measurement}
+      \field{type}{JCGM}
+      \field{year}{2008}
+      \verb{urlraw}
+      \verb https://www.bipm.org/en/committees/jc/jcgm/publications
+      \endverb
+      \verb{url}
+      \verb https://www.bipm.org/en/committees/jc/jcgm/publications
+      \endverb
+    \endentry
+    \entry{NUM-ARG}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=799568764d88dbd9c2feb8c38481be87}{%
+           family={Rodríguez\bibnamedelima González},
+           familyi={R\bibinitperiod\bibinitdelim G\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{799568764d88dbd9c2feb8c38481be87}
+      \strng{fullhash}{799568764d88dbd9c2feb8c38481be87}
+      \strng{bibnamehash}{799568764d88dbd9c2feb8c38481be87}
+      \strng{authorbibnamehash}{799568764d88dbd9c2feb8c38481be87}
+      \strng{authornamehash}{799568764d88dbd9c2feb8c38481be87}
+      \strng{authorfullhash}{799568764d88dbd9c2feb8c38481be87}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Laboratorio de Mecánica y Ondas, Grado en Física, curso 2025/2026 (revisión de 17 de septiembre de 2025). Departamento de Física Fundamental, Facultad de Ciencias, Universidad de Salamanca}
+      \field{title}{Notes on Uncertainty in Measurements}
+      \field{year}{2025}
+    \endentry
+    \entry{ERR-MP}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=c0eb894c8858feec14de11683aca505a}{%
+           family={Pino},
+           familyi={P\bibinitperiod},
+           given={Manuel},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{c0eb894c8858feec14de11683aca505a}
+      \strng{fullhash}{c0eb894c8858feec14de11683aca505a}
+      \strng{bibnamehash}{c0eb894c8858feec14de11683aca505a}
+      \strng{authorbibnamehash}{c0eb894c8858feec14de11683aca505a}
+      \strng{authornamehash}{c0eb894c8858feec14de11683aca505a}
+      \strng{authorfullhash}{c0eb894c8858feec14de11683aca505a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Teoría de errores e informes. Laboratorio de Mecánica y Ondas, 2.º curso del Grado en Física, Universidad de Salamanca (M. Amado, I. de Martino y M. Pino). Basado en A. Rodríguez González, \emph{Notes on Uncertainty in Measurements}}
+      \field{title}{Errores e incertidumbre en la medida}
+      \field{year}{2025}
+    \endentry
+    \entry{HUGHES}{book}{}
+      \name{author}{2}{}{%
+        {{hash=a7f6ea810c92e923e7b12ce8748bc904}{%
+           family={Hughes},
+           familyi={H\bibinitperiod},
+           given={Ifan},
+           giveni={I\bibinitperiod}}}%
+        {{hash=1ae4d38d473221b1dfa3cb416a29ebb5}{%
+           family={Hase},
+           familyi={H\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Oxford}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{e861172396e70b8edde933cbddf791f8}
+      \strng{fullhash}{e861172396e70b8edde933cbddf791f8}
+      \strng{bibnamehash}{e861172396e70b8edde933cbddf791f8}
+      \strng{authorbibnamehash}{e861172396e70b8edde933cbddf791f8}
+      \strng{authornamehash}{e861172396e70b8edde933cbddf791f8}
+      \strng{authorfullhash}{e861172396e70b8edde933cbddf791f8}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Measurements and Their Uncertainties: A Practical Guide to Modern Error Analysis}
+      \field{year}{2010}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
