@@ -158,7 +158,6 @@
 \setcounter{tocdepth}{2}
 \makeatletter
 \def\@@and{y}
-\renewcommand{\keywordsname}{Palabras clave}
 \renewcommand{\abstractname}{\color{azulacero}\lsstyle Resumen}
 \makeatother
 
@@ -356,8 +355,6 @@
 \address{Grado en Física, Facultad de Ciencias, Universidad de Salamanca,
          Salamanca, España}
 \date{}
-\keywords{momento de inercia, teorema de Steiner, péndulo de torsión,
-constante de torsión, oscilador armónico, regresión lineal}
 
 
 % =========================================================================
@@ -396,28 +393,18 @@ Uncertainty in Measurements}.
 \newpage
 \seccion{Introducción}{La inercia de la rotación}\label{sec:introduccion}
 % =========================================================================
-La mecánica de la traslación descansa sobre una idea sencilla: la masa mide
-cuánto se resiste un cuerpo a cambiar su estado de movimiento. Cuando el
-movimiento es de rotación, ese papel lo asume el \emph{momento de inercia},
-una magnitud que no depende solo de cuánta masa tiene el cuerpo, sino también
-de cómo está repartida alrededor del eje de giro~\cite{FI-FAB,FI-DMG}. Por
-eso el patinador que recoge los brazos gira más deprisa, y por eso un mismo
-objeto puede resultar fácil o difícil de hacer girar según el eje que
-elijamos.
+En la rotación, el papel que la masa desempeña en la traslación lo asume el
+\emph{momento de inercia}, que no depende solo de cuánta masa tiene un
+cuerpo, sino de cómo se reparte alrededor del eje de giro~\cite{FI-FAB,FI-DMG}.
+El teorema de Steiner precisa esa dependencia: conocido el momento respecto a
+un eje que pasa por el centro de masas, se conoce respecto a cualquier otro
+paralelo a él.
 
-Esa dependencia con el eje es justamente lo que precisa el teorema de
-Steiner, o de los ejes paralelos: basta conocer el momento de inercia
-respecto a un eje que pase por el centro de masas para conocerlo respecto a
-cualquier otro paralelo a él. Es un resultado que hemos usado muchas veces en
-los problemas de Física~I; en esta práctica queremos verlo aparecer en el
-laboratorio.
-
-Para ello trabajamos con un péndulo de torsión: un eje vertical unido a un
-muelle espiral sobre el que se montan distintos cuerpos. Si lo apartamos un
-ángulo pequeño de su posición de equilibrio, el sistema oscila con un periodo
-que depende solo del momento de inercia del cuerpo y de la constante de
-torsión del muelle. Medir tiempos se convierte así en una manera de medir
-inercia rotacional~\cite{GUION-P1}.
+Lo estudiamos con un péndulo de torsión: un eje vertical acoplado a un muelle
+espiral sobre el que se montan distintos cuerpos. Apartado un ángulo pequeño
+del equilibrio, el sistema oscila con un periodo que solo depende del momento
+de inercia y de la constante de torsión del muelle, de modo que medir tiempos
+equivale a medir inercia rotacional~\cite{GUION-P1}.
 
 \subsection{Objetivos}\label{sec:objetivos}
 \begin{itemize}
@@ -429,16 +416,11 @@ inercia rotacional~\cite{GUION-P1}.
         un cilindro macizo, y compararlos con los que predicen sus
         expresiones teóricas.
 \end{itemize}
-La constante $D$ la obtenemos de la pendiente de una regresión lineal de
-$T^{2}$ frente a $R^{2}$ con la varilla y los cilindros móviles
-(\cref{eq:varilla}); el teorema de Steiner lo contrastamos con la
-linealidad de $T^{2}$ frente a $r^{2}$ para el disco (\cref{eq:steinerT}),
-y los momentos de inercia de los sólidos, despejándolos del periodo con la
-\cref{eq:periodo}.
+Las tres medidas se apoyan en las \cref{eq:varilla,eq:steinerT,eq:periodo},
+respectivamente.
 
 \subsection{Material empleado}\label{sec:material}
-Para el desarrollo de la experiencia hemos utilizado el siguiente
-instrumental (\cref{fig:fotos}):
+Hemos utilizado el siguiente instrumental (\cref{fig:fotos}):
 \begin{itemize}
   \item Muelle espiral con soporte y eje vertical de giro.
   \item Varilla metálica con dos cilindros móviles.
@@ -477,20 +459,14 @@ instrumental (\cref{fig:fotos}):
 \end{figure}
 
 \subsection{Montaje experimental}\label{sec:montaje}
-El muelle espiral está sujeto por su extremo exterior a un soporte fijo
-sobre un trípode, y por el interior a un eje vertical que puede girar
-libremente; sobre el extremo superior del eje se atornillan los distintos
-cuerpos (\cref{fig:montaje}). Al girar el eje un ángulo $\varphi$, el muelle
-se enrolla o desenrolla y ejerce un momento recuperador que lo devuelve hacia
-el equilibrio.
-
-Con la varilla, los cilindros se colocan simétricamente sobre las muescas de
-la barra, a una distancia $R$ del eje, de manera que el centro de masas del
-conjunto sigue sobre el eje de giro. Con el disco, en cambio, el eje se
-atornilla sucesivamente en orificios situados a distancias $r$ crecientes de
-su centro: el disco gira entonces alrededor de un eje paralelo al que pasa
-por su centro de masas, que es exactamente la situación que describe el
-teorema de Steiner~\cite{GUION-P1}.
+El muelle espiral está sujeto por su extremo exterior a un soporte fijo y
+por el interior a un eje vertical, sobre el que se atornillan los cuerpos
+(\cref{fig:montaje}). Con la varilla, los cilindros se colocan
+simétricamente a una distancia $R$ del eje, de modo que el centro de masas
+permanece sobre él. Con el disco, el eje se atornilla en orificios a
+distancias $r$ crecientes de su centro: el disco gira entonces alrededor de
+un eje paralelo al que pasa por su centro de masas, justo la situación que
+describe el teorema de Steiner~\cite{GUION-P1}.
 
 \begin{figure}[ht]
 \centering
@@ -555,30 +531,22 @@ alrededor de un eje paralelo al que pasa por su CM. Esquema sin escala.}
 \seccion{Fundamentos teóricos}{Del momento angular al periodo}\label{sec:fundamentos}
 % =========================================================================
 \subsection{Momento de inercia de un sólido rígido}\label{sec:momento}
-Un sólido rígido es un sistema de partículas en el que la distancia entre
-cualesquiera dos de ellas permanece constante~\cite{FI-DMG}. Si gira con
-velocidad angular $\vect{\omega}$, cada partícula describe una circunferencia
-alrededor del eje de giro, y su contribución a la inercia de la rotación
-crece con el cuadrado de su distancia a ese eje.
-
 \begin{definicion}[Momento de inercia respecto a un eje]\label{def:momento}
 Sea $\rho_i$ la distancia de la partícula $i$, de masa $m_i$, al eje de giro.
 El momento de inercia del sólido respecto a ese eje es
 \begin{equation}\label{eq:momento}
   I=\sum_i m_i\,\rho_i^{2}
   \qquad\longrightarrow\qquad
-  I=\int_{V}\rho_{\perp}^{2}\,\dif m=\int_{V}\rho_{\perp}^{2}\,\rho(\vect{r})\,\dif V,
+  I=\int_{V}\rho_{\perp}^{2}\,\dif m,
 \end{equation}
-donde la segunda forma corresponde a una distribución continua de densidad
-$\rho(\vect{r})$. Sus unidades en el SI son \si{\kilogram\meter\squared}.
+donde la segunda forma corresponde a una distribución continua de masa. Se
+mide en \si{\kilogram\meter\squared}.
 \end{definicion}
 
-En general, el momento angular y la velocidad angular no son paralelos: se
-relacionan mediante una matriz simétrica, el tensor de inercia,
-$\vect{J}=\mathsf{I}\,\vect{\omega}$, cuyos elementos diagonales son los
-momentos de inercia respecto a los ejes coordenados y los no diagonales, los
-productos de inercia~\cite{FI-FAB,FI-DMG}. Al ser simétrica, siempre existe
-una base en la que es diagonal: la de los \emph{ejes principales de inercia}.
+En general, momento angular y velocidad angular se relacionan mediante el
+tensor de inercia, $\vect{J}=\mathsf{I}\,\vect{\omega}$, y no son
+paralelos~\cite{FI-FAB,FI-DMG}. Sí lo son al girar alrededor de un eje
+principal:
 
 \begin{referencia}[Ejes principales de inercia]{FI-FAB}\label{ref:ejes}
 Es fácil demostrar que cuando un sólido gira alrededor de un eje principal,
@@ -587,181 +555,195 @@ homogéneos y simétricos, los ejes principales coinciden con los ejes de
 simetría del sólido.
 \end{referencia}
 
-En todas nuestras configuraciones el cuerpo gira alrededor de un eje de
-simetría (la esfera, los cilindros, la varilla con los cilindros colocados
-simétricamente) o de un eje paralelo a uno de simetría (el disco). En ese
-caso el momento angular a lo largo del eje se reduce a
+Todos nuestros cuerpos giran alrededor de un eje de simetría, o de uno
+paralelo a él en el caso del disco, de modo que a lo largo del eje
 \begin{equation}\label{eq:J}
   J=I\,\omega=I\,\dot{\varphi},
 \end{equation}
-con $I$ un escalar: el momento de inercia respecto al eje de giro y
-$\varphi$ el ángulo girado~\cite{GUION-P1}.
+con $I$ un escalar y $\varphi$ el ángulo girado~\cite{GUION-P1}.
 
 \subsection{El péndulo de torsión}\label{sec:torsion}
-La variación del momento angular de un sólido está gobernada por el momento
-resultante de las fuerzas exteriores, $\vect{M}=\dif\vect{J}/\dif t$. Para
-un giro alrededor de un eje fijo y principal, su componente a lo largo del
-eje, junto con la \cref{eq:J}, da la ecuación fundamental de la dinámica de
-rotación~\cite{FI-FAB,GUION-P1}:
+La componente según el eje de $\vect{M}=\dif\vect{J}/\dif t$, junto con la
+\cref{eq:J}, da la ecuación fundamental de la dinámica de rotación, análoga
+a $F=m\,a$~\cite{FI-FAB,GUION-P1}:
 \begin{equation}\label{eq:dinamica}
-  M=\ddt{J}=I\,\ddot{\varphi}.
+  M=I\,\ddot{\varphi}.
 \end{equation}
-Es el análogo rotacional de $F=m\,a$: el momento de la fuerza ocupa el lugar
-de la fuerza; la aceleración angular, el de la lineal, y el momento de
-inercia, el de la masa.
-
-Para ángulos pequeños, el muelle espiral responde como un resorte de torsión
-lineal: ejerce un momento recuperador proporcional al ángulo girado, en una
-ley de Hooke angular,
+Para ángulos pequeños, el muelle espiral ejerce un momento recuperador
+proporcional al ángulo girado (ley de Hooke angular),
 \begin{equation}\label{eq:hooke}
   M=-D\,\varphi,
 \end{equation}
-donde $D$ es la constante de torsión del muelle, en
-\si{\newton\meter\per\radian}. Igualando las \cref{eq:dinamica,eq:hooke}
-llegamos a la ecuación del movimiento,
+con $D$ la constante de torsión, en \si{\newton\meter\per\radian}. Juntas,
+las \cref{eq:dinamica,eq:hooke} dan la ecuación de un oscilador armónico,
 \begin{equation}\label{eq:oscilador}
-  \ddot{\varphi}+\frac{D}{I}\,\varphi=0,
-\end{equation}
-que es la de un oscilador armónico para la variable angular $\varphi$, con
-solución general
-\begin{equation}\label{eq:solucion}
-  \varphi(t)=A\,\sin(\Omega t+\phi_0),
+  \ddot{\varphi}+\Omega^{2}\varphi=0,
   \qquad
   \Omega^{2}\equiv\frac{D}{I},
+  \qquad
+  \varphi(t)=A\,\sin(\Omega t+\phi_0).
 \end{equation}
-siendo $A$ la amplitud angular y $\phi_0$ la fase inicial, fijadas ambas por
-las condiciones iniciales.
 
 \begin{resultado}[Periodo de las oscilaciones de torsión]\label{res:periodo}
 En la aproximación de pequeñas oscilaciones, un sólido de momento de inercia
-$I$ respecto al eje de giro, acoplado a un muelle de constante de torsión
-$D$, oscila con periodo
+$I$ acoplado a un muelle de constante de torsión $D$ oscila con periodo
 \begin{equation}\label{eq:periodo}
-  T=\frac{2\pi}{\Omega}=2\pi\sqrt{\frac{I}{D}}
+  T=2\pi\sqrt{\frac{I}{D}}
   \qquad\Longleftrightarrow\qquad
   I=\frac{D\,T^{2}}{4\pi^{2}},
 \end{equation}
 independiente de la amplitud.
 \end{resultado}
 
-Conocida $D$, medir el periodo equivale, por tanto, a medir el momento de
-inercia. La relación es lineal entre $I$ y $T^{2}$, no entre $I$ y $T$; por
-eso en todos los ajustes de este informe la variable dependiente será el
-cuadrado del periodo.
+La relación es lineal entre $I$ y $T^{2}$; por eso en todos los ajustes la
+variable dependiente será el cuadrado del periodo.
 
 \begin{observacion}[Límites del modelo]\label{obs:modelo}
-La \cref{eq:periodo} descansa en tres aproximaciones que conviene tener
-presentes al interpretar los datos. La primera es la linealidad del muelle,
-que solo es razonable para amplitudes moderadas; por eso soltamos el sistema
-desde ángulos pequeños. La segunda es despreciar el rozamiento en el eje y
-con el aire: un amortiguamiento débil apenas modifica el periodo, pero sí
-hace que la amplitud decaiga a lo largo de las oscilaciones que cronometramos.
-La tercera es que $I$ debería incluir también la inercia de las piezas que
-giran con el cuerpo (el propio eje, la tuerca y los soportes), $\Ie$, de
-modo que en rigor $T^{2}=4\pi^{2}(I+\Ie)/D$. En las regresiones lineales esa
-contribución constante queda absorbida en la ordenada en el origen y no
-altera la pendiente; al medir sólidos aislados, en cambio, puede introducir
-un pequeño sesgo sistemático que discutiremos con los datos.
+La \cref{eq:periodo} supone un muelle lineal (amplitudes pequeñas) y un
+rozamiento despreciable. Además, en rigor $T^{2}=4\pi^{2}(I+\Ie)/D$, con
+$\Ie$ la inercia del eje y las piezas de sujeción: en las regresiones queda
+absorbida en la ordenada y no afecta a la pendiente, pero en los sólidos
+aislados puede introducir un pequeño sesgo sistemático.
 \end{observacion}
 
 \subsection{Teorema de Steiner}\label{sec:steiner}
-Los momentos de inercia dependen del eje respecto al que se calculan. El
-teorema de Steiner permite trasladarlos de un eje que pasa por el centro de
-masas a cualquier otro paralelo a él~\cite{FI-FAB,FI-DMG}.
-
-\begin{referencia}[Teorema de Steiner]{FI-FAB}\label{ref:steiner}
-El momento de inercia $I_Z^{A}$ de un eje que pasa por un punto $A$ y que es
-paralelo a un eje principal $Z$, de momento $I_Z^{\mathrm{CM}}$, es
-$I_Z^{A}=I_Z^{\mathrm{CM}}+M D_Z^{2}$, siendo $D_Z$ la distancia entre
-ambos ejes y $M$ la masa del sólido.
-\end{referencia}
+El teorema de Steiner traslada el momento de inercia de un eje que pasa por
+el centro de masas a cualquier otro paralelo a él~\cite{FI-FAB,FI-DMG}
+(\cref{fig:steiner}).
 
 \begin{figure}[ht]
 \centering
-\begin{tikzpicture}[>=Stealth, scale=1.0, font=\small]
-  % sólido arbitrario visto en la dirección de los ejes
-  \draw[azulprof, line width=0.8pt, fill=azulfondo]
-    plot[smooth cycle, tension=0.8] coordinates
-    {(-2.6,0.2) (-1.9,1.6) (-0.2,2.1) (1.7,1.7) (2.9,0.6) (2.6,-1.0)
-     (1.1,-1.8) (-0.9,-1.6) (-2.2,-1.1)};
-  % ejes perpendiculares al papel
-  \coordinate (CM) at (0.55,-0.35);
-  \coordinate (A)  at (-1.55,-0.55);
-  \coordinate (P)  at (0.95,1.45);
-  \draw[azulprof, line width=0.6pt, fill=white] (CM) circle (0.17);
-  \fill[azulprof] (CM) circle (0.05);
-  \node[azulprof, anchor=north west] at ($(CM)+(0.05,-0.12)$) {CM};
-  \draw[acento, line width=0.6pt, fill=white] (A) circle (0.17);
-  \fill[acento] (A) circle (0.05);
-  \node[acento, anchor=north] at ($(A)+(0,-0.2)$) {$A$};
-  % elemento de masa
-  \fill[azulacero] (P) circle (0.07);
-  \node[azulacero, anchor=south west] at ($(P)+(0.03,0.03)$) {$\dif m$};
-  % vectores (componentes perpendiculares a los ejes)
-  \draw[->, line width=0.8pt, grispizarra] ($(A)!0.12!(CM)$) -- ($(A)!0.88!(CM)$)
-    node[midway, below=1pt, text=black!80] {$\vect{d}$};
-  \draw[->, line width=0.8pt, azulprof] ($(CM)!0.1!(P)$) -- ($(CM)!0.95!(P)$)
-    node[midway, right=1pt, text=azulprof] {$\vect{s}_{\perp}$};
-  \draw[->, line width=0.8pt, acento, densely dashed] ($(A)!0.07!(P)$) -- ($(A)!0.97!(P)$)
-    node[pos=0.5, above left=0pt, text=acento] {$\vect{\rho}_{\perp}$};
-  % leyenda
-  \node[anchor=west, align=left, text=black!80] at (3.4,1.0)
-    {$\vect{\rho}_{\perp}=\vect{d}+\vect{s}_{\perp}$};
-  \node[anchor=west, align=left, text=black!80] at (3.4,0.2)
-    {$\displaystyle\int\vect{s}_{\perp}\,\dif m=\vect{0}$};
-  \node[anchor=west, align=left, text=black!80] at (3.4,-0.8)
-    {$I_{A}=\Icm+M d^{2}$};
+\begin{tikzpicture}[>=Stealth, font=\small]
+  % ================= (a) dos ejes paralelos, en perspectiva =================
+  \begin{scope}
+    \def\Rd{2.4}\def\tk{0.3}\def\dd{1.5}
+    \node[anchor=west, text=grispizarra] at (-2.6,3.6) {\small\scshape (a)\; ejes paralelos};
+    % tramos inferiores de los ejes (el disco los oculta en parte)
+    \draw[azulprof, line width=0.8pt] (0,-1.55) -- (0,0);
+    \draw[acento, line width=0.8pt] (\dd,-1.55) -- (\dd,0);
+    % disco homogéneo de radio \Rd y espesor \tk
+    \fill[azulclaro!45] (-\Rd,\tk) -- (-\Rd,0)
+      arc[start angle=180, end angle=360, x radius=\Rd, y radius=\kp*\Rd]
+      -- (\Rd,\tk) -- cycle;
+    \draw[azulprof, line width=0.6pt] (-\Rd,\tk) -- (-\Rd,0)
+      arc[start angle=180, end angle=360, x radius=\Rd, y radius=\kp*\Rd] -- (\Rd,\tk);
+    \draw[azulprof, line width=0.6pt, fill=azulfondo]
+      (0,\tk) ellipse [x radius=\Rd, y radius=\kp*\Rd];
+    % puntos de la cara superior: CM, A y el elemento de masa
+    \coordinate (Ot) at (0,\tk);
+    \coordinate (At) at (\dd,\tk);
+    \coordinate (Pt) at (-0.55,{\kp*(-1.75)+\tk});
+    \draw[grispizarra, line width=0.7pt] (Ot) -- (At)
+      node[midway, above=0pt, text=black!80, fill=azulfondo, inner sep=1pt] {$d$};
+    \draw[azulprof, line width=0.8pt] (Pt) -- (Ot)
+      node[pos=0.5, left=1pt, text=azulprof] {$s_{\perp}$};
+    \draw[acento, line width=0.8pt, densely dashed] (Pt) -- (At)
+      node[pos=0.5, below right=0pt, text=acento] {$\rho_{\perp}$};
+    \fill[azulacero] (Pt) circle (2pt);
+    \node[azulacero, anchor=east] at ($(Pt)+(-0.08,0)$) {$\dif m$};
+    % tramos superiores de los ejes y sus nombres
+    \draw[azulprof, line width=0.8pt, ->] (Ot) -- (0,2.65)
+      node[above, text=azulprof] {$\Delta_{\mathrm{CM}}$};
+    \draw[acento, line width=0.8pt, ->] (At) -- (\dd,2.65)
+      node[above, text=acento] {$\Delta_{A}$};
+    \fill[azulprof] (Ot) circle (1.7pt);
+    \fill[acento] (At) circle (1.7pt);
+    \node[azulprof, anchor=east, font=\footnotesize] at (-0.08,\tk+0.45) {CM};
+    \node[acento, anchor=west, font=\footnotesize] at (\dd+0.08,\tk+0.45) {$A$};
+    % giro alrededor de \Delta_A
+    \draw[acento, line width=0.6pt, -{Stealth[length=4pt]}]
+      plot[domain=200:500, samples=60, variable=\t]
+      ({\dd+0.32*cos(\t)},{1.75+\kp*0.32*sin(\t)});
+  \end{scope}
+  % ================= (b) sección por un plano perpendicular =================
+  \begin{scope}[shift={(7.0,0)}]
+    \node[anchor=west, text=grispizarra] at (-2.9,3.6) {\small\scshape (b)\; sección perpendicular};
+    \def\dd{1.95}\def\px{0.85}\def\py{1.6}
+    \draw[azulclaro, line width=0.5pt, fill=azulfondo] (0,0) circle (2.4);
+    \draw[->, grispizarra, line width=0.5pt] (-2.75,0) -- (3.1,0) node[right, text=black!80] {$x$};
+    \draw[->, grispizarra, line width=0.5pt] (0,-0.75) -- (0,2.85) node[above, text=black!80] {$y$};
+    % proyección del elemento de masa y ángulo recto
+    \draw[grispizarra, densely dotted, line width=0.6pt] (\px,0) -- (\px,\py)
+      node[pos=0.3, right=0pt, text=black!80] {$y$};
+    \draw[grispizarra, line width=0.4pt] (\px-0.16,0) -- (\px-0.16,0.16) -- (\px,0.16);
+    % distancias a los dos ejes
+    \draw[azulprof, line width=0.8pt] (0,0) -- (\px,\py)
+      node[pos=0.55, left=1pt, text=azulprof] {$s_{\perp}$};
+    \draw[acento, line width=0.8pt, densely dashed] (\dd,0) -- (\px,\py)
+      node[pos=0.5, right=1pt, text=acento] {$\rho_{\perp}$};
+    % ejes perpendiculares al plano: CM en el origen y A en (d,0)
+    \draw[azulprof, line width=0.6pt, fill=white] (0,0) circle (0.13);
+    \fill[azulprof] (0,0) circle (0.045);
+    \draw[acento, line width=0.6pt, fill=white] (\dd,0) circle (0.13);
+    \fill[acento] (\dd,0) circle (0.045);
+    \node[azulprof, anchor=north east, font=\footnotesize] at (-0.08,-0.06) {CM};
+    \node[acento, anchor=south west, font=\footnotesize] at (\dd+0.06,0.06) {$A=(d,0)$};
+    \fill[azulacero] (\px,\py) circle (2pt);
+    \node[azulacero, anchor=south west, font=\footnotesize] at (\px+0.05,\py+0.02) {$\dif m\ (x,y)$};
+    % cotas sobre el eje x
+    \draw[grispizarra, line width=0.45pt, |<->|] (0,-0.5) -- (\px,-0.5)
+      node[midway, below, text=black!80] {$x$};
+    \draw[grispizarra, line width=0.45pt, |<->|] (\px,-0.5) -- (\dd,-0.5)
+      node[midway, below, text=black!80] {$d-x$};
+    \draw[grispizarra, line width=0.45pt, |<->|] (0,-1.25) -- (\dd,-1.25)
+      node[midway, below, text=black!80] {$d$};
+  \end{scope}
 \end{tikzpicture}
-\caption{Teorema de Steiner. Sección del sólido perpendicular a dos ejes
-paralelos: uno pasa por el centro de masas (CM) y el otro por el punto $A$, a
-distancia $d$. Un elemento de masa $\dif m$ dista $s_{\perp}$ del primero y
-$\rho_{\perp}$ del segundo.}
+\caption{Geometría del teorema de Steiner. (a)~Sólido homogéneo atravesado por
+dos ejes paralelos: $\Delta_{\mathrm{CM}}$, que pasa por el centro de masas, y
+$\Delta_{A}$, a distancia $d$. Un elemento de masa $\dif m$ dista $s_{\perp}$
+del primero y $\rho_{\perp}$ del segundo, medidas ambas perpendicularmente a
+los ejes. (b)~Sección por el plano perpendicular a los ejes que contiene a
+$\dif m$, con el origen en el CM y el eje $x$ orientado hacia $A$: las dos
+distancias son las hipotenusas de dos triángulos rectángulos que comparten el
+cateto $y$.}
 \label{fig:steiner}
 \end{figure}
 
 \begin{teorema}[de Steiner o de los ejes paralelos]\label{teo:steiner}
 Sea $\Icm$ el momento de inercia de un sólido de masa $M$ respecto a un eje
-que pasa por su centro de masas, e $I_A$ el momento respecto a un eje paralelo
-situado a distancia $d$. Entonces
+$\Delta_{\mathrm{CM}}$ que pasa por su centro de masas, e $I_A$ el momento
+respecto a un eje $\Delta_{A}$ paralelo a él y situado a distancia $d$.
+Entonces
 \begin{equation}\label{eq:steiner}
   I_A=\Icm+M\,d^{2}.
 \end{equation}
 \end{teorema}
 
 \begin{demostracion}
-Tomemos ambos ejes perpendiculares al plano de la \cref{fig:steiner} y
-llamemos $\vect{s}_{\perp}$ y $\vect{\rho}_{\perp}$ a las proyecciones, sobre
-ese plano, de la posición de un elemento de masa $\dif m$ medida desde cada
-eje; si $\vect{d}$ es el vector que va del eje $A$ al eje del CM,
-$\vect{\rho}_{\perp}=\vect{d}+\vect{s}_{\perp}$. Llevándolo a la
-\cref{eq:momento},
+Tomemos un sistema de coordenadas con origen en el centro de masas, el eje
+$z$ a lo largo de $\Delta_{\mathrm{CM}}$ y el eje $x$ orientado hacia
+$\Delta_{A}$, que corta así al plano $xy$ en el punto $A=(d,0)$
+(\cref{fig:steiner}). Un elemento de masa $\dif m$ situado en $(x,y,z)$
+dista de cada eje
 \begin{equation*}
-  I_A=\int\rho_{\perp}^{2}\,\dif m
-     =\int\bigl(d^{2}+2\,\vect{d}\cdot\vect{s}_{\perp}+s_{\perp}^{2}\bigr)\dif m
-     =M d^{2}+2\,\vect{d}\cdot\!\int\vect{s}_{\perp}\,\dif m+\Icm .
+  s_{\perp}^{2}=x^{2}+y^{2},
+  \qquad
+  \rho_{\perp}^{2}=(x-d)^{2}+y^{2},
 \end{equation*}
-La integral del término cruzado es nula por la propia definición de centro
-de masas: medidas desde él, las posiciones de las masas se compensan. Queda
-la \cref{eq:steiner}. \hfill$\square$
+sin que intervenga la coordenada $z$, que es la dirección de los ejes.
+Llevándolo a la \cref{eq:momento},
+\begin{equation*}
+  I_A=\int\bigl[(x-d)^{2}+y^{2}\bigr]\dif m
+     =\underbrace{\int\bigl(x^{2}+y^{2}\bigr)\dif m}_{\Icm}
+     \;-\;2d\int x\,\dif m\;+\;d^{2}\!\int\dif m .
+\end{equation*}
+La última integral es la masa $M$, y la central se anula por la propia
+definición de centro de masas: $\int x\,\dif m=M\,x_{\mathrm{CM}}=0$, pues el
+origen está en él. Queda la \cref{eq:steiner}. \hfill$\square$
 \end{demostracion}
 
-El término $M d^{2}$ es el momento de inercia de una partícula de masa $M$
-situada en el centro de masas: girar alrededor de un eje desplazado equivale
-a girar alrededor del CM \emph{y}, además, a hacer orbitar toda la masa en
-torno al nuevo eje~\cite{FI-FAB}. Como $M d^{2}\geq0$, el momento de
-inercia es mínimo para el eje que pasa por el centro de masas, entre todos
-los de una misma dirección.
-
-Para el disco perforado, que oscila alrededor de un eje a distancia $r$ de su
-centro de masas, las \cref{eq:periodo,eq:steiner} dan
+El término $M d^{2}$ es el momento de inercia de toda la masa concentrada en
+el CM; como es positivo, el momento de inercia es mínimo respecto al eje que
+pasa por el centro de masas~\cite{FI-FAB}. Para el disco perforado, con el
+eje a distancia $r$ del CM, las \cref{eq:periodo,eq:steiner} dan
 \begin{equation}\label{eq:steinerT}
   T^{2}=\frac{4\pi^{2}}{D}\bigl(\Icm+m\,r^{2}\bigr)
        =\underbrace{\frac{4\pi^{2}\Icm}{D}}_{a}
        +\underbrace{\frac{4\pi^{2}m}{D}}_{b}\,r^{2}.
 \end{equation}
-El teorema de Steiner predice, por tanto, una dependencia \emph{lineal} de
-$T^{2}$ con $r^{2}$. Si conocemos $D$, la pendiente y la ordenada de la recta
-proporcionan la masa del disco y su momento de inercia respecto al CM:
+una dependencia \emph{lineal} de $T^{2}$ con $r^{2}$ cuya pendiente y
+ordenada, conocida $D$, dan la masa del disco y su momento respecto al CM:
 \begin{equation}\label{eq:disco}
   m=\frac{D\,b}{4\pi^{2}},
   \qquad
@@ -769,12 +751,10 @@ proporcionan la masa del disco y su momento de inercia respecto al CM:
 \end{equation}
 
 \subsection{Calibración del muelle: varilla con cilindros móviles}\label{sec:calibracion}
-Para conocer $D$ usamos el mismo razonamiento sobre un sistema cuyo momento
-de inercia sabemos calcular: una varilla delgada de masa $\mb$ y longitud $L$
-con dos cilindros iguales, de masa $\mc$, diámetro $d$ y altura $h$,
-colocados simétricamente a una distancia $R$ del eje que pasa por el centro
-de la varilla (\figpanel{fig:montaje}{a}). El centro de masas del conjunto
-permanece sobre el eje y, aplicando el teorema de Steiner a cada cilindro,
+Para conocer $D$ usamos una varilla delgada (masa $\mb$, longitud $L$) con
+dos cilindros iguales (masa $\mc$, diámetro $d$, altura $h$) colocados
+simétricamente a una distancia $R$ del eje (\figpanel{fig:montaje}{a}).
+Aplicando el teorema de Steiner a cada cilindro,
 \begin{equation}\label{eq:Ivarilla}
   I=\Ib+2\,\Ic+2\,\mc R^{2},
   \qquad
@@ -782,27 +762,23 @@ permanece sobre el eje y, aplicando el teorema de Steiner a cada cilindro,
   \qquad
   \Ic=\mc\left(\frac{d^{2}}{16}+\frac{h^{2}}{12}\right),
 \end{equation}
-donde $\Ib$ e $\Ic$ son los momentos de inercia de la varilla y de un
-cilindro respecto a un eje que pasa por su CM perpendicularmente a su eje de
-simetría~\cite{FI-FAB,GUION-P1}. El periodo cumple entonces
+con $\Ib$ e $\Ic$ los momentos de la varilla y de un cilindro respecto a un
+eje por su CM perpendicular a su eje de simetría~\cite{FI-FAB,GUION-P1}.
+Entonces
 \begin{equation}\label{eq:varilla}
   T^{2}=\underbrace{\frac{4\pi^{2}}{D}\bigl(\Ib+2\Ic\bigr)}_{a'}
        +\underbrace{\frac{8\pi^{2}\mc}{D}}_{b'}\,R^{2},
 \end{equation}
-de nuevo lineal en el cuadrado de la distancia. Con la masa $\mc$ conocida,
-la pendiente de la recta determina la constante de torsión,
+y, conocida $\mc$, la pendiente determina la constante de torsión,
 \begin{equation}\label{eq:D}
   D=\frac{8\pi^{2}\mc}{b'},
 \end{equation}
-y la ordenada ofrece una comprobación independiente, pues debe ser
-compatible con $4\pi^{2}(\Ib+2\Ic)/D$ calculada a partir de las dimensiones
-de la varilla y de los cilindros.
+mientras que la ordenada sirve de comprobación frente a
+$4\pi^{2}(\Ib+2\Ic)/D$ calculada con las dimensiones.
 
 \subsection{Momentos de inercia de sólidos sencillos}\label{sec:solidos}
-Para los cuerpos homogéneos de geometría sencilla, la integral de la
-\cref{eq:momento} puede resolverse de forma exacta. La \cref{tab:teoricos}
-recoge las expresiones que necesitamos, todas respecto a ejes que pasan por
-el centro de masas~\cite{ALONSO,FI-FAB,FI-DMG}.
+Para cuerpos homogéneos sencillos, la \cref{eq:momento} se integra de forma
+exacta (\cref{tab:teoricos})~\cite{ALONSO,FI-FAB,FI-DMG}.
 
 \begin{table}[ht]
 \centering
@@ -824,12 +800,10 @@ Varilla delgada de longitud $L$       & perpendicular a la varilla         & $\t
 \end{tabular}
 \end{table}
 
-Para cada uno de los tres sólidos dispondremos así de dos estimaciones del
-momento de inercia: una \emph{dinámica}, a partir del periodo medido y de la
-\cref{eq:periodo}, y otra \emph{geométrica}, a partir de su masa y sus
-dimensiones con la \cref{tab:teoricos}. Compararlas mediante sus intervalos
-de confianza al \SI{95}{\percent} es el último objetivo de la
-práctica~\cite{GUION-P1}.
+Así, cada sólido tendrá dos estimaciones de su momento de inercia: una
+\emph{dinámica}, a partir del periodo (\cref{eq:periodo}), y otra
+\emph{geométrica}, a partir de su masa y dimensiones; las compararemos con
+sus intervalos al \SI{95}{\percent}~\cite{GUION-P1}.
 
 \ornamento
 
