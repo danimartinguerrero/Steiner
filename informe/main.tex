@@ -34,7 +34,7 @@
 }
 
 % --- PÁGINA, COLORES Y GRÁFICOS --------------------------------------------
-\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage[a4paper,margin=2.6cm,footskip=1.45cm]{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \definecolor{azulprof}{HTML}{1B365D}    % azul marino
@@ -48,6 +48,8 @@
 \usetikzlibrary{babel, arrows.meta, calc, positioning, decorations.pathmorphing,
                 decorations.markings, patterns}
 \usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.17}
 \usepackage{booktabs}
 \usepackage{multirow}
@@ -320,6 +322,15 @@
     mark options={fill=azulprof, draw=white, line width=0.3pt},
     error bars/.cd, y dir=both, y explicit,
     error bar style={line width=0.6pt, azulprof}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulprof}},
+  puntoB/.style={only marks, mark=square*, mark size=1.9pt, azulacero,
+    mark options={fill=azulclaro, draw=azulacero, line width=0.5pt},
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={line width=0.6pt, azulacero}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulacero}},
+  ajusteB/.style={azulacero, line width=1.1pt, densely dashed},
+  % leyenda en una fila sobre el gráfico, para que no tape los datos
+  leyenda arriba/.style={legend columns=-1,
+    legend style={at={(0.5,1.03)}, anchor=south,
+      /tikz/every even column/.append style={column sep=9pt}}},
   ajuste/.style={azulprof, line width=1.1pt},
   teorica/.style={acento, line width=0.9pt, densely dashed},
 }
@@ -330,6 +341,9 @@
 % Pies de figura y tabla
 \usepackage[font=small, labelfont={sc,color=azulprof}, labelsep=period,
             margin=0.6cm, justification=justified]{caption}
+\usepackage{subcaption}
+\captionsetup[sub]{font=small, labelfont={sc,color=azulprof}, labelformat=parens,
+                   margin=0pt, justification=centering}
 
 % =========================================================================
 %                     VARIABLES PARA LA PORTADA
@@ -429,8 +443,7 @@ Hemos utilizado el siguiente instrumental (\cref{fig:fotos}):
         macizo.
   \item Cronómetro.
   \item Regla milimetrada, cinta métrica y calibre (pie de rey).
-  % \item Balanza (si se han pesado los cuerpos en lugar de usar las masas
-  %       indicadas en el laboratorio).
+  \item Balanza.
 \end{itemize}
 
 \begin{figure}[ht]
@@ -739,15 +752,15 @@ pasa por el centro de masas~\cite{FI-FAB}. Para el disco perforado, con el
 eje a distancia $r$ del CM, las \cref{eq:periodo,eq:steiner} dan
 \begin{equation}\label{eq:steinerT}
   T^{2}=\frac{4\pi^{2}}{D}\bigl(\Icm+m\,r^{2}\bigr)
-       =\underbrace{\frac{4\pi^{2}\Icm}{D}}_{a}
-       +\underbrace{\frac{4\pi^{2}m}{D}}_{b}\,r^{2}.
+       =\underbrace{\frac{4\pi^{2}\Icm}{D}}_{b}
+       +\underbrace{\frac{4\pi^{2}m}{D}}_{a}\,r^{2}.
 \end{equation}
 una dependencia \emph{lineal} de $T^{2}$ con $r^{2}$ cuya pendiente y
 ordenada, conocida $D$, dan la masa del disco y su momento respecto al CM:
 \begin{equation}\label{eq:disco}
-  m=\frac{D\,b}{4\pi^{2}},
+  m=\frac{D\,a}{4\pi^{2}},
   \qquad
-  \Icm=\frac{D\,a}{4\pi^{2}}.
+  \Icm=\frac{D\,b}{4\pi^{2}}.
 \end{equation}
 
 \subsection{Calibración del muelle: varilla con cilindros móviles}\label{sec:calibracion}
@@ -766,12 +779,12 @@ con $\Ib$ e $\Ic$ los momentos de la varilla y de un cilindro respecto a un
 eje por su CM perpendicular a su eje de simetría~\cite{FI-FAB,GUION-P1}.
 Entonces
 \begin{equation}\label{eq:varilla}
-  T^{2}=\underbrace{\frac{4\pi^{2}}{D}\bigl(\Ib+2\Ic\bigr)}_{a'}
-       +\underbrace{\frac{8\pi^{2}\mc}{D}}_{b'}\,R^{2},
+  T^{2}=\underbrace{\frac{4\pi^{2}}{D}\bigl(\Ib+2\Ic\bigr)}_{b}
+       +\underbrace{\frac{8\pi^{2}\mc}{D}}_{a}\,R^{2},
 \end{equation}
 y, conocida $\mc$, la pendiente determina la constante de torsión,
 \begin{equation}\label{eq:D}
-  D=\frac{8\pi^{2}\mc}{b'},
+  D=\frac{8\pi^{2}\mc}{a},
 \end{equation}
 mientras que la ordenada sirve de comprobación frente a
 $4\pi^{2}(\Ib+2\Ic)/D$ calculada con las dimensiones.
@@ -814,7 +827,7 @@ sus intervalos al \SI{95}{\percent}~\cite{GUION-P1}.
 Seguimos la metodología del guion~\cite{GUION-P1}. En todos los casos
 apartamos el sistema un ángulo pequeño de su posición de equilibrio, lo
 soltamos sin impulso y, con el cronómetro, medimos tres veces el tiempo
-$t_{n}$ que tarda en completar $n=\pend{5}$ oscilaciones. El periodo es
+$t_{n}$ que tarda en completar $n=5$ oscilaciones. El periodo es
 $T=t_{n}/n$.
 \begin{enumerate}
   \item \emph{Calibración del muelle.} Con la varilla y los cilindros
@@ -822,14 +835,17 @@ $T=t_{n}/n$.
         periodo para cada distancia $R$ disponible.
   \item \emph{Teorema de Steiner.} Atornillamos el eje sucesivamente en los
         orificios del disco perforado, a distancias $r$ de su centro, y
-        medimos el periodo en cada uno.
+        medimos el periodo en cada uno. (Es importante señalar que debido a un reparto de pesos no equitativo entre las dos mitades del mismo, se nos aconsejó voltear el disco una vez realizadas las medidas del lado que primero considerásemos, para así obtener resultados coherentes al realizar las medidas relativas al otro lado.)
   \item \emph{Sólidos.} Medimos el periodo de la esfera, el cilindro hueco y
         el cilindro macizo, y sus masas y dimensiones (diámetros, alturas y
         espesores) con el calibre y la regla.
 \end{enumerate}
-\pendiente{Describir aquí las particularidades de nuestra sesión: amplitud
-aproximada de soltado, quién cronometró, criterio para iniciar y detener el
-cronómetro, etc.}
+De cara también a justificar errores experimentales, es importante tener en cuenta que:
+\begin{itemize}
+    \item Las amplitudes empleadas se consideran propias de un régimen de ángulos pequeños, aunque al no poder medir dicho ángulo, no se puede descartar que en alguna medida el ángulo fuese más amplio de lo que nos gustaría.
+    \item El cronómetro estuvo en las manos siempre del mismo, luego podemos esperar cierta homogeneidad en las lecturas de tiempo.
+    \item El criterio para iniciar y detener el cronómetro no resultó todo lo profesional y exacto que nos gustaría, pues el inicio y detención venían marcados por el criterio y la observación del otro compañero disponible. Luego puede esperarse que el periodo registrado sea ligeramente mayor del real debido a este hecho.
+\end{itemize}
 
 \subsection{Tratamiento de incertidumbres}\label{sec:incertidumbres}
 Seguimos la \emph{Guide to the expression of uncertainty in
@@ -844,7 +860,11 @@ con $\Tcoef$ el factor de cobertura de Student para $\nu$ grados de
 libertad~\cite{NUM-ARG}; el resultado se expresa como $y\pm\ext{y}$. Las
 incertidumbres se dan con una sola cifra significativa, salvo cuando la
 primera es un 1, en cuyo caso se conservan dos; el valor se redondea a la
-misma posición decimal~\cite{ERR-MP}.
+misma posición decimal~\cite{ERR-MP}. Este es el criterio que hemos empleado
+en todo el informe: cuando un valor y su incertidumbre se escriben en
+notación científica, comparten la misma potencia de diez, y en el redondeo,
+si la primera cifra descartada es exactamente un 5, se redondea a la cifra
+par~\cite{NUM-ARG}.
 
 \begin{calculo}[Periodo de oscilación]\label{calc:T}
 Para cada configuración, la media de las tres lecturas $t_{n,i}$ tiene una
@@ -863,22 +883,22 @@ en un factor $n$, porque los errores de arranque y parada del cronómetro
 \end{calculo}
 
 \begin{metodo}[Regresión lineal por mínimos cuadrados]\label{met:regresion}
-Las \cref{eq:steinerT,eq:varilla} tienen la forma $y=a+b\,x$, con $y=T^{2}$
+Las \cref{eq:steinerT,eq:varilla} tienen la forma $y=a\,x+b$, con $y=T^{2}$
 y $x=r^{2}$ o $x=R^{2}$. Para los $N$ pares $(x_i,y_i)$ ajustamos la recta
 por mínimos cuadrados ordinarios, sin ponderar~\cite{NUM-ARG,HUGHES}. Con
 $S_{xx}=\sum_i(x_i-\mean{x})^{2}$ y $S_{xy}=\sum_i(x_i-\mean{x})(y_i-\mean{y})$,
 \begin{equation}\label{eq:regresion}
-  b=\frac{S_{xy}}{S_{xx}},
+  a=\frac{S_{xy}}{S_{xx}},
   \qquad
-  a=\mean{y}-b\,\mean{x},
+  b=\mean{y}-a\,\mean{x},
   \qquad
-  s^{2}=\frac{1}{N-2}\sum_{i=1}^{N}\bigl(y_i-a-b\,x_i\bigr)^{2},
+  s^{2}=\frac{1}{N-2}\sum_{i=1}^{N}\bigl(y_i-b-a\,x_i\bigr)^{2},
 \end{equation}
 y las incertidumbres típicas de los parámetros son
 \begin{equation}\label{eq:uregresion}
-  u(b)=\frac{s}{\sqrt{S_{xx}}},
+  u(a)=\frac{s}{\sqrt{S_{xx}}},
   \qquad
-  u(a)=s\,\sqrt{\frac{1}{N}+\frac{\mean{x}^{2}}{S_{xx}}},
+  u(b)=s\,\sqrt{\frac{1}{N}+\frac{\mean{x}^{2}}{S_{xx}}},
 \end{equation}
 con $\nu=N-2$ grados de libertad para construir los intervalos al
 \SI{95}{\percent}. La calidad del ajuste la juzgamos con el coeficiente de
@@ -889,7 +909,7 @@ residuos.
 \begin{calculo}[Constante de torsión]\label{calc:D}
 Aplicando la \cref{eq:propagacion} a la \cref{eq:D},
 \begin{equation}\label{eq:uD}
-  \frac{u^{2}(D)}{D^{2}}=\frac{u^{2}(\mc)}{\mc^{2}}+\frac{u^{2}(b')}{b'^{2}}.
+  \frac{u^{2}(D)}{D^{2}}=\frac{u^{2}(\mc)}{\mc^{2}}+\frac{u^{2}(a)}{a^{2}}.
 \end{equation}
 Del mismo modo se propagan las incertidumbres de $m$ e $\Icm$ en la
 \cref{eq:disco} y la de $I=DT^{2}/4\pi^{2}$ para cada sólido.
@@ -899,96 +919,431 @@ Del mismo modo se propagan las incertidumbres de $m$ e $\Icm$ en la
 \newpage
 \seccion{Análisis de datos y resultados}{Lo que dicen las medidas}\label{sec:analisis}
 % =========================================================================
-\pendiente{Sección pendiente de completar con los datos de la sesión.}
 
 \subsection{Constante de torsión del muelle}\label{sec:resD}
-Dimensiones y masas de la varilla y de los cilindros móviles:
-$\mb=\pend{—}$, $L=\pend{—}$, $\mc=\pend{—}$, $d=\pend{—}$, $h=\pend{—}$.
+Una vez realizadas las medidas de tiempo tras cinco oscilaciones, para cada
+posición de los dos cilindros (colocados simétricamente respecto del eje de
+simetría) a lo largo de la varilla metálica, recogemos en la
+\cref{tab:varilla} los resultados. Además, a lo largo de la práctica, se
+realizaron las mediciones de las dimensiones y masas de la varilla y de los
+cilindros móviles (\cref{tab:dimvarilla}).
 
 \begin{table}[ht]
 \centering
-\caption{Tiempos de $n$ oscilaciones y periodos de la varilla con los
-cilindros a distancia $R$ del eje.}
+\caption{Masas y dimensiones de la varilla metálica y de los cilindros móviles.}
+\label{tab:dimvarilla}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l @{\hspace{2.2em}} l l@{}}
+\toprule
+\multicolumn{2}{@{}l}{\scshape\color{azulprof}Varilla metálica} &
+\multicolumn{2}{l@{}}{\scshape\color{azulprof}Cilindros móviles} \\
+\cmidrule(r{1.1em}){1-2}\cmidrule(l){3-4}
+Masa, $\mb$     & $\SI{131,1 \pm 0,1}{\gram}$ & Masa, $m_{\mathrm{c}1}$ & $\SI{238,3 \pm 0,1}{\gram}$ \\
+Longitud, $L$   & $\SI{60,0 \pm 0,1}{\centi\meter}$ & Masa, $m_{\mathrm{c}2}$ & $\SI{238,1 \pm 0,1}{\gram}$ \\
+                &                             & Diámetro, $d$ & $\SI{3,53 \pm 0,01}{\centi\meter}$ \\
+                &                             & Altura, $h$   & $\SI{3,32 \pm 0,01}{\centi\meter}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Tiempos de $n=5$ oscilaciones y periodos de la varilla con los
+cilindros a distancia $R$ del eje, e incertidumbres típicas asociadas.}
 \label{tab:varilla}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}c c c c c c@{}}
 \toprule
 $R$ (\si{\centi\meter}) & $t_{n,1}$ (\si{\second}) & $t_{n,2}$ (\si{\second}) &
-$t_{n,3}$ (\si{\second}) & $T$ (\si{\second}) & $T^{2}$ (\si{\second\squared}) \\
+$t_{n,3}$ (\si{\second}) & $T\pm u(T)$ (\si{\second}) & $T^{2}\pm u(T^{2})$ (\si{\second\squared}) \\
 \midrule
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
+30 & \num{37,18} & \num{37,50} & \num{37,66} & \num{7,49 \pm 0,03}    & \num{56,1 \pm 0,4} \\
+25 & \num{31,87} & \num{31,87} & \num{32,09} & \num{6,389 \pm 0,015}  & \num{40,82 \pm 0,19} \\
+20 & \num{26,18} & \num{26,35} & \num{25,97} & \num{5,23 \pm 0,02}    & \num{27,4 \pm 0,2} \\
+15 & \num{20,78} & \num{20,85} & \num{20,87} & \num{4,167 \pm 0,005}  & \num{17,36 \pm 0,05} \\
+10 & \num{16,28} & \num{16,37} & \num{16,09} & \num{3,249 \pm 0,017}  & \num{10,56 \pm 0,11} \\
+5  & \num{12,87} & \num{12,53} & \num{12,32} & \num{2,51 \pm 0,03}    & \num{6,32 \pm 0,16} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+Antes de realizar el ajuste lineal y obtener su representación, hemos de
+hallar los valores de los momentos de inercia de la barra y de cada cilindro,
+para obtener más adelante el valor de $D$. Tomando las magnitudes recogidas
+en la \cref{tab:dimvarilla}, y ayudándonos de las \cref{eq:Ivarilla}:
+\begin{equation*}
+  I=\Ib+2\,\Ic+2\,\mc R^{2},
+  \qquad
+  \Ib=\frac{\mb L^{2}}{12},
+  \qquad
+  I_{\mathrm{c}1}=m_{\mathrm{c}1}\left(\frac{d^{2}}{16}+\frac{h^{2}}{12}\right),
+  \qquad
+  I_{\mathrm{c}2}=m_{\mathrm{c}2}\left(\frac{d^{2}}{16}+\frac{h^{2}}{12}\right).
+\end{equation*}
+Si calculamos primero el momento de inercia de la barra, también debemos
+tener en cuenta su incertidumbre:
+\begin{equation*}
+  \Ib=\frac{\mb L^{2}}{12}
+     =\frac{(\SI{0,1311}{\kilogram})\,(\SI{0,600}{\meter})^{2}}{12}
+     =\SI{3,933e-3}{\kilogram\meter\squared}.
+\end{equation*}
+
+\begin{calculo}[Momento de inercia de la varilla]\label{calc:Ib}
+Aplicando la ley de propagación de incertidumbres para variables no
+correlacionadas, la incertidumbre típica $u(\Ib)$ se obtiene mediante
+\begin{equation}\label{eq:uIb}
+  u^{2}(\Ib)=\left(\frac{\partial\Ib}{\partial\mb}\right)^{\!2}u^{2}(\mb)
+            +\left(\frac{\partial\Ib}{\partial L}\right)^{\!2}u^{2}(L).
+\end{equation}
+Calculando las derivadas parciales correspondientes,
+\begin{equation}\label{eq:dIb}
+  \frac{\partial\Ib}{\partial\mb}=\frac{L^{2}}{12},
+  \qquad
+  \frac{\partial\Ib}{\partial L}=\frac{\mb L}{6},
+\end{equation}
+la incertidumbre típica de la varilla es
+\begin{equation}\label{eq:uIb2}
+  u(\Ib)=\sqrt{\left(\frac{L^{2}}{12}\right)^{\!2}u^{2}(\mb)
+              +\left(\frac{\mb L}{6}\right)^{\!2}u^{2}(L)}.
+\end{equation}
+\end{calculo}
+
+\begin{calculo}[Momento de inercia de un cilindro]\label{calc:Ic}
+Para un cilindro macizo de masa $\mc$, diámetro $d$ y altura $h$, el momento
+de inercia respecto a un eje perpendicular a su eje de simetría que pasa por
+su centro de masas es
+\begin{equation}\label{eq:Ic}
+  \Ic=\mc\left(\frac{d^{2}}{16}+\frac{h^{2}}{12}\right).
+\end{equation}
+La incertidumbre típica $u(\Ic)$ expresada mediante derivadas parciales
+satisface
+\begin{equation}\label{eq:uIc}
+  u^{2}(\Ic)=\left(\frac{\partial\Ic}{\partial\mc}\right)^{\!2}u^{2}(\mc)
+            +\left(\frac{\partial\Ic}{\partial d}\right)^{\!2}u^{2}(d)
+            +\left(\frac{\partial\Ic}{\partial h}\right)^{\!2}u^{2}(h),
+\end{equation}
+donde
+\begin{equation}\label{eq:dIc}
+  \frac{\partial\Ic}{\partial\mc}=\frac{d^{2}}{16}+\frac{h^{2}}{12},
+  \qquad
+  \frac{\partial\Ic}{\partial d}=\frac{\mc d}{8},
+  \qquad
+  \frac{\partial\Ic}{\partial h}=\frac{\mc h}{6}.
+\end{equation}
+\end{calculo}
+
+Utilizando los datos experimentales expresados en el Sistema Internacional
+(SI) y particularizando el cálculo del momento de inercia para cada cilindro
+(pues sus masas no son idénticas), obtenemos los momentos de inercia con sus
+incertidumbres, recogidos en la \cref{tab:Momentosdeinercia}:
+\begin{itemize}
+  \item Varilla: $\mb=\SI{131,1 \pm 0,1 e-3}{\kilogram}$,
+        $L=\SI{600 \pm 1 e-3}{\meter}$.
+  \item Cilindros: $m_{\mathrm{c}1}=\SI{238,3 \pm 0,1 e-3}{\kilogram}$,
+        $m_{\mathrm{c}2}=\SI{238,1 \pm 0,1 e-3}{\kilogram}$,
+        $d=\SI{35,3 \pm 0,1 e-3}{\meter}$,
+        $h=\SI{33,2 \pm 0,1 e-3}{\meter}$.
+\end{itemize}
+Los valores teóricos calculados con sus incertidumbres son:
+
+\begin{table}[ht]
+\centering
+\caption{Momentos de inercia geométricos teóricos y sus incertidumbres
+típicas asociadas.}
+\label{tab:Momentosdeinercia}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c@{}}
+\toprule
+Elemento & $I\pm u(I)$ (\si{\kilogram\meter\squared}) \\
+\midrule
+Varilla metálica, $\Ib$   & $\num{393,3 \pm 1,3 e-5}$ \\
+Cilindro 1, $I_{\mathrm{c}1}$ & $\num{40,45 \pm 0,17 e-6}$ \\
+Cilindro 2, $I_{\mathrm{c}2}$ & $\num{40,41 \pm 0,17 e-6}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Una vez obtenidas todas las magnitudes necesarias, procedemos a representar
+$T^{2}$ frente a $R^{2}$, con sus incertidumbres (\cref{fig:varilla}).
+Debido a que estas son extremadamente pequeñas, son apenas perceptibles en
+la representación gráfica, que incluye además el ajuste lineal por el método
+de mínimos cuadrados (\cref{met:regresion}):
+\begin{destacado}[Ajuste lineal $T^{2}=a\,R^{2}+b$]
+\vspace{-6pt}
+\begin{equation*}
+  a=\SI{5,71 \pm 0,03 e2}{\second\squared\per\meter\squared},
+  \qquad
+  b=\SI{4,76 \pm 0,17}{\second\squared},
+  \qquad
+  r=\num{0,99993},
+\end{equation*}
+{\small con incertidumbres típicas.}
+\end{destacado}
+
 \begin{figure}[ht]
 \centering
-\huecofigura{Gráfica de $T^{2}$ frente a $R^{2}$ con la recta de regresión
-(\cref{eq:varilla}).}
+\begin{tikzpicture}
+  \pgfplotstableread{
+    x       T2     uT2
+    0.0025  6.32   0.16
+    0.0100  10.56  0.11
+    0.0225  17.36  0.05
+    0.0400  27.4   0.2
+    0.0625  40.82  0.19
+    0.0900  56.1   0.4
+  }\datosvarilla
+  \begin{groupplot}[group style={group size=1 by 2, vertical sep=0.35cm,
+                                 x descriptions at=edge bottom},
+                    datos, width=0.86\textwidth, xmin=0, xmax=0.1,
+                    xtick={0,0.02,...,0.1},
+                    xticklabel style={/pgf/number format/fixed,
+                                      /pgf/number format/precision=2}]
+    \nextgroupplot[height=6.4cm, ymin=0, ymax=64, ylabel={$T^{2}$ (\si{\second\squared})},
+                   leyenda arriba]
+      \addplot[ajuste, domain=0:0.1, samples=2] {571.3564*x+4.7587};
+      \addplot[puntoA] table[x=x, y=T2, y error=uT2] {\datosvarilla};
+      \legend{ajuste: $T^{2}=\num{571,4}\,R^{2}+\num{4,76}$, datos experimentales}
+    \nextgroupplot[height=3.1cm, ymin=-0.6, ymax=0.6, ytick={-0.4,0,0.4},
+                   yticklabel style={/pgf/number format/fixed,
+                                     /pgf/number format/precision=1},
+                   ylabel={residuo (\si{\second\squared})}, xlabel={$R^{2}$ (\si{\meter\squared})}]
+      \addplot[grispizarra, densely dashed, line width=0.6pt, domain=0:0.1, samples=2] {0};
+      \addplot[puntoA] table[x=x, y expr=\thisrow{T2}-(571.3564*\thisrow{x}+4.7587),
+                             y error=uT2] {\datosvarilla};
+  \end{groupplot}
+\end{tikzpicture}
 \caption{Calibración del muelle: $T^{2}$ frente a $R^{2}$ para la varilla con
-cilindros móviles.}
+cilindros móviles. Arriba, datos experimentales y recta de regresión por
+mínimos cuadrados; abajo, residuos del ajuste, con barras de incertidumbre
+típica $u(T^{2})$.}
 \label{fig:varilla}
 \end{figure}
 
+De cara a calcular la constante de torsión $D$, es importante notar un
+detalle: las masas de los dos cilindros no son idénticas. Sin embargo, sus
+momentos de inercia son prácticamente idénticos debido a una diferencia en
+sus masas que podríamos considerar como irrelevante
+($\Delta m=\SI{0,2}{\gram}$). Por lo tanto, al apoyarnos en la
+\cref{eq:varilla}, sí que es coherente o legítimo multiplicar por 2 el
+momento de inercia de cada cilindro, contenido en la ordenada en el origen
+$b$. Sin embargo, para el caso de la pendiente $a$, que nos permite calcular
+la constante de torsión $D$, hemos de emplear el peso medio entre ambos
+cilindros. Afortunadamente ambas masas son números impares, luego el
+resultado es un número par
+($\mc=\frac{m_{\mathrm{c}1}+m_{\mathrm{c}2}}{2}=\SI{238,2}{\gram}$) cuyo
+momento de inercia es prácticamente idéntico al de cada cilindro empleando
+sus masas correspondientes
+($\Ic(\mc=\SI{238,2}{\gram})=\num{40,43 \pm 0,17 e-6}\ \si{\kilogram\meter\squared}$).
+Teniendo todo ello en cuenta, y haciendo uso de las
+\cref{eq:D,eq:uD}, hallamos el valor de la constante de torsión para una
+masa $\mc=\SI{238,2}{\gram}$:
 \begin{destacado}[Constante de torsión]
-$D=\pend{—}\ \si{\newton\meter\per\radian}$ \quad (incertidumbre típica);
-\quad intervalo al \SI{95}{\percent}: \pend{—}.
+\vspace{-6pt}
+\begin{equation*}
+  D=\num{32,9 \pm 0,2 e-3}\ \si{\newton\meter\per\radian}
+  \quad(\text{incertidumbre típica}),
+\end{equation*}
+{\small y, con $\nu=N-2=4$ grados de libertad y $t_{95,4}=\num{2,78}$, una
+incertidumbre ampliada al \SI{95}{\percent}
+$\ext{D}=\num{0,6}\times10^{-3}\ \si{\newton\meter\per\radian}$:}
+\begin{equation*}
+  D=\num{32,9 \pm 0,6 e-3}\ \si{\newton\meter\per\radian}
+  \quad(\SI{95}{\percent}).
+\end{equation*}
 \end{destacado}
 
 \subsection{Comprobación del teorema de Steiner}\label{sec:resSteiner}
 La \cref{tab:disco} recoge los periodos del disco para cada posición del eje,
 y la \cref{fig:disco}, la regresión de $T^{2}$ frente a $r^{2}$.
+
 \begin{table}[ht]
 \centering
 \caption{Periodos del disco perforado con el eje a distancia $r$ de su
-centro.}
+centro, e incertidumbres típicas asociadas. Los valores negativos de $r$
+corresponden a los orificios de la otra mitad del disco, medidos tras
+voltearlo.}
 \label{tab:disco}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}c c c c c c@{}}
 \toprule
 $r$ (\si{\centi\meter}) & $t_{n,1}$ (\si{\second}) & $t_{n,2}$ (\si{\second}) &
-$t_{n,3}$ (\si{\second}) & $T$ (\si{\second}) & $T^{2}$ (\si{\second\squared}) \\
+$t_{n,3}$ (\si{\second}) & $T\pm u(T)$ (\si{\second}) & $T^{2}\pm u(T^{2})$ (\si{\second\squared}) \\
 \midrule
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
-\pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} & \pend{—} \\
+\multicolumn{6}{@{}l}{\small\scshape\color{azulacero}Serie 1 ($r\ge0$)} \\
+0   & \num{20,41} & \num{20,85} & \num{20,53} & \num{4,12 \pm 0,03}   & \num{17,0 \pm 0,2} \\
+4   & \num{20,00} & \num{19,94} & \num{19,78} & \num{3,981 \pm 0,013} & \num{15,85 \pm 0,10} \\
+8   & \num{20,41} & \num{20,91} & \num{21,06} & \num{4,16 \pm 0,04}   & \num{17,3 \pm 0,3} \\
+12  & \num{22,50} & \num{22,22} & \num{22,94} & \num{4,51 \pm 0,04}   & \num{20,3 \pm 0,4} \\
+16  & \num{25,44} & \num{24,82} & \num{25,28} & \num{5,04 \pm 0,04}   & \num{25,4 \pm 0,4} \\
+\midrule
+\multicolumn{6}{@{}l}{\small\scshape\color{azulacero}Serie 2 ($r<0$)} \\
+$-2$  & \num{19,91} & \num{20,18} & \num{20,13} & \num{4,015 \pm 0,017} & \num{16,12 \pm 0,13} \\
+$-4$  & \num{19,75} & \num{19,59} & \num{19,44} & \num{3,919 \pm 0,018} & \num{15,36 \pm 0,14} \\
+$-8$  & \num{20,63} & \num{20,88} & \num{20,87} & \num{4,159 \pm 0,016} & \num{17,29 \pm 0,14} \\
+$-12$ & \num{21,75} & \num{22,08} & \num{21,75} & \num{4,37 \pm 0,02}   & \num{19,11 \pm 0,19} \\
+$-16$ & \num{24,09} & \num{23,85} & \num{24,16} & \num{4,807 \pm 0,019} & \num{23,10 \pm 0,18} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{figure}[ht]
 \centering
-\huecofigura{Gráfica de $T^{2}$ frente a $r^{2}$ con la recta de regresión
-(\cref{eq:steinerT}).}
+\begin{tikzpicture}
+  \begin{axis}[datos, width=0.86\textwidth, height=7.2cm,
+               xmin=-0.001, xmax=0.0275, ymin=14.5, ymax=26.5,
+               xtick={0,0.005,...,0.025},
+               xticklabel style={/pgf/number format/fixed,
+                                 /pgf/number format/precision=3},
+               xlabel={$r^{2}$ (\si{\meter\squared})},
+               ylabel={$T^{2}$ (\si{\second\squared})},
+               leyenda arriba, legend columns=2,
+               legend style={/tikz/every even column/.append style={column sep=12pt}}]
+    \addplot[ajuste, domain=-0.001:0.0275, samples=2] {355.6*x+15.75};
+    \addplot[ajusteB, domain=-0.001:0.0275, samples=2] {291.3*x+15.38};
+    \addplot[puntoA] table[x=x, y=T2, y error=u] {
+      x       T2     u
+      0       17.0   0.2
+      0.0016  15.85  0.10
+      0.0064  17.3   0.3
+      0.0144  20.3   0.4
+      0.0256  25.4   0.4
+    };
+    \addplot[puntoB] table[x=x, y=T2, y error=u] {
+      x       T2     u
+      0.0004  16.12  0.13
+      0.0016  15.36  0.14
+      0.0064  17.29  0.14
+      0.0144  19.11  0.19
+      0.0256  23.10  0.18
+    };
+    \legend{ajuste serie 1: $T^{2}=\num{355,6}\,r^{2}+\num{15,75}$,
+            ajuste serie 2: $T^{2}=\num{291,3}\,r^{2}+\num{15,38}$,
+            serie 1 ($r\ge0$), serie 2 ($r<0$)}
+  \end{axis}
+\end{tikzpicture}
 \caption{Teorema de Steiner: $T^{2}$ frente a $r^{2}$ para el disco
-perforado.}
+perforado. Círculos: serie 1, sobre la cara con la pegatina; cuadrados:
+serie 2, tras voltear el disco. Las rectas son los ajustes por mínimos
+cuadrados de cada serie y las barras, la incertidumbre típica $u(T^{2})$.}
 \label{fig:disco}
 \end{figure}
 
-\begin{destacado}[Disco perforado]
-$m=\pend{—}$, \quad $\Icm=\pend{—}$.
+Como se puede apreciar, los ajustes para cada conjunto o serie de medidas son
+ligeramente diferentes. El primer set corresponde a las medidas realizadas
+para las perforaciones equidistantes ($\Delta d=\SI{4}{\centi\meter}$) sobre
+la cara con la pegatina [Datos Serie 1 ($r\ge0$)], tal y como se puede
+apreciar en la \cref{fig:serie1}. El segundo set corresponde a las medidas
+realizadas para las perforaciones de la segunda mitad del disco y tras
+voltear el mismo, tal y como se puede apreciar en la \cref{fig:serie2}. (El
+disco se volteó por recomendación de uno de los Teaching Assistants).
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[b]{0.36\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figuras/foto-disco-pegatina.jpg}
+    \caption{Cara con la pegatina: serie 1 ($r\ge0$).}
+    \label{fig:serie1}
+  \end{subfigure}%
+  \hspace{0.06\textwidth}%
+  \begin{subfigure}[b]{0.36\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figuras/foto-disco-volteado.jpg}
+    \caption{Disco volteado: serie 2 ($r<0$).}
+    \label{fig:serie2}
+  \end{subfigure}
+  \caption{Las dos caras del disco perforado sobre las que se midieron las
+  dos series de periodos.}
+  \label{fig:disco_paralelo}
+\end{figure}
+
+La discrepancia presente en los ajustes realizados puede deberse a la
+geometría y la masa del propio disco. Se ha dicho anteriormente que se nos
+recomendó voltear el disco. Y esto es así porque el propio disco sufre una
+descompensación, luego al voltearlo y medir el segundo set para las
+perforaciones de la segunda mitad, se evita esta descompensación. Aun así, no
+se descarta un error experimental, asociado principalmente al tiempo de
+reacción y que podría explicar las diferencias apreciadas anteriormente.
+No obstante, se ha decidido calcular la masa del disco y el momento de
+inercia en la posición del centro de masas, empleando los datos de cada
+ajuste (\cref{tab:ajustes_disco}).
+
+\begin{table}[ht]
+\centering
+\caption{Parámetros de los ajustes lineales $T^{2}=a\,r^{2}+b$ para las dos
+series del disco perforado: valor con su incertidumbre típica, e
+incertidumbre ampliada al \SI{95}{\percent} ($\nu=3$, $t_{95,3}=\num{3,18}$).}
+\label{tab:ajustes_disco}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+Serie & $a\pm u(a)$ (\si{\second\squared\per\meter\squared}) & $U(a)$ (\si{\second\squared\per\meter\squared}) &
+$b\pm u(b)$ (\si{\second\squared}) & $U(b)$ (\si{\second\squared}) \\
+\midrule
+Serie 1 ($r\ge0$) & $\num{3,6 \pm 0,5 e2}$ & $\num{1,4}\times10^{2}$ & \num{15,8 \pm 0,6} & \num{2} \\
+Serie 2 ($r<0$)   & $\num{2,9 \pm 0,3 e2}$ & $\num{0,8}\times10^{2}$ & \num{15,4 \pm 0,4} & \num{1,1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Entonces, obtenidas las pendientes de cada ajuste con sus incertidumbres
+ampliadas a un intervalo del \SI{95}{\percent}, podemos calcular la masa del
+disco y el momento de inercia del centro de masas sin más que usar las
+\cref{eq:disco} y calculando sus incertidumbres por propagación.
+\begin{destacado}[Disco perforado (incertidumbres ampliadas al \SI{95}{\percent})]
+\vspace{6pt}\noindent
+\begin{tabular}{@{}l l l@{}}
+Serie 1 ($r\ge0$): & $m=\SI{0,30 \pm 0,12}{\kilogram}$, &
+  $\Icm=\num{1,31 \pm 0,17 e-2}\ \si{\kilogram\meter\squared}$; \\[2pt]
+Serie 2 ($r<0$): & $m=\SI{0,24 \pm 0,07}{\kilogram}$, &
+  $\Icm=\num{1,28 \pm 0,10 e-2}\ \si{\kilogram\meter\squared}$.
+\end{tabular}
 \end{destacado}
 
 \subsection{Momentos de inercia de los sólidos}\label{sec:resSolidos}
 La \cref{tab:solidos} compara, para cada sólido, el momento de inercia
-obtenido del periodo con el que predicen su masa y sus dimensiones.
+obtenido del periodo con el que predicen su masa y sus dimensiones. Para
+calcular los momentos de inercia, recogemos primero las magnitudes que
+necesitamos conocer de los sólidos empleados (\cref{tab:magnitudes_solidos}).
+El diámetro de la esfera se obtiene a partir de su perímetro, medido con la
+cinta métrica, como $D_{\mathrm{e}}=P/\pi=\SI{14,64 \pm 0,03}{\centi\meter}$.
+
+\begin{table}[ht]
+\centering
+\caption{Masas y dimensiones características de los sólidos de prueba.}
+\label{tab:magnitudes_solidos}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l @{\hspace{2.2em}} l l@{}}
+\toprule
+\multicolumn{2}{@{}l}{\scshape\color{azulprof}Esfera} &
+\multicolumn{2}{l@{}}{\scshape\color{azulprof}Cilindros de prueba} \\
+\cmidrule(r{1.1em}){1-2}\cmidrule(l){3-4}
+Masa, $M_{\mathrm{e}}$      & $\SI{948,1 \pm 0,1}{\gram}$ & Masa cil.\ hueco, $M_{\mathrm{h}}$      & $\SI{399,5 \pm 0,1}{\gram}$ \\
+Perímetro, $P$              & $\SI{46,0 \pm 0,1}{\centi\meter}$ & Diámetro cil.\ hueco, $d_{\mathrm{h}}$ & $\SI{9,03 \pm 0,01}{\centi\meter}$ \\
+                            &                             & Altura cil.\ hueco, $h_{\mathrm{h}}$    & $\SI{9,05 \pm 0,01}{\centi\meter}$ \\
+\cmidrule(l){3-4}
+                            &                             & Masa cil.\ macizo, $M_{\mathrm{m}}$     & $\SI{340,8 \pm 0,1}{\gram}$ \\
+                            &                             & Diámetro cil.\ macizo, $d_{\mathrm{m}}$ & $\SI{8,94 \pm 0,01}{\centi\meter}$ \\
+                            &                             & Altura cil.\ macizo, $h_{\mathrm{m}}$   & $\SI{9,09 \pm 0,01}{\centi\meter}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{table}[ht]
 \centering
 \caption{Momentos de inercia de los sólidos: valor dinámico, a partir del
 periodo, y valor geométrico, a partir de la \cref{tab:teoricos}, con sus
-intervalos al \SI{95}{\percent}.}
+incertidumbres ampliadas al \SI{95}{\percent}.}
 \label{tab:solidos}
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}l c c c@{}}
 \toprule
-Sólido & $T$ (\si{\second}) & $I_{\text{din}}$ (\si{\kilogram\meter\squared}) &
-$I_{\text{geo}}$ (\si{\kilogram\meter\squared}) \\
+Sólido & $T\pm u(T)$ (\si{\second}) & $I_{\text{din}}\pm U(I_{\text{din}})$ (\si{\kilogram\meter\squared}) &
+$I_{\text{geo}}\pm U(I_{\text{geo}})$ (\si{\kilogram\meter\squared}) \\
 \midrule
-Esfera          & \pend{—} & \pend{—} & \pend{—} \\
-Cilindro hueco  & \pend{—} & \pend{—} & \pend{—} \\
-Cilindro macizo & \pend{—} & \pend{—} & \pend{—} \\
+Esfera          & \num{0,535 \pm 0,002} & $\num{2,39 \pm 0,08 e-4}$ & $\num{2,033 \pm 0,017 e-3}$ \\
+Cilindro hueco  & \num{1,06 \pm 0,01}   & $\num{9,4 \pm 0,7 e-4}$   & $\num{8,14 \pm 0,04 e-4}$ \\
+Cilindro macizo & \num{0,78 \pm 0,01}   & $\num{5,1 \pm 0,4 e-4}$   & $\num{3,405 \pm 0,015 e-4}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -997,11 +1352,99 @@ Cilindro macizo & \pend{—} & \pend{—} & \pend{—} \\
 \newpage
 \seccion{Discusión y conclusiones}{Lo que aprendemos}\label{sec:discusion}
 % =========================================================================
-\pendiente{Sección pendiente: valor de $D$ y calidad de la calibración;
-linealidad de $T^{2}$ frente a $r^{2}$ y compatibilidad de $m$ e $\Icm$ con
-los valores esperados; comparación de los momentos de inercia dinámicos y
-geométricos; fuentes de error (tiempo de reacción, amplitud, rozamiento,
-inercia del eje).}
+\begin{conclusion}[Constante de torsión]\label{conc:D}
+La calibración con la varilla y los cilindros móviles da
+$D=\num{32,9 \pm 0,6 e-3}\ \si{\newton\meter\per\radian}$ al
+\SI{95}{\percent}, una incertidumbre relativa inferior al \SI{2}{\percent}.
+La dependencia lineal de $T^{2}$ con $R^{2}$ es excelente ($r=\num{0,99993}$)
+y los residuos se reparten a ambos lados de la recta sin ninguna tendencia
+apreciable (\cref{fig:varilla}). Además, la ordenada del ajuste,
+$b=\SI{4,8 \pm 0,5}{\second\squared}$ al \SI{95}{\percent}, es compatible con
+la que predicen las dimensiones de la varilla y de los cilindros,
+$4\pi^{2}(\Ib+2\Ic)/D\simeq\SI{4,81}{\second\squared}$: el modelo de la
+\cref{eq:varilla} describe bien el sistema y la inercia del eje apenas
+contribuye en este montaje.
+\end{conclusion}
+
+\begin{conclusion}[Teorema de Steiner]\label{conc:steiner}
+En las dos series del disco perforado, $T^{2}$ crece con $r^{2}$ tal y como
+predice la \cref{eq:steinerT}, aunque con bastante más dispersión que en la
+calibración ($r=\num{0,976}$ y $r=\num{0,988}$). Las diferencias que se
+aprecian a simple vista entre ambas series no son significativas: las
+pendientes difieren en unos \SI{64}{\second\squared\per\meter\squared}, algo
+más de una vez su incertidumbre típica combinada, y las ordenadas, en
+\SI{0,4}{\second\squared}, frente a una incertidumbre combinada de
+\SI{0,7}{\second\squared}. En consecuencia, también lo son las magnitudes que
+derivamos de ellas: $m=\SI{0,30 \pm 0,12}{\kilogram}$ y
+$m=\SI{0,24 \pm 0,07}{\kilogram}$ para la masa del disco, e
+$\Icm=\num{1,31 \pm 0,17 e-2}$ y
+$\num{1,28 \pm 0,10 e-2}\ \si{\kilogram\meter\squared}$ para su
+momento de inercia respecto al centro de masas. Damos, por tanto, el teorema
+de Steiner por comprobado cualitativa y cuantitativamente dentro de nuestra
+precisión, que es modesta: la masa queda determinada solo al
+\SIrange{30}{40}{\percent}.
+\end{conclusion}
+
+\begin{observacion}[Sobre la precisión del disco]\label{obs:disco}
+Esa incertidumbre tan grande en la pendiente se debe a que el intervalo de
+$r^{2}$ es corto (hasta \SI{0,0256}{\meter\squared}) y a que los periodos
+apenas varían en los orificios centrales, de modo que pequeñas desviaciones
+pesan mucho en el ajuste. Es significativo que, en la serie~1, el punto
+$r=0$ quede por encima del de $r=\SI{4}{\centi\meter}$, y en la serie~2 el de
+$r=\SI{-2}{\centi\meter}$ por encima del de $r=\SI{-4}{\centi\meter}$, cuando
+el teorema predice el mínimo en el centro de masas: es coherente con la descompensación
+de masas del disco que motivó voltearlo, que desplaza su centro de masas
+fuera del orificio central. Como no pesamos el disco ni medimos su radio, no
+podemos contrastar directamente $m$ e $\Icm$; hacerlo sería la mejora más
+inmediata de esta parte.
+\end{observacion}
+
+\begin{conclusion}[Momentos de inercia de los sólidos]\label{conc:solidos}
+En los dos cilindros el valor dinámico supera al geométrico y los intervalos
+al \SI{95}{\percent} no se solapan: $\num{9,4 \pm 0,7 e-4}$ frente
+a $\num{8,14 \pm 0,04 e-4}\ \si{\kilogram\meter\squared}$ en el
+hueco, y $\num{5,1 \pm 0,4 e-4}$ frente a
+$\num{3,405 \pm 0,015 e-4}\ \si{\kilogram\meter\squared}$ en el
+macizo. El exceso es del mismo signo y de un orden de magnitud parecido en
+ambos casos, entre $\num{1,2}\times10^{-4}$ y
+$\num{1,7}\times10^{-4}\ \si{\kilogram\meter\squared}$, lo que apunta a un
+error sistemático y no a la dispersión de las medidas.
+\end{conclusion}
+
+\begin{observacion}[Origen de la discrepancia]\label{obs:sistematico}
+Atribuimos ese exceso principalmente a dos causas:
+\begin{itemize}
+  \item la inercia del soporte sobre el que se montan los cuerpos, $\Ie$, que
+    no hemos descontado (\cref{obs:modelo}). Con la varilla la ordenada
+    absorbía esa contribución, pero al medir un sólido aislado se suma
+    íntegramente a su momento de inercia;
+  \item el criterio manual de arranque y parada del cronómetro, que, como ya
+    advertimos, tiende a alargar el periodo registrado. Un retraso de unas
+    dos décimas en cinco oscilaciones aumenta $I$ entre un \SI{7}{\percent}
+    y un \SI{10}{\percent}, lo que explica solo una parte del exceso.
+\end{itemize}
+Medir el periodo del soporte vacío para restar $\Ie$, cronometrar más
+oscilaciones o emplear una barrera fotoeléctrica reduciría ambos efectos.
+\end{observacion}
+
+\begin{observacion}[Medida anómala de la esfera]\label{obs:esfera}
+El periodo registrado para la esfera, $T=\SI{0,535}{\second}$, conduce a
+$I_{\text{din}}=\num{2,39 \pm 0,08 e-4}\ \si{\kilogram\meter\squared}$,
+casi diez veces menor que el valor geométrico,
+$\num{2,033 \pm 0,017 e-3}\ \si{\kilogram\meter\squared}$, e incluso
+menor que el del cilindro macizo, siendo la esfera casi tres veces más
+pesada y de mayor radio. Esto no es físicamente posible, por lo que
+atribuimos la discrepancia a un error en la toma o en la transcripción del
+periodo (con su momento geométrico cabría esperar $T\approx\SI{1,56}{\second}$),
+y no la tenemos en cuenta para extraer conclusiones.
+\end{observacion}
+
+En conjunto, la práctica cumple sus objetivos: el péndulo de torsión permite
+calibrar el muelle con una precisión notable y comprobar el teorema de
+Steiner, mientras que la medida de momentos de inercia de sólidos aislados
+pone de manifiesto la importancia de los errores sistemáticos que no aparecen
+en la dispersión de los datos: la inercia de las piezas que giran con el
+cuerpo y el modo de cronometrar.
 
 % =========================================================================
 \newpage
