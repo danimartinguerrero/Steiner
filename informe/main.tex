@@ -838,8 +838,42 @@ $T=t_{n}/n$.
         medimos el periodo en cada uno. (Es importante señalar que debido a un reparto de pesos no equitativo entre las dos mitades del mismo, se nos aconsejó voltear el disco una vez realizadas las medidas del lado que primero considerásemos, para así obtener resultados coherentes al realizar las medidas relativas al otro lado.)
   \item \emph{Sólidos.} Medimos el periodo de la esfera, el cilindro hueco y
         el cilindro macizo, y sus masas y dimensiones (diámetros, alturas y
-        espesores) con el calibre y la regla.
+        espesores) con el calibre y la regla. Los dos cilindros se montan
+        sobre un soporte, por lo que medimos también el periodo del soporte
+        vacío para poder descontar su contribución.
 \end{enumerate}
+Las longitudes de los cilindros se midieron con un pie de rey, cuya
+resolución es de una décima de milímetro (\cref{fig:calibre}); el perímetro
+de la esfera y la longitud de la varilla, con la cinta métrica, y las masas,
+con la balanza, de resolución \SI{0,1}{\gram}.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.30\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/calibre-cilindro-movil.jpg}
+  \caption{Cilindro móvil.}
+  \label{fig:calibre-movil}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.30\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/calibre-cilindro-hueco.jpg}
+  \caption{Cilindro hueco.}
+  \label{fig:calibre-hueco}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.30\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/calibre-cilindro-macizo.jpg}
+  \caption{Cilindro macizo.}
+  \label{fig:calibre-macizo}
+\end{subfigure}
+\caption{Medida de las dimensiones de los cilindros con el pie de rey, de
+resolución \SI{0,1}{\milli\meter}: (a)~diámetro de uno de los cilindros
+móviles de la varilla, (b)~altura del cilindro hueco y (c)~altura del
+cilindro macizo.}
+\label{fig:calibre}
+\end{figure}
+
 De cara también a justificar errores experimentales, es importante tener en cuenta que:
 \begin{itemize}
     \item Las amplitudes empleadas se consideran propias de un régimen de ángulos pequeños, aunque al no poder medir dicho ángulo, no se puede descartar que en alguna medida el ángulo fuese más amplio de lo que nos gustaría.
@@ -1179,8 +1213,8 @@ $t_{n,3}$ (\si{\second}) & $T\pm u(T)$ (\si{\second}) & $T^{2}\pm u(T^{2})$ (\si
 \multicolumn{6}{@{}l}{\small\scshape\color{azulacero}Serie 2 ($r<0$)} \\
 $-2$  & \num{19,91} & \num{20,18} & \num{20,13} & \num{4,015 \pm 0,017} & \num{16,12 \pm 0,13} \\
 $-4$  & \num{19,75} & \num{19,59} & \num{19,44} & \num{3,919 \pm 0,018} & \num{15,36 \pm 0,14} \\
-$-8$  & \num{20,63} & \num{20,88} & \num{20,87} & \num{4,159 \pm 0,016} & \num{17,29 \pm 0,14} \\
-$-12$ & \num{21,75} & \num{22,08} & \num{21,75} & \num{4,37 \pm 0,02}   & \num{19,11 \pm 0,19} \\
+$-8$  & \num{20,63} & \num{20,68} & \num{20,87} & \num{4,145 \pm 0,015} & \num{17,18 \pm 0,12} \\
+$-12$ & \num{21,75} & \num{22,06} & \num{21,75} & \num{4,37 \pm 0,02}   & \num{19,10 \pm 0,18} \\
 $-16$ & \num{24,09} & \num{23,85} & \num{24,16} & \num{4,807 \pm 0,019} & \num{23,10 \pm 0,18} \\
 \bottomrule
 \end{tabular}
@@ -1199,7 +1233,7 @@ $-16$ & \num{24,09} & \num{23,85} & \num{24,16} & \num{4,807 \pm 0,019} & \num{2
                leyenda arriba, legend columns=2,
                legend style={/tikz/every even column/.append style={column sep=12pt}}]
     \addplot[ajuste, domain=-0.001:0.0275, samples=2] {355.6*x+15.75};
-    \addplot[ajusteB, domain=-0.001:0.0275, samples=2] {291.3*x+15.38};
+    \addplot[ajusteB, domain=-0.001:0.0275, samples=2] {292.2*x+15.34};
     \addplot[puntoA] table[x=x, y=T2, y error=u] {
       x       T2     u
       0       17.0   0.2
@@ -1212,12 +1246,12 @@ $-16$ & \num{24,09} & \num{23,85} & \num{24,16} & \num{4,807 \pm 0,019} & \num{2
       x       T2     u
       0.0004  16.12  0.13
       0.0016  15.36  0.14
-      0.0064  17.29  0.14
-      0.0144  19.11  0.19
+      0.0064  17.18  0.12
+      0.0144  19.10  0.18
       0.0256  23.10  0.18
     };
     \legend{ajuste serie 1: $T^{2}=\num{355,6}\,r^{2}+\num{15,75}$,
-            ajuste serie 2: $T^{2}=\num{291,3}\,r^{2}+\num{15,38}$,
+            ajuste serie 2: $T^{2}=\num{292,2}\,r^{2}+\num{15,34}$,
             serie 1 ($r\ge0$), serie 2 ($r<0$)}
   \end{axis}
 \end{tikzpicture}
@@ -1281,7 +1315,7 @@ Serie & $a\pm u(a)$ (\si{\second\squared\per\meter\squared}) & $U(a)$ (\si{\seco
 $b\pm u(b)$ (\si{\second\squared}) & $U(b)$ (\si{\second\squared}) \\
 \midrule
 Serie 1 ($r\ge0$) & $\num{3,6 \pm 0,5 e2}$ & $\num{1,4}\times10^{2}$ & \num{15,8 \pm 0,6} & \num{2} \\
-Serie 2 ($r<0$)   & $\num{2,9 \pm 0,3 e2}$ & $\num{0,8}\times10^{2}$ & \num{15,4 \pm 0,4} & \num{1,1} \\
+Serie 2 ($r<0$)   & $\num{2,9 \pm 0,3 e2}$ & $\num{0,8}\times10^{2}$ & \num{15,3 \pm 0,4} & \num{1,1} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1310,40 +1344,90 @@ cinta métrica, como $D_{\mathrm{e}}=P/\pi=\SI{14,64 \pm 0,03}{\centi\meter}$.
 
 \begin{table}[ht]
 \centering
-\caption{Masas y dimensiones características de los sólidos de prueba.}
+\caption{Masas y dimensiones características de los sólidos de prueba y del
+soporte sobre el que se montan los cilindros.}
 \label{tab:magnitudes_solidos}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}l l @{\hspace{2.2em}} l l@{}}
 \toprule
-\multicolumn{2}{@{}l}{\scshape\color{azulprof}Esfera} &
+\multicolumn{2}{@{}l}{\scshape\color{azulprof}Esfera y soporte} &
 \multicolumn{2}{l@{}}{\scshape\color{azulprof}Cilindros de prueba} \\
 \cmidrule(r{1.1em}){1-2}\cmidrule(l){3-4}
-Masa, $M_{\mathrm{e}}$      & $\SI{948,1 \pm 0,1}{\gram}$ & Masa cil.\ hueco, $M_{\mathrm{h}}$      & $\SI{399,5 \pm 0,1}{\gram}$ \\
-Perímetro, $P$              & $\SI{46,0 \pm 0,1}{\centi\meter}$ & Diámetro cil.\ hueco, $d_{\mathrm{h}}$ & $\SI{9,03 \pm 0,01}{\centi\meter}$ \\
-                            &                             & Altura cil.\ hueco, $h_{\mathrm{h}}$    & $\SI{9,05 \pm 0,01}{\centi\meter}$ \\
-\cmidrule(l){3-4}
-                            &                             & Masa cil.\ macizo, $M_{\mathrm{m}}$     & $\SI{340,8 \pm 0,1}{\gram}$ \\
-                            &                             & Diámetro cil.\ macizo, $d_{\mathrm{m}}$ & $\SI{8,94 \pm 0,01}{\centi\meter}$ \\
-                            &                             & Altura cil.\ macizo, $h_{\mathrm{m}}$   & $\SI{9,09 \pm 0,01}{\centi\meter}$ \\
+Masa esfera, $M_{\mathrm{e}}$   & $\SI{948,1 \pm 0,1}{\gram}$       & Masa cil.\ hueco, $M_{\mathrm{h}}$      & $\SI{399,5 \pm 0,1}{\gram}$ \\
+Perímetro esfera, $P$           & $\SI{46,0 \pm 0,1}{\centi\meter}$ & Diámetro cil.\ hueco, $d_{\mathrm{h}}$ & $\SI{9,03 \pm 0,01}{\centi\meter}$ \\
+                                &                                    & Altura cil.\ hueco, $h_{\mathrm{h}}$    & $\SI{9,05 \pm 0,01}{\centi\meter}$ \\
+\cmidrule(r{1.1em}){1-2}\cmidrule(l){3-4}
+Masa soporte, $M_{\mathrm{s}}$  & $\SI{134,7 \pm 0,1}{\gram}$       & Masa cil.\ macizo, $M_{\mathrm{m}}$     & $\SI{340,8 \pm 0,1}{\gram}$ \\
+Diámetro soporte, $d_{\mathrm{s}}$ & $\SI{9,99 \pm 0,01}{\centi\meter}$ & Diámetro cil.\ macizo, $d_{\mathrm{m}}$ & $\SI{8,94 \pm 0,01}{\centi\meter}$ \\
+                                &                                    & Altura cil.\ macizo, $h_{\mathrm{m}}$   & $\SI{9,09 \pm 0,01}{\centi\meter}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+Los cilindros no se atornillan directamente al eje, sino que descansan sobre
+un soporte que gira con ellos. Por eso medimos también el periodo $T_{\mathrm{s}}$
+del soporte vacío (\cref{tab:tiempos_solidos}): como los momentos de inercia
+respecto a un mismo eje se suman, el del cilindro es, por la
+\cref{eq:periodo},
+\begin{equation}\label{eq:restasoporte}
+  I_{\text{din}}=\frac{D}{4\pi^{2}}\bigl(T^{2}-T_{\mathrm{s}}^{2}\bigr),
+\end{equation}
+donde $T$ es el periodo del conjunto soporte y cilindro. La esfera, en cambio,
+se monta directamente sobre el eje, y para ella basta la \cref{eq:periodo}.
+
+\begin{table}[ht]
+\centering
+\caption{Tiempos de $n=5$ oscilaciones y periodos del soporte vacío, de los
+cilindros sobre el soporte y de la esfera, con sus incertidumbres típicas.}
+\label{tab:tiempos_solidos}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+Configuración & $t_{n,1}$ (\si{\second}) & $t_{n,2}$ (\si{\second}) &
+$t_{n,3}$ (\si{\second}) & $T\pm u(T)$ (\si{\second}) \\
+\midrule
+Soporte                     & \num{2,68} & \num{2,68} & \num{2,66} & \num{0,5347 \pm 0,0015} \\
+Soporte y cilindro hueco    & \num{5,32} & \num{5,18} & \num{5,32} & \num{1,055 \pm 0,009} \\
+Soporte y cilindro macizo   & \num{3,85} & \num{3,85} & \num{3,94} & \num{0,776 \pm 0,006} \\
+Esfera                      & \num{7,53} & \num{7,47} & \num{7,28} & \num{1,485 \pm 0,015} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{calculo}[Momentos de inercia dinámicos]\label{calc:Idin}
+Aplicando la \cref{eq:propagacion} a la \cref{eq:restasoporte},
+\begin{equation}\label{eq:uIdin}
+  u^{2}(I_{\text{din}})=\left(\frac{T^{2}-T_{\mathrm{s}}^{2}}{4\pi^{2}}\right)^{\!2}u^{2}(D)
+   +\left(\frac{D\,T}{2\pi^{2}}\right)^{\!2}u^{2}(T)
+   +\left(\frac{D\,T_{\mathrm{s}}}{2\pi^{2}}\right)^{\!2}u^{2}(T_{\mathrm{s}}),
+\end{equation}
+y, para la esfera, la misma expresión con $T_{\mathrm{s}}=0$. Los periodos
+proceden de solo tres lecturas, de modo que el número efectivo de grados de
+libertad que da la fórmula de Welch--Satterthwaite es pequeño
+($\nu_{\mathrm{eff}}\approx2$) y el factor de cobertura, grande:
+$t_{95,2}=\num{4,30}$~\cite{NUM-ARG}. Para el soporte resulta
+$I_{\mathrm{s}}=\num{2,384 \pm 0,019 e-4}\ \si{\kilogram\meter\squared}$
+(incertidumbre típica). Los valores geométricos, en cambio, solo dependen de
+magnitudes evaluadas por su resolución ($\nu\to\infty$), y su incertidumbre
+ampliada se obtiene con $t_{95,\infty}=\num{1,96}$.
+\end{calculo}
+
 \begin{table}[ht]
 \centering
 \caption{Momentos de inercia de los sólidos: valor dinámico, a partir del
-periodo, y valor geométrico, a partir de la \cref{tab:teoricos}, con sus
-incertidumbres ampliadas al \SI{95}{\percent}.}
+periodo (descontado el soporte en los cilindros), y valor geométrico, a
+partir de la \cref{tab:teoricos}, con sus incertidumbres ampliadas al
+\SI{95}{\percent}.}
 \label{tab:solidos}
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}l c c c@{}}
 \toprule
-Sólido & $T\pm u(T)$ (\si{\second}) & $I_{\text{din}}\pm U(I_{\text{din}})$ (\si{\kilogram\meter\squared}) &
+Sólido & Modelo geométrico & $I_{\text{din}}\pm U(I_{\text{din}})$ (\si{\kilogram\meter\squared}) &
 $I_{\text{geo}}\pm U(I_{\text{geo}})$ (\si{\kilogram\meter\squared}) \\
 \midrule
-Esfera          & \num{0,535 \pm 0,002} & $\num{2,39 \pm 0,08 e-4}$ & $\num{2,033 \pm 0,017 e-3}$ \\
-Cilindro hueco  & \num{1,06 \pm 0,01}   & $\num{9,4 \pm 0,7 e-4}$   & $\num{8,14 \pm 0,04 e-4}$ \\
-Cilindro macizo & \num{0,78 \pm 0,01}   & $\num{5,1 \pm 0,4 e-4}$   & $\num{3,405 \pm 0,015 e-4}$ \\
+Esfera          & $\tfrac{2}{5}M R^{2}$ & $\num{1,84 \pm 0,17 e-3}$ & $\num{2,033 \pm 0,017 e-3}$ \\
+Cilindro hueco  & $M R^{2}$             & $\num{6,9 \pm 0,7 e-4}$   & $\num{8,14 \pm 0,04 e-4}$ \\
+Cilindro macizo & $\tfrac{1}{2}M R^{2}$ & $\num{2,6 \pm 0,3 e-4}$   & $\num{3,405 \pm 0,015 e-4}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1371,7 +1455,7 @@ En las dos series del disco perforado, $T^{2}$ crece con $r^{2}$ tal y como
 predice la \cref{eq:steinerT}, aunque con bastante más dispersión que en la
 calibración ($r=\num{0,976}$ y $r=\num{0,988}$). Las diferencias que se
 aprecian a simple vista entre ambas series no son significativas: las
-pendientes difieren en unos \SI{64}{\second\squared\per\meter\squared}, algo
+pendientes difieren en unos \SI{63}{\second\squared\per\meter\squared}, algo
 más de una vez su incertidumbre típica combinada, y las ordenadas, en
 \SI{0,4}{\second\squared}, frente a una incertidumbre combinada de
 \SI{0,7}{\second\squared}. En consecuencia, también lo son las magnitudes que
@@ -1400,51 +1484,53 @@ inmediata de esta parte.
 \end{observacion}
 
 \begin{conclusion}[Momentos de inercia de los sólidos]\label{conc:solidos}
-En los dos cilindros el valor dinámico supera al geométrico y los intervalos
-al \SI{95}{\percent} no se solapan: $\num{9,4 \pm 0,7 e-4}$ frente
-a $\num{8,14 \pm 0,04 e-4}\ \si{\kilogram\meter\squared}$ en el
-hueco, y $\num{5,1 \pm 0,4 e-4}$ frente a
-$\num{3,405 \pm 0,015 e-4}\ \si{\kilogram\meter\squared}$ en el
-macizo. El exceso es del mismo signo y de un orden de magnitud parecido en
-ambos casos, entre $\num{1,2}\times10^{-4}$ y
-$\num{1,7}\times10^{-4}\ \si{\kilogram\meter\squared}$, lo que apunta a un
-error sistemático y no a la dispersión de las medidas.
+La esfera, que se monta directamente sobre el eje, da
+$I_{\text{din}}=\num{1,84 \pm 0,17 e-3}\ \si{\kilogram\meter\squared}$
+frente a un valor geométrico de
+$\num{2,033 \pm 0,017 e-3}\ \si{\kilogram\meter\squared}$: una diferencia
+del \SI{10}{\percent}, con los dos intervalos al \SI{95}{\percent} a punto de
+solaparse, de modo que el resultado queda en el límite de la compatibilidad.
+En los cilindros, una vez descontado el soporte, la discrepancia es mayor:
+$\num{6,9 \pm 0,7 e-4}$ frente a
+$\num{8,14 \pm 0,04 e-4}\ \si{\kilogram\meter\squared}$ en el hueco
+(un \SI{15}{\percent} menos) y $\num{2,6 \pm 0,3 e-4}$ frente a
+$\num{3,405 \pm 0,015 e-4}\ \si{\kilogram\meter\squared}$ en el macizo
+(un \SI{23}{\percent} menos), sin solapamiento de los intervalos. Que los tres
+valores dinámicos queden por debajo de los geométricos apunta a un error
+sistemático, y no a la dispersión de las medidas.
 \end{conclusion}
 
 \begin{observacion}[Origen de la discrepancia]\label{obs:sistematico}
-Atribuimos ese exceso principalmente a dos causas:
+El cronometraje manual no lo explica: como advertimos en el procedimiento,
+tiende a alargar los periodos y, por tanto, a sobrestimar los momentos de
+inercia, justo al contrario de lo observado. Tampoco la constante de
+torsión, cuya incertidumbre relativa no llega al \SI{2}{\percent}.
+Atribuimos el defecto, sobre todo, a dos causas:
 \begin{itemize}
-  \item la inercia del soporte sobre el que se montan los cuerpos, $\Ie$, que
-    no hemos descontado (\cref{obs:modelo}). Con la varilla la ordenada
-    absorbía esa contribución, pero al medir un sólido aislado se suma
-    íntegramente a su momento de inercia;
-  \item el criterio manual de arranque y parada del cronómetro, que, como ya
-    advertimos, tiende a alargar el periodo registrado. Un retraso de unas
-    dos décimas en cinco oscilaciones aumenta $I$ entre un \SI{7}{\percent}
-    y un \SI{10}{\percent}, lo que explica solo una parte del exceso.
+  \item los modelos geométricos idealizan los cuerpos. El de pared delgada,
+    $MR^{2}$, es una cota superior para un cilindro hueco con paredes de
+    espesor finito, para el que $\tfrac{1}{2}M(R_{1}^{2}+R_{2}^{2})<MR^{2}$, y
+    no medimos su diámetro interior. Además, cualquier pieza metálica de
+    fijación junto al eje concentra masa donde menos contribuye, lo que
+    reduce el momento de inercia real frente al de un sólido homogéneo;
+  \item la resta del soporte. Su periodo procede de los tiempos más cortos de
+    toda la práctica ($t_{5}\approx\SI{2,7}{\second}$), donde el tiempo de
+    reacción pesa más: un error de una décima en $t_{5}$ altera $I_{\mathrm{s}}$
+    en torno a un \SI{8}{\percent}, que al restarse afecta sobre todo al
+    cilindro macizo, el de menor momento de inercia y, precisamente, el de
+    mayor discrepancia.
 \end{itemize}
-Medir el periodo del soporte vacío para restar $\Ie$, cronometrar más
-oscilaciones o emplear una barrera fotoeléctrica reduciría ambos efectos.
-\end{observacion}
-
-\begin{observacion}[Medida anómala de la esfera]\label{obs:esfera}
-El periodo registrado para la esfera, $T=\SI{0,535}{\second}$, conduce a
-$I_{\text{din}}=\num{2,39 \pm 0,08 e-4}\ \si{\kilogram\meter\squared}$,
-casi diez veces menor que el valor geométrico,
-$\num{2,033 \pm 0,017 e-3}\ \si{\kilogram\meter\squared}$, e incluso
-menor que el del cilindro macizo, siendo la esfera casi tres veces más
-pesada y de mayor radio. Esto no es físicamente posible, por lo que
-atribuimos la discrepancia a un error en la toma o en la transcripción del
-periodo (con su momento geométrico cabría esperar $T\approx\SI{1,56}{\second}$),
-y no la tenemos en cuenta para extraer conclusiones.
+Medir el diámetro interior del cilindro hueco, cronometrar más oscilaciones
+(sobre todo las del soporte) o emplear una barrera fotoeléctrica permitiría
+reducir ambos efectos.
 \end{observacion}
 
 En conjunto, la práctica cumple sus objetivos: el péndulo de torsión permite
 calibrar el muelle con una precisión notable y comprobar el teorema de
-Steiner, mientras que la medida de momentos de inercia de sólidos aislados
+Steiner, mientras que la medida de momentos de inercia de sólidos concretos
 pone de manifiesto la importancia de los errores sistemáticos que no aparecen
-en la dispersión de los datos: la inercia de las piezas que giran con el
-cuerpo y el modo de cronometrar.
+en la dispersión de los datos: las idealizaciones de los modelos geométricos
+y la inercia de las piezas que giran con el cuerpo.
 
 % =========================================================================
 \newpage
