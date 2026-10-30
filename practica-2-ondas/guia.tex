@@ -1,0 +1,335 @@
+\documentclass[a4paper,11pt]{article}
+
+% =========================================================================
+%  Guía de medida — Práctica 2: Ondas estacionarias
+%  Mismo estilo que el informe de la Práctica 1 (Palatino, versalitas,
+%  paleta de azules y grises).
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{mathpazo}
+\linespread{1.05}
+\usepackage[final]{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}, per-mode=symbol, separate-uncertainty=true}
+
+\usepackage[a4paper, margin=2.3cm, top=2.4cm, footskip=1.3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{azulprof}{HTML}{1B365D}
+\definecolor{azulacero}{HTML}{3B6EA8}
+\definecolor{azulclaro}{HTML}{B7CBE3}
+\definecolor{grispizarra}{HTML}{5B6770}
+\definecolor{grisclaro}{HTML}{E4E8EC}
+\definecolor{azulfondo}{HTML}{F3F7FB}
+\definecolor{acento}{HTML}{B8800A}
+\usepackage{tikz}
+\usetikzlibrary{babel, arrows.meta, calc, decorations.pathmorphing, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{booktabs, array}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em, itemsep=3pt, topsep=4pt}
+\usepackage[font=small, labelfont={sc,color=azulprof}, labelsep=period,
+            margin=0.6cm]{caption}
+\usepackage[colorlinks=true, linkcolor=azulacero, urlcolor=azulacero,
+            pdftitle={Práctica 2: Ondas estacionarias. Guía de medida},
+            pdfauthor={David Gómez García; Daniel Martín Guerrero}]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+\crefname{figure}{figura}{figuras}
+\crefname{table}{tabla}{tablas}
+\crefname{equation}{ecuación}{ecuaciones}
+\crefformat{equation}{ecuación~(#2#1#3)}
+\crefmultiformat{equation}{ecuaciones~(#2#1#3)}{ y~(#2#1#3)}{, (#2#1#3)}{ y~(#2#1#3)}
+
+% --- Cabeceras y pie ----------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\color{grispizarra}\scshape\textls[60]{Laboratorio de Mecánica y Ondas}}
+\fancyhead[R]{\footnotesize\color{grispizarra}\scshape\textls[60]{Ondas estacionarias\,\textperiodcentered\,Guía de medida}}
+\fancyfoot[C]{\small\color{azulacero}\thepage}
+
+% --- Secciones al estilo del informe ------------------------------------------
+\usepackage{titlesec}
+\usepackage{needspace}
+\titleformat{\section}{\normalfont\Large\color{azulprof}\scshape\lsstyle}
+  {\color{azulacero}\upshape\thesection}{0.55em}{}
+  [\vspace{-4pt}{\color{azulclaro}\rule{\linewidth}{0.45pt}}]
+\titlespacing*{\section}{0pt}{14pt}{8pt}
+\pretocmd{\section}{\needspace{7\baselineskip}}{}{}
+\titleformat{\subsection}[runin]{\normalfont\bfseries\color{azulprof}}{\thesubsection.}{0.5em}{}[.]
+
+% --- Cajas -----------------------------------------------------------------------
+\newtcolorbox{caja}[1]{enhanced, breakable, sharp corners,
+  colback=azulfondo, colframe=azulclaro, boxrule=0.4pt,
+  left=10pt, right=10pt, top=7pt, bottom=6pt, before skip=10pt, after skip=10pt,
+  attach boxed title to top left={yshift*=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=white, colframe=white, sharp corners, boxrule=0pt,
+                     left=3pt, right=3pt, top=1pt, bottom=1pt},
+  fonttitle=\bfseries\color{azulprof}, coltitle=azulprof, title={#1}}
+\newtcolorbox{consejo}{enhanced, sharp corners, frame hidden, colback=azulfondo,
+  borderline west={1.6pt}{0pt}{acento}, left=10pt, right=8pt, top=4pt, bottom=4pt,
+  before skip=8pt, after skip=8pt}
+
+\newcommand{\hueco}[1][1.6cm]{\rule{#1}{0.4pt}}
+
+% =========================================================================
+\begin{document}
+
+% --- Cabecera del documento ---------------------------------------------------
+\noindent
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[azulprof] (current page.north west) rectangle ($(current page.north east)+(0,-0.35cm)$);
+  \fill[azulacero] (current page.north west) rectangle ($(current page.north west)+(7cm,-0.35cm)$);
+  \fill[azulclaro] (current page.north west) rectangle ($(current page.north west)+(3cm,-0.35cm)$);
+\end{tikzpicture}%
+\begin{minipage}[b]{0.72\linewidth}
+  {\color{azulacero}\scshape\textls[90]{Laboratorio de Mecánica y Ondas \textbar\ Práctica 2}}\\[6pt]
+  {\color{azulprof}\fontsize{26}{30}\selectfont\bfseries Ondas estacionarias}\\[4pt]
+  {\color{azulprof}\itshape\large Guía de medida: qué hacer y qué apuntar}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.26\linewidth}\raggedleft
+  \includegraphics[height=1.0cm]{logo-usal.png}\\[4pt]
+  {\footnotesize\color{grispizarra}David Gómez García\\Daniel Martín Guerrero}
+\end{minipage}\\[-2pt]
+{\color{azulacero}\rule{\linewidth}{1.2pt}}
+
+\vspace{4pt}
+\noindent\textbf{\color{azulprof}Objetivo.} Determinar cómo depende la longitud
+de onda de los modos estacionarios de una cuerda, excitada por un motor, de la
+tensión $T$, de la densidad lineal $\mu$ y de la distancia $L$ entre los puntos
+de apoyo; y, a partir de ello, estimar $\mu$ y compararla con la medida directa
+con la báscula, siguiendo el guion de la práctica.
+
+% =========================================================================
+\section{Lo esencial de la teoría}
+% =========================================================================
+En una cuerda tensa las ondas viajan a $v=\sqrt{T/\mu}$ y, para una frecuencia
+$f$ fija (la del motor), su longitud de onda es $\lambda=v/f$. Con los dos
+extremos fijos a distancia $L$, solo caben modos estacionarios con un número
+entero $n$ de vientres (antinodos):
+\begin{equation}\label{eq:modos}
+  \lambda_n=\frac{2L}{n},\qquad n=1,2,3,\dots
+\end{equation}
+Combinando ambas relaciones,
+\begin{equation}\label{eq:lineal}
+  \lambda^{2}=\frac{1}{\mu f^{2}}\;T
+  \qquad\Longrightarrow\qquad
+  \boxed{\;\lambda^{2}\ \text{frente a}\ T\ \text{es una recta de pendiente}\ a=\frac{1}{\mu f^{2}}\;}
+\end{equation}
+
+\begin{consejo}
+\small\textbf{Tres ideas para entender lo que veremos.}
+(i)~Como $T_n=\mu f^{2}(2L/n)^{2}$, cuantos \emph{más} vientres, \emph{menos}
+tensión: el modo $n=1$ es el que más tensión necesita.
+(ii)~La pendiente solo depende de $\mu$ (y de $f$): al doblar la cuerda la
+pendiente se reduce a la mitad, mientras que cambiar $L$ \emph{no} cambia la
+pendiente, solo desplaza los puntos a lo largo de la misma recta
+(\cref{fig:grafica}).
+(iii)~De la pendiente se despeja la densidad: $\mu=1/(a f^{2})$.
+\end{consejo}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
+  % -------- motor con excéntrica --------
+  \draw[azulprof, fill=azulclaro!45, line width=0.7pt, rounded corners=2pt] (-1.9,-1.3) rectangle (-0.5,0.9);
+  \node[azulprof, align=center, font=\footnotesize] at (-1.2,-0.75) {motor};
+  \draw[azulprof, fill=white, line width=0.7pt] (-0.85,0.25) circle (0.38);
+  \fill[azulprof] (-0.85,0.25) circle (0.05);
+  \fill[acento] (-0.66,0.25) circle (0.07);
+  \draw[acento, line width=0.5pt, ->] (-0.85,0.25) ++(30:0.55) arc[start angle=30, end angle=150, radius=0.55];
+  \node[grispizarra, font=\scriptsize\itshape, anchor=south] at (-1.0,0.95) {excéntrica};
+  % -------- banco --------
+  \fill[grisclaro] (-2.1,-1.55) rectangle (12.4,-1.3);
+  \draw[grispizarra, line width=0.5pt] (-2.1,-1.55) rectangle (12.4,-1.3);
+  % -------- varilla de apoyo (posición L1) y posición alternativa L2 --------
+  \draw[grispizarra, line width=1.6pt] (8.6,-1.3) -- (8.6,0.15);
+  \fill[grispizarra] (8.6,0.25) circle (0.1);
+  \draw[grispizarra!50, line width=1.2pt, densely dashed] (6.5,-1.3) -- (6.5,0.15);
+  \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (6.5,-1.62) {posición $L_2$};
+  \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (8.6,-1.62) {varilla (posición $L_1$)};
+  % -------- onda estacionaria n = 3 entre la excéntrica y la varilla --------
+  \def\xa{-0.66}\def\xb{8.6}\def\yc{0.25}\def\amp{0.62}
+  \fill[azulclaro!35] plot[domain=0:1, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)})
+    -- plot[domain=1:0, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)}) -- cycle;
+  \draw[azulacero, line width=0.6pt, densely dashed] plot[domain=0:1, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)});
+  \draw[azulprof, line width=1.1pt] plot[domain=0:1, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)});
+  \foreach \k in {0,1,2,3}{
+    \fill[azulprof] ({\xa+(\xb-\xa)*\k/3},\yc) circle (1.6pt);}
+  \foreach \k in {1,3,5}{
+    \draw[acento, line width=0.4pt, densely dotted] ({\xa+(\xb-\xa)*\k/6},{\yc-\amp}) -- ({\xa+(\xb-\xa)*\k/6},{\yc+\amp});}
+  \node[azulprof, font=\scriptsize, anchor=north] at ({\xa+(\xb-\xa)/3},{\yc-0.08}) {nodo};
+  \node[acento, font=\scriptsize, anchor=south] at ({\xa+(\xb-\xa)/2},{\yc+\amp+0.02}) {vientre (antinodo)};
+  % -------- cuerda hasta el dinamómetro --------
+  \draw[azulprof, line width=1.1pt] (8.6,0.35) -- (10.0,0.35);
+  \draw[grispizarra, fill=white, line width=0.7pt, rounded corners=1.5pt] (10.0,0.12) rectangle (11.7,0.58);
+  \foreach \x in {10.25,10.45,...,11.45}{\draw[grispizarra!70, line width=0.3pt] (\x,0.12) -- (\x,0.26);}
+  \node[grispizarra, font=\scriptsize\itshape, anchor=south] at (10.85,0.62) {dinamómetro, $T$};
+  \draw[grispizarra, line width=1.4pt] (11.95,-1.3) -- (11.95,0.35) -- (11.7,0.35);
+  \draw[->, acento, line width=0.8pt] (12.15,-0.4) -- (12.75,-0.4);
+  \node[acento, font=\scriptsize\itshape, align=left, anchor=west] at (12.0,-0.85) {soporte\\móvil};
+  % -------- cota L --------
+  \draw[grispizarra, line width=0.45pt, |<->|] (\xa,-0.95) -- (\xb,-0.95)
+    node[midway, fill=white, inner sep=2pt, text=black!80] {$L$};
+  % -------- estroboscopio --------
+  \draw[azulprof, fill=azulclaro!45, line width=0.7pt, rounded corners=2pt] (5.0,1.85) rectangle (7.6,2.6);
+  \node[azulprof, font=\scriptsize] at (6.3,2.22) {estroboscopio, $f$};
+  \foreach \ang in {-125,-105,-85}{\draw[acento!80, line width=0.4pt] (6.3,1.85) -- ++(\ang:0.75);}
+\end{tikzpicture}
+\caption{Esquema del montaje, con el modo $n=3$ (tres vientres). La excéntrica
+del motor hace oscilar la cuerda, que pasa por la varilla vertical y llega al
+dinamómetro sujeto a un soporte móvil: al desplazarlo variamos la tensión $T$.
+La distancia $L$ va de la excéntrica a la varilla, que puede ocupar dos
+posiciones ($L_1>L_2$). El estroboscopio «congela» la cuerda cuando su
+frecuencia coincide con la del motor.}
+\label{fig:montaje}
+\end{figure}
+
+% =========================================================================
+\section{Procedimiento}
+% =========================================================================
+\begin{enumerate}
+  \item \textbf{Preparación.} Fijar la varilla en la posición $L_1$ (la más
+    lejana) y medir $L_1$ con la regla. Atar la cuerda \emph{simple} a la
+    excéntrica y al dinamómetro, y comprobar que este marca \emph{cero} sin
+    tensión.
+  \item \textbf{Frecuencia.} Encender el motor y medir su frecuencia $f$ con el
+    estroboscopio. Se mide una vez y vale para todas las series (el motor no
+    cambia de velocidad), aunque conviene comprobarla al final.
+  \item \textbf{Barrido en tensión.} Partir de una tensión alta y desplazar
+    \emph{lentamente} el soporte del dinamómetro hasta que aparezca la onda
+    estacionaria más nítida y amplia con $n=1$ vientre. Anotar $T$. Seguir
+    aflojando para $n=2,3,4$ y, si se puede, $5$
+    (\cref{fig:modos}).
+  \item \textbf{Cuerda doble.} Repetir el barrido con la cuerda doble
+    (densidad $2\mu$) y la misma $L_1$.
+  \item \textbf{Segunda distancia.} Pasar la varilla a $L_2$, medirla y repetir
+    con la cuerda simple y con la doble.
+  \item \textbf{Densidad.} Pesar un trozo de cuerda de longitud $\ell$ conocida
+    (cuanto más largo, mejor) en la báscula: $\mu=m/\ell$.
+\end{enumerate}
+
+\begin{consejo}
+\small\textbf{Consejos prácticos.}
+El estroboscopio también deja la cuerda inmóvil a $f/2$, $f/3$\ldots: la
+frecuencia buena es la \emph{más alta} a la que se ve una sola imagen quieta
+(al doble se ven dos). Cada tensión conviene leerla en el punto de máxima
+amplitud del modo, acercándonos desde ambos lados; si da tiempo, repetir
+cada lectura dos o tres veces. Anotar la resolución del dinamómetro, de la
+regla y de la báscula: son las incertidumbres de tipo~B.
+\end{consejo}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, font=\small]
+  \foreach \n/\y in {1/0,2/-1.15,3/-2.3,4/-3.45,5/-4.6}{
+    \fill[azulclaro!35] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.38*sin(\n*180*\x)})
+      -- plot[domain=1:0, samples=100, smooth] ({7*\x},{\y-0.38*sin(\n*180*\x)}) -- cycle;
+    \draw[azulprof, line width=0.9pt] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.38*sin(\n*180*\x)});
+    \draw[azulacero, line width=0.5pt, densely dashed] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y-0.38*sin(\n*180*\x)});
+    \fill[grispizarra] (0,\y) circle (1.5pt); \fill[grispizarra] (7,\y) circle (1.5pt);
+    \node[anchor=east, text=azulprof] at (-0.3,\y) {$n=\n$};
+    \pgfmathsetmacro{\Tn}{1/(\n*\n)}
+    \node[anchor=west, text=black!80] at (7.4,\y) {$\lambda_{\n}=\ifnum\n=1 2L\else\ifnum\n=2 L\else 2L/\n\fi\fi$};
+    \fill[acento!70] (10.0,\y-0.12) rectangle ({10.0+2.4*\Tn},\y+0.12);
+  }
+  \node[anchor=south west, text=grispizarra, font=\scriptsize\itshape] at (10.0,0.35) {tensión necesaria $\propto 1/n^{2}$};
+\end{tikzpicture}
+\caption{Modos estacionarios con $n=1$ a $5$ vientres para una misma $L$. A la
+derecha, la tensión que requiere cada modo, $T_n=\mu f^{2}(2L/n)^{2}$, en
+proporción a la del fundamental: el modo $n=2$ necesita la cuarta parte de
+tensión que el $n=1$.}
+\label{fig:modos}
+\end{figure}
+
+% =========================================================================
+\section{Hoja de medidas}
+% =========================================================================
+\noindent
+$L_1=$~\hueco\ cm \qquad $L_2=$~\hueco\ cm \qquad $f=$~\hueco\ Hz\\[6pt]
+Trozo de cuerda: $m=$~\hueco\ g, \quad $\ell=$~\hueco\ cm
+\quad$\Rightarrow$\quad $\mu=m/\ell=$~\hueco[2cm]\ \si{\kilogram\per\meter}\\[6pt]
+Resoluciones: regla \hueco[1.2cm] \quad dinamómetro \hueco[1.2cm] \quad
+báscula \hueco[1.2cm] \quad estroboscopio \hueco[1.2cm]
+
+\begin{table}[ht]
+\centering
+\caption{Tensiones a las que aparece cada modo. Para cada $L$, la longitud de
+onda es $\lambda_n=2L/n$.}
+\label{tab:medidas}
+\renewcommand{\arraystretch}{1.55}
+\begin{tabular}{@{}c c c @{\hspace{1.4em}} c c c@{}}
+\toprule
+ & \multicolumn{2}{c}{\scshape\color{azulprof}$L_1$} & & \multicolumn{2}{c@{}}{\scshape\color{azulprof}$L_2$} \\
+\cmidrule(lr){2-3}\cmidrule(l){5-6}
+$n$ & $T$ simple (N) & $T$ doble (N) & $\lambda_n$ (m) & $T$ simple (N) & $T$ doble (N) \\
+\midrule
+1 & \hueco & \hueco & \hueco[1.1cm]\,/\,\hueco[1.1cm] & \hueco & \hueco \\
+2 & \hueco & \hueco & \hueco[1.1cm]\,/\,\hueco[1.1cm] & \hueco & \hueco \\
+3 & \hueco & \hueco & \hueco[1.1cm]\,/\,\hueco[1.1cm] & \hueco & \hueco \\
+4 & \hueco & \hueco & \hueco[1.1cm]\,/\,\hueco[1.1cm] & \hueco & \hueco \\
+5 & \hueco & \hueco & \hueco[1.1cm]\,/\,\hueco[1.1cm] & \hueco & \hueco \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize\color{grispizarra} En la columna central, $\lambda_n$ para
+$L_1$\,/\,para $L_2$.}
+\end{table}
+
+% =========================================================================
+\section{Análisis en el laboratorio}
+% =========================================================================
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[width=0.62\linewidth, height=5.6cm, axis lines=left,
+               xmin=0, xmax=1.08, ymin=0, ymax=1.12, xtick=\empty, ytick=\empty,
+               xlabel={tensión $T$}, ylabel={$\lambda^{2}$},
+               label style={font=\small}, axis line style={grispizarra},
+               legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9, text opacity=1, at={(0.98,0.03)}, anchor=south east},
+               legend cell align=left]
+    \addplot[azulprof, line width=1.1pt, domain=0:1.05] {1.0*x};
+    \addplot[acento, line width=1.1pt, densely dashed, domain=0:1.05] {0.5*x};
+    \addplot[only marks, mark=*, mark size=2pt, azulprof] coordinates {(1,1) (0.25,0.25) (0.1111,0.1111) (0.0625,0.0625)};
+    \addplot[only marks, mark=square*, mark size=1.9pt, azulacero, mark options={fill=azulclaro}] coordinates {(0.64,0.64) (0.16,0.16) (0.0711,0.0711)};
+    \addplot[only marks, mark=triangle*, mark size=2.4pt, acento] coordinates {(0.5,0.25) (0.2222,0.1111) (0.125,0.0625)};
+    \legend{cuerda simple: pendiente $1/(\mu f^{2})$, cuerda doble: pendiente $1/(2\mu f^{2})$,
+            simple con $L_1$, simple con $L_2$, doble con $L_1$}
+  \end{axis}
+\end{tikzpicture}
+\caption{Lo que esperamos obtener (esquema cualitativo): los puntos de $L_1$ y
+$L_2$ con la misma cuerda caen sobre la \emph{misma} recta; la cuerda doble da
+una recta con la mitad de pendiente.}
+\label{fig:grafica}
+\end{figure}
+
+\begin{caja}{Qué hay que hacer antes de irse}
+\begin{enumerate}[leftmargin=1.5em]
+  \item Calcular $\lambda_n=2L/n$ y $\lambda_n^{2}$ para cada medida.
+  \item Representar en una misma gráfica $\lambda^{2}$ frente a $T$ para las
+    cuatro series ($L_1$ y $L_2$; cuerda simple y doble) y hacer un ajuste
+    lineal de cada una, con sus pendientes $a$ e incertidumbres.
+  \item Comparar las pendientes: (i)~misma $L$ y distinta densidad (deben
+    estar en razón $2:1$); (ii)~distinta $L$ y misma densidad (deben coincidir).
+  \item Estimar la densidad de cada pendiente, $\mu=1/(a f^{2})$, propagando
+    la incertidumbre:
+    $\dfrac{u(\mu)}{\mu}=\sqrt{\Bigl(\dfrac{u(a)}{a}\Bigr)^{2}+\Bigl(\dfrac{2\,u(f)}{f}\Bigr)^{2}}$,
+    y compararla con la de la báscula, $\mu=m/\ell$, mediante sus intervalos
+    al \SI{95}{\percent}.
+\end{enumerate}
+\end{caja}
+
+\end{document}
