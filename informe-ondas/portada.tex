@@ -1,0 +1,143 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Portada — estilo artículo científico, motivo: onda estacionaria vista
+% con el estroboscopio (instantáneas superpuestas del modo n = 3).
+% Misma cabecera, bloque de título y pie que los informes anteriores.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\thispagestyle{empty}
+\pagecolor{white}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (O) at (current page.south west);
+
+  % ----------------------------------------------------------------
+  % Cabecera: logotipos y filete
+  % ----------------------------------------------------------------
+  \node[anchor=north west, inner sep=0] at ($(O)+(2.2cm,27.9cm)$)
+    {\includegraphics[height=1.42cm]{figuras/logo-usal.png}};
+  \node[anchor=north east, inner sep=0] at ($(O)+(18.8cm,27.9cm)$)
+    {\includegraphics[height=1.42cm]{figuras/logo-ciencias.png}};
+  \draw[grispizarra!60, line width=0.4pt]
+    ($(O)+(2.2cm,26.0cm)$) -- ($(O)+(18.8cm,26.0cm)$);
+  \node[anchor=north west, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(2.2cm,25.75cm)$)
+    {\textls[80]{\Universidad\ \textbar\ \Facultad}};
+  \node[anchor=north east, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(18.8cm,25.75cm)$)
+    {\textls[80]{\Titulacion}};
+
+  % ----------------------------------------------------------------
+  % Motivo gráfico: modo n = 3 «congelado» por el estroboscopio.
+  % Cada traza es y(x,t_j) = A sin(3 pi x / L) cos(phi_j); su conjunto
+  % dibuja la envolvente, con los nodos inmóviles.
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={($(O)+(2.7cm,19.4cm)$)}, x=1cm, y=1cm]
+    \def\Lc{15.6}\def\Ac{2.35}
+    % envolvente tenue
+    \fill[azulclaro!22] plot[domain=0:\Lc, samples=200, smooth] (\x,{\Ac*sin(3*180*\x/\Lc)})
+      -- plot[domain=\Lc:0, samples=200, smooth] (\x,{-\Ac*sin(3*180*\x/\Lc)}) -- cycle;
+    % posición de equilibrio
+    \draw[grispizarra!45, line width=0.4pt, dashed] (-0.5,0) -- (\Lc+0.5,0);
+    % instantáneas
+    \foreach \j in {0,...,12}{
+      \pgfmathsetmacro{\c}{cos(15*\j)}
+      \pgfmathsetmacro{\pc}{25+70*abs(\c)}
+      \pgfmathsetmacro{\lw}{0.25+0.75*abs(\c)}
+      \draw[azulprof!\pc!azulclaro, line width=\lw pt]
+        plot[domain=0:\Lc, samples=160, smooth] (\x,{\Ac*\c*sin(3*180*\x/\Lc)});}
+    % vientres
+    \foreach \k in {1,3,5}{
+      \draw[acento!80, line width=0.4pt, densely dotted]
+        ({\Lc*\k/6},{-\Ac-0.15}) -- ({\Lc*\k/6},{\Ac+0.15});}
+    % nodos
+    \foreach \k in {0,...,3}{
+      \fill[white] ({\Lc*\k/3},0) circle (3.4pt);
+      \fill[azulprof] ({\Lc*\k/3},0) circle (2.4pt);}
+    % extremos: excéntrica del motor y varilla de apoyo
+    \draw[azulprof, line width=0.7pt, fill=white] (-0.55,0) circle (0.42);
+    \fill[azulprof] (-0.55,0) circle (1.2pt);
+    \fill[acento] (-0.13,0) circle (1.8pt);
+    \draw[grispizarra, line width=1.6pt] (\Lc,-2.9) -- (\Lc,-0.12);
+    % longitud de onda
+    \draw[grispizarra, line width=0.45pt, |<->|]
+      (0,{\Ac+0.75}) -- ({2*\Lc/3},{\Ac+0.75})
+      node[midway, fill=white, inner sep=2pt, text=azulprof] {$\lambda_{3}=2L/3$};
+    % distancia entre apoyos
+    \draw[grispizarra, line width=0.45pt, |<->|]
+      (0,{-\Ac-0.75}) -- (\Lc,{-\Ac-0.75})
+      node[midway, fill=white, inner sep=2pt, text=azulprof] {$L$};
+    % rótulos discretos, al modo de «tú estás aquí»
+    \draw[grispizarra!70, line width=0.35pt] ({\Lc/3},0) -- ({\Lc/3+0.55},{-\Ac-0.25});
+    \node[anchor=west, text=grispizarra, font=\itshape\small] at ({\Lc/3+0.6},{-\Ac-0.27}) {nodo};
+    \draw[grispizarra!70, line width=0.35pt] ({\Lc*5/6},{-\Ac}) -- ({\Lc*5/6-1.2},{-\Ac+0.35});
+    \fill[acento] ({\Lc*5/6},{-\Ac}) circle (1.3pt);
+    \node[anchor=east, text=grispizarra, font=\itshape\small] at ({\Lc*5/6-1.25},{-\Ac+0.38}) {vientre};
+    \node[anchor=north, text=grispizarra, font=\itshape\small] at (-0.55,-0.55) {motor};
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Fila de modos normales (como la línea del tiempo de Cosmosofía)
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={($(O)+(0,13.55cm)$)}, x=1cm, y=1cm]
+    \draw[grispizarra!60, line width=0.4pt] (2.2,0) -- (18.8,0);
+    \foreach \n in {1,...,5}{
+      \pgfmathsetmacro{\xa}{2.55+3.27*(\n-1)}
+      \pgfmathsetmacro{\pc}{35+15*\n}
+      \fill[azulclaro!40] plot[domain=0:2.6, samples=60, smooth] ({\xa+\x},{0.5*sin(\n*180*\x/2.6)})
+        -- plot[domain=2.6:0, samples=60, smooth] ({\xa+\x},{-0.5*sin(\n*180*\x/2.6)}) -- cycle;
+      \draw[azulprof!\pc!azulclaro, line width=0.9pt]
+        plot[domain=0:2.6, samples=60, smooth] ({\xa+\x},{0.5*sin(\n*180*\x/2.6)});
+      \draw[azulprof!\pc!azulclaro, line width=0.5pt, densely dashed]
+        plot[domain=0:2.6, samples=60, smooth] ({\xa+\x},{-0.5*sin(\n*180*\x/2.6)});
+      \fill[azulprof] (\xa,0) circle (1.2pt);
+      \fill[azulprof] ({\xa+2.6},0) circle (1.2pt);
+      \node[anchor=north, text=grispizarra, font=\footnotesize] at ({\xa+1.3},-0.62) {$n=\n$};}
+    \node[anchor=north, text=grispizarra, font=\scshape\scriptsize] at (10.5,-1.08)
+      {\textls[160]{modos normales de una cuerda fija por sus extremos}};
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Bloque del título
+  % ----------------------------------------------------------------
+  \node[anchor=north west, inner sep=0, text width=16.6cm, align=left]
+    at ($(O)+(2.2cm,11.1cm)$)
+    {{\color{azulacero}\scshape\large\textls[120]{\Asignatura\ \textbar\ \NumPractica}}\\[12pt]
+     {\color{azulprof}\fontsize{33}{38}\selectfont\bfseries\spaceskip=0.28em\relax\TituloPractica}\\[10pt]
+     {\color{azulprof}\itshape\Large\SubtituloPractica}\\[12pt]
+     {\color{azulacero}\rule{2.5cm}{1.4pt}}\\[9pt]
+     {\color{grispizarra}\large
+      $\lambda_{n}=\dfrac{2L}{n}$
+      \quad\textperiodcentered\quad
+      $\lambda^{2}=\dfrac{T}{\mu f^{2}}$}};
+
+  % ----------------------------------------------------------------
+  % Pie: tipo de trabajo, autores, tutores, lugar y fecha
+  % ----------------------------------------------------------------
+  \draw[grispizarra!60, line width=0.4pt]
+    ($(O)+(2.2cm,4.6cm)$) -- ($(O)+(18.8cm,4.6cm)$);
+
+  \node[anchor=north west, inner sep=0, text width=4.6cm, align=left]
+    at ($(O)+(2.2cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Documento}}\\[3pt]
+     {\large\bfseries\color{azulprof}\tipotrabajo}};
+
+  \node[anchor=north west, inner sep=0, text width=5.6cm, align=left]
+    at ($(O)+(7.2cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Autores}}\\[3pt]
+     {\large\color{black!85}\miNombre}};
+
+  \node[anchor=north west, inner sep=0, text width=5cm, align=left]
+    at ($(O)+(13.8cm,4.25cm)$)
+    {{\scshape\small\color{azulacero}\textls[80]{Tutores}}\\[3pt]
+     {\large\color{black!85}\miTutor}};
+
+  \node[anchor=south east, inner sep=0, text=grispizarra, font=\scshape\small]
+    at ($(O)+(18.8cm,1.2cm)$)
+    {\textls[100]{\miUbicacion, \number\year}};
+  \fill[azulprof] ($(O)+(0,0)$) rectangle ($(O)+(21cm,0.45cm)$);
+  \fill[azulacero] ($(O)+(0,0)$) rectangle ($(O)+(7cm,0.45cm)$);
+  \fill[azulclaro] ($(O)+(0,0)$) rectangle ($(O)+(3cm,0.45cm)$);
+\end{tikzpicture}
+
+\end{titlepage}

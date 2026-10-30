@@ -1,0 +1,1154 @@
+\documentclass[a4paper,11pt]{amsart}
+
+% =========================================================================
+%  Informe de laboratorio — Práctica 2: Ondas estacionarias
+%  Estilo: el del informe del efecto Doppler (artículo científico
+%  minimalista, Palatino, versalitas, enunciados numerados por sección,
+%  paleta de azules y grises), con los encabezados de sección, el índice y
+%  la paginación inspirados en el guion de Cosmosofía.
+% =========================================================================
+
+% --- IDIOMA Y CODIFICACIÓN ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+
+% --- TIPOGRAFÍA (Palatino) --------------------------------------------------
+\usepackage{mathpazo}
+\linespread{1.05}
+\usepackage[final]{microtype}
+
+% --- MATEMÁTICAS Y UNIDADES ------------------------------------------------
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{bm}
+\usepackage{siunitx}
+\sisetup{
+  output-decimal-marker = {,},
+  group-minimum-digits  = 4,
+  group-digits          = integer,
+  group-separator       = {\,},
+  per-mode              = symbol,
+  separate-uncertainty  = true,
+  range-phrase          = {\text{ a }},
+  detect-all            = false
+}
+
+% --- PÁGINA, COLORES Y GRÁFICOS --------------------------------------------
+\usepackage[a4paper,margin=2.6cm,footskip=1.45cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{azulprof}{HTML}{1B365D}    % azul marino
+\definecolor{azulacero}{HTML}{3B6EA8}   % azul acero
+\definecolor{azulclaro}{HTML}{B7CBE3}   % azul hielo
+\definecolor{grispizarra}{HTML}{5B6770} % gris pizarra
+\definecolor{grisclaro}{HTML}{E4E8EC}   % gris perla
+\definecolor{azulfondo}{HTML}{F3F7FB}   % fondo tenue de referencias y resultados
+\definecolor{acento}{HTML}{B8800A}      % acento sobrio (ámbar oscuro) para comparaciones
+\usepackage{tikz}
+\usetikzlibrary{babel, arrows.meta, calc, positioning, decorations.pathmorphing,
+                decorations.markings, patterns}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.17}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[most]{tcolorbox}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{needspace}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em, itemsep=2pt, topsep=4pt}
+
+% --- ENLACES Y REFERENCIAS CRUZADAS ----------------------------------------
+\usepackage[colorlinks=true, linkcolor=azulacero, citecolor=azulacero,
+            urlcolor=azulacero, plainpages=false, pdfusetitle=false,
+            pdftitle={Práctica 2: Ondas estacionarias},
+            pdfauthor={David Gómez García; Daniel Martín Guerrero}]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+
+% --- BIBLIOGRAFÍA -----------------------------------------------------------
+\usepackage{csquotes}
+\usepackage[backend=biber, style=numeric, sorting=none, giveninits=true,
+            maxbibnames=6, minbibnames=3, doi=true, url=true,
+            isbn=false]{biblatex}
+\addbibresource{referencias.bib}
+\DeclareFieldFormat[article,techreport,unpublished]{title}{#1\isdot}
+\DeclareFieldFormat{url}{\url{#1}}
+\renewcommand*{\bibfont}{\small}
+\setlength{\bibitemsep}{3pt}
+
+
+% =========================================================================
+%        CABECERAS, PIE DE PÁGINA, SECCIONES E ÍNDICE (aire de Cosmosofía)
+% =========================================================================
+% Pequeña espiral: viñeta de la paginación y ornamento entre secciones
+\newcommand{\espiralita}[1][0.9]{%
+  \tikz[baseline=-0.6ex, scale=#1]{%
+    \draw[azulacero, line width=0.45pt]
+      plot[domain=0:15.7, samples=70, variable=\t, smooth]
+      ({0.0105*\t*cos(\t r)},{0.0105*\t*sin(\t r)});
+    \fill[azulprof] (0,0) circle (0.55pt);}}
+\newcommand{\ornamento}{%
+  \par\vspace{10pt}{\centering
+  \tikz{\draw[azulclaro, line width=0.4pt] (-1.6,0) -- (-0.32,0);
+        \draw[azulclaro, line width=0.4pt] (0.32,0) -- (1.6,0);
+        \node at (0,0) {\espiralita[1.6]};}\par}\vspace{6pt}}
+
+\makeatletter
+\def\ps@headings{%
+  \let\@mkboth\markboth
+  \def\@evenhead{\normalfont\footnotesize\color{grispizarra}\scshape
+    \textls[60]{Laboratorio de Mecánica y Ondas}\hfil
+    \textls[60]{Ondas estacionarias en una cuerda}}%
+  \let\@oddhead\@evenhead
+  \def\@evenfoot{\hfil\normalfont\small\color{azulacero}%
+    \espiralita\enspace\thepage\enspace\espiralita\hfil}%
+  \let\@oddfoot\@evenfoot}
+\def\ps@firstpage{\ps@plain\def\@oddhead{}\let\@evenhead\@oddhead
+  \def\@oddfoot{\hfil\normalfont\small\color{azulacero}%
+    \espiralita\enspace\thepage\enspace\espiralita\hfil}%
+  \let\@evenfoot\@oddfoot}
+\pagestyle{headings}
+
+% Secciones: número en azul acero, título en versalitas espaciadas; debajo,
+% un subtítulo en cursiva y un filete rematado en un pequeño círculo.
+\def\section{\@startsection{section}{1}%
+  \z@{1.3\linespacing\@plus.8\linespacing}{.25\linespacing}%
+  {\normalfont\Large\color{azulprof}\scshape\lsstyle\raggedright}}
+\let\@seccntformatorig\@seccntformat
+\def\@seccntformat#1{%
+  \ifnum\pdfstrcmp{#1}{section}=\z@
+    {\color{azulacero}\upshape\csname the#1\endcsname}\hspace{0.55em}%
+  \else\@seccntformatorig{#1}\fi}
+\newcommand{\filete}{%
+  \tikz[baseline]{\draw[azulclaro, line width=0.45pt] (0,0) -- (\linewidth-5pt,0);
+    \draw[azulacero, line width=0.5pt, fill=white] (\linewidth-2.6pt,0) circle (2.3pt);}}
+\DeclareRobustCommand{\tocsub}[1]{%
+  \ \textperiodcentered\ {\itshape\color{grispizarra}#1}}
+\newcommand{\subtitulo}[1]{%
+  \par\nopagebreak\vspace{-2pt}%
+  \noindent{\itshape\color{grispizarra}#1}\par\nopagebreak\vspace{1pt}%
+  \noindent\filete\par\nopagebreak\vspace{0.55\baselineskip}}
+% \seccion{Título}{Subtítulo}: sección numerada con subtítulo (índice incluido).
+% amsart escribe en el índice el título principal, no el opcional, así que el
+% subtítulo se añade a esa entrada mediante \@tocextra.
+\let\@tocextra\@empty
+\def\@tocwriteb#1#2#3{%
+  \begingroup
+    \def\@tocline##1##2##3##4##5##6{%
+      \ifnum##1>\c@tocdepth
+      \else \sbox\z@{##5\let\indentlabel\@tochangmeasure##6}\fi}%
+    \csname l@#2\endcsname{#1{\csname#2name\endcsname}{\@secnumber}{}}%
+  \endgroup
+  \addcontentsline{toc}{#2}%
+    {\protect#1{\csname#2name\endcsname}{\@secnumber}{#3\@tocextra}}%
+  \global\let\@tocextra\@empty}
+\newcommand{\seccion}[2]{%
+  \gdef\@tocextra{\tocsub{#2}}%
+  \section{#1}\subtitulo{#2}}
+
+% Índice: número en azul acero, título en azul marino y subtítulo en cursiva
+\def\l@section{\@tocline{1}{7pt}{0pt}{}{}}
+\renewcommand{\tocsection}[3]{%
+  \indentlabel{\@ifnotempty{#2}{{\color{azulacero}#2}\quad}}{\color{azulprof}#3}}
+\def\l@subsection{\@tocline{2}{1pt}{1.55pc}{2.4pc}{\small}}
+\renewcommand{\contentsnamefont}{\scshape\color{azulprof}\lsstyle}
+\makeatother
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{2}
+\makeatletter
+\def\@@and{y}
+\renewcommand{\abstractname}{\color{azulacero}\lsstyle Resumen}
+\makeatother
+
+% =========================================================================
+%               NOTACIÓN Y MACROS DE USO FRECUENTE
+% =========================================================================
+\newcommand{\mub}{\mu_{\mathrm{b}}}          % densidad lineal medida con la báscula
+\newcommand{\mus}{\mu_{\mathrm{s}}}          % densidad deducida de una pendiente
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^{2} #1}{\partial #2^{2}}}
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\ddt}[1]{\frac{\dif #1}{\dif t}}
+\newcommand{\vect}[1]{\vec{#1}}
+\newcommand{\Tcoef}{t_{95,\nu}}               % factor de cobertura al 95 %
+\newcommand{\ext}[1]{U(#1)}                   % incertidumbre ampliada
+\newcommand{\mean}[1]{\overline{#1}}
+% Dato pendiente de incorporar (se resalta con discreción)
+\newcommand{\pend}[1]{\textcolor{grispizarra}{\colorbox{grisclaro}{\strut\,#1\,}}}
+\newcommand{\pendiente}[1]{\textcolor{grispizarra}{\textit{[#1]}}}
+% Hueco reservado para una gráfica o figura que aún no existe
+\newcommand{\huecofigura}[2][5.2cm]{%
+  \tikz{\draw[grispizarra!45, dashed, line width=0.5pt, rounded corners=2pt, fill=azulfondo]
+          (0,0) rectangle (0.92\linewidth,#1);
+        \node[text=grispizarra, font=\small\itshape, align=center, text width=0.8\linewidth]
+          at (0.46\linewidth,#1/2) {#2};}}
+
+% =========================================================================
+%        ENTORNOS FORMALES (enunciados numerados, estilo artículo)
+% =========================================================================
+\usepackage{amsthm}
+
+% Enunciados en cursiva (resultados generales)
+\newtheoremstyle{cienplano}{10pt}{10pt}{\itshape}{}%
+  {\bfseries\color{azulprof}}{.}{0.6em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont\upshape\ (#3)}}
+% Definiciones, cálculos y estimaciones (cuerpo en redonda)
+\newtheoremstyle{ciendef}{10pt}{10pt}{\normalfont}{}%
+  {\bfseries\color{azulprof}}{.}{0.6em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont\upshape\ (#3)}}
+% Observaciones (encabezado en cursiva)
+\newtheoremstyle{cienobs}{8pt}{8pt}{\normalfont}{}%
+  {\itshape\color{azulprof}}{.}{0.6em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont\upshape\ (#3)}}
+
+\theoremstyle{cienplano}
+\newtheorem{proposicion}{Proposición}[section]
+\newtheorem{teorema}[proposicion]{Teorema}
+\newtheorem{resultado}[proposicion]{Resultado}
+\newtheorem{conclusion}[proposicion]{Conclusión}
+\theoremstyle{ciendef}
+\newtheorem{definicion}[proposicion]{Definición}
+\newtheorem{hipotesis}[proposicion]{Hipótesis}
+\newtheorem{calculo}[proposicion]{Cálculo de incertidumbre}
+\newtheorem{estimacion}[proposicion]{Estimación lineal}
+\theoremstyle{cienobs}
+\newtheorem{observacion}[proposicion]{Observación}
+\newtheorem*{demostracion}{Demostración}
+
+% --- Referencia formalizada --------------------------------------------------
+% Caja fina con fondo tenue y título sobre el borde. Cuerpo en cursiva y, al
+% pie, la fuente completa con autor, título y número de cita. Comparte
+% contador con los enunciados.
+% Uso: \begin{referencia}[título]{clave-bib} ... \end{referencia}
+\newcounter{referencia}
+\renewcommand{\thereferencia}{\theproposicion}
+\newtcolorbox{referenciabox}[2]{%
+  enhanced, breakable, sharp corners,
+  colback=azulfondo, colframe=azulclaro, boxrule=0.4pt,
+  left=10pt, right=10pt, top=7pt, bottom=6pt,
+  before skip=14pt, after skip=12pt,
+  attach boxed title to top left={yshift*=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=white, colframe=white, sharp corners, boxrule=0pt,
+                     left=3pt, right=3pt, top=1pt, bottom=1pt},
+  fonttitle=\bfseries\color{azulprof}, coltitle=azulprof,
+  fontupper=\itshape,
+  title={Referencia~\thereferencia\ifx\relax#1\relax\else\ \normalfont(#1)\fi},
+  after upper={\par\vspace{5pt}{\color{azulclaro}\hrule height 0.4pt}\vspace{4pt}%
+    {\upshape\footnotesize\color{grispizarra}\raggedleft
+     \citeauthor{#2}, \citetitle{#2}~\cite{#2}.\par}}}
+\newenvironment{referencia}[2][]
+  {\par\stepcounter{proposicion}\refstepcounter{referencia}\begin{referenciabox}{#1}{#2}}
+  {\end{referenciabox}}
+\crefname{referencia}{referencia}{referencias}
+
+% --- Método (caja azulada para los fundamentos del tratamiento de datos) -----
+\newcounter{metodo}
+\renewcommand{\themetodo}{\theproposicion}
+\newtcolorbox{metodobox}[1]{%
+  enhanced, breakable, sharp corners,
+  colback=azulfondo, colframe=azulclaro, boxrule=0.4pt,
+  left=10pt, right=10pt, top=7pt, bottom=5pt,
+  before skip=14pt, after skip=12pt,
+  attach boxed title to top left={yshift*=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=white, colframe=white, sharp corners, boxrule=0pt,
+                     left=3pt, right=3pt, top=1pt, bottom=1pt},
+  fonttitle=\bfseries\color{azulprof}, coltitle=azulprof,
+  title={Método~\themetodo\ifx\relax#1\relax\else\ \normalfont(#1)\fi}}
+\newenvironment{metodo}[1][]
+  {\par\stepcounter{proposicion}\refstepcounter{metodo}\begin{metodobox}{#1}}
+  {\end{metodobox}}
+\crefname{metodo}{método}{métodos}
+\Crefname{metodo}{Método}{Métodos}
+\Crefname{referencia}{Referencia}{Referencias}
+
+% --- Resultado destacado ----------------------------------------------------
+% Fondo azulado tenue y filete lateral: magnitudes calculadas con su
+% incertidumbre.  Uso: \begin{destacado}[rótulo opcional] ... \end{destacado}
+\newtcolorbox{destacado}[1][]{%
+  enhanced, sharp corners, frame hidden, colback=azulfondo,
+  borderline west={1.6pt}{0pt}{azulacero},
+  left=10pt, right=8pt, top=2pt, bottom=4pt,
+  before skip=8pt, after skip=10pt,
+  before upper={\ifx\relax#1\relax\else{\scshape\small\color{azulacero}#1}\par\vspace{-4pt}\fi}}
+
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{resultado}{resultado}{resultados}
+\Crefname{resultado}{Resultado}{Resultados}
+\crefname{conclusion}{conclusión}{conclusiones}
+\crefname{hipotesis}{hipótesis}{hipótesis}
+\crefname{calculo}{cálculo}{cálculos}
+\crefname{estimacion}{estimación}{estimaciones}
+\crefname{observacion}{observación}{observaciones}
+\Crefname{observacion}{Observación}{Observaciones}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+\crefname{subsection}{sección}{secciones}
+\Crefname{subsection}{Sección}{Secciones}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefformat{equation}{ecuación~(#2#1#3)}
+\Crefformat{equation}{Ecuación~(#2#1#3)}
+\crefrangeformat{equation}{ecuaciones~(#3#1#4)--(#5#2#6)}
+\crefmultiformat{equation}{ecuaciones~(#2#1#3)}{ y~(#2#1#3)}{, (#2#1#3)}{ y~(#2#1#3)}
+
+% --- Estilo de gráficas de datos ----------------------------------------------
+\pgfplotsset{
+  datos/.style={
+    tick label style={font=\scriptsize}, label style={font=\small},
+    axis lines=left, axis line style={grispizarra},
+    grid=major, grid style={grisclaro, line width=0.4pt},
+    every tick/.style={grispizarra},
+    legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9,
+                  text opacity=1, cells={anchor=west}},
+    legend cell align=left,
+    /pgf/number format/use comma, /pgf/number format/1000 sep={\,},
+    scaled ticks=false,
+  },
+  puntoA/.style={only marks, mark=*, mark size=2.1pt, azulprof,
+    mark options={fill=azulprof, draw=white, line width=0.3pt},
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={line width=0.6pt, azulprof}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulprof}},
+  puntoB/.style={only marks, mark=square*, mark size=1.9pt, azulacero,
+    mark options={fill=azulclaro, draw=azulacero, line width=0.5pt},
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={line width=0.6pt, azulacero}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulacero}},
+  ajusteB/.style={azulacero, line width=1.1pt, densely dashed},
+  % leyenda en una fila sobre el gráfico, para que no tape los datos
+  leyenda arriba/.style={legend columns=-1,
+    legend style={at={(0.5,1.03)}, anchor=south,
+      /tikz/every even column/.append style={column sep=9pt}}},
+  ajuste/.style={azulprof, line width=1.1pt},
+  teorica/.style={acento, line width=0.9pt, densely dashed},
+}
+
+% Referencia a un panel de figura: «figura 2\,(a)», enlazada en bloque
+\newcommand{\figpanel}[2]{\hyperref[#1]{figura~\ref*{#1}\,\textup{(#2)}}}
+
+% Pies de figura y tabla
+\usepackage[font=small, labelfont={sc,color=azulprof}, labelsep=period,
+            margin=0.6cm, justification=justified]{caption}
+\usepackage{subcaption}
+\captionsetup[sub]{font=small, labelfont={sc,color=azulprof}, labelformat=parens,
+                   margin=0pt, justification=centering}
+
+% =========================================================================
+%                     VARIABLES PARA LA PORTADA
+% =========================================================================
+\newcommand{\Universidad}{Universidad de Salamanca}
+\newcommand{\Facultad}{Facultad de Ciencias}
+\newcommand{\Titulacion}{Grado en Física}
+\newcommand{\Asignatura}{Laboratorio de Mecánica y Ondas}
+\newcommand{\NumPractica}{Práctica 2}
+\newcommand{\TituloPractica}{Ondas estacionarias}
+\newcommand{\SubtituloPractica}{Modos normales de una cuerda tensa}
+\newcommand{\tipotrabajo}{Informe de laboratorio}
+\newcommand{\miNombre}{David Gómez García \\ Daniel Martín Guerrero}
+\newcommand{\miTutor}{Mario Amado \\ Ivan de Martino \\ Manuel Pino}
+\newcommand{\miUbicacion}{Salamanca}
+
+% =========================================================================
+%                     DATOS DEL ARTÍCULO (cabecera)
+% =========================================================================
+\title{Ondas estacionarias en una cuerda}
+\author{David Gómez García}
+\author{Daniel Martín Guerrero}
+\address{Grado en Física, Facultad de Ciencias, Universidad de Salamanca,
+         Salamanca, España}
+\date{}
+
+% =========================================================================
+%                                DOCUMENTO
+% =========================================================================
+\begin{document}
+% --- PORTADA ----------------------------------------------------------------
+\pagenumbering{alph}
+\input{portada}
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\begin{abstract}
+Excitamos con un motor una cuerda tensa sujeta por sus dos extremos y
+buscamos, variando la tensión, las condiciones en las que se forman ondas
+estacionarias con uno, dos o más vientres. Para cada modo la longitud de onda
+queda fijada por la geometría, $\lambda_n=2L/n$, mientras que la frecuencia,
+la del motor, se mide con un estroboscopio. Representando $\lambda^{2}$ frente
+a la tensión $T$ para dos distancias entre apoyos y dos cuerdas, una simple y
+otra doble, comprobamos que la relación es lineal, que la pendiente
+$1/(\mu f^{2})$ no depende de la distancia y que se reduce a la mitad al
+doblar la densidad lineal. De las pendientes estimamos la densidad lineal de
+la cuerda y la comparamos con la que obtenemos pesándola. Los resultados se
+expresan con su incertidumbre típica y ampliada al \SI{95}{\percent},
+siguiendo \emph{Notes on Uncertainty in Measurements}.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+% =========================================================================
+\newpage
+\seccion{Introducción}{La música de una cuerda tensa}\label{sec:introduccion}
+% =========================================================================
+Cuando pulsamos la cuerda de una guitarra no suena cualquier frecuencia: solo
+aquellas para las que la onda que viaja por la cuerda, al reflejarse en los
+extremos, se superpone consigo misma de forma que los extremos permanezcan
+quietos. El resultado no es una onda que avanza, sino una \emph{onda
+estacionaria}, con puntos que no se mueven nunca (los nodos) y otros que
+oscilan con amplitud máxima (los vientres o antinodos)~\cite{FV5-ECJ,FRENCH}.
+
+En esta práctica hacemos el experimento al revés: fijamos la frecuencia, la de
+un motor, y variamos la tensión de la cuerda hasta que la onda «encaja» entre
+los dos apoyos con uno, dos o más vientres. Como la velocidad de propagación
+depende de la tensión y de la densidad lineal de la cuerda, la tensión a la
+que aparece cada modo nos permite medir esa densidad sin pesar la
+cuerda~\cite{GUION-P2}.
+
+\subsection{Objetivos}\label{sec:objetivos}
+\begin{itemize}
+  \item Determinar la longitud de onda de los modos de vibración de una cuerda
+        en función de la tensión, de la densidad lineal y de la distancia
+        entre los puntos de apoyo.
+  \item Comprobar que $\lambda^{2}$ crece linealmente con la tensión y
+        comparar las pendientes para distintas distancias y distintas
+        densidades lineales.
+  \item Estimar la densidad lineal de la cuerda a partir de las pendientes y
+        compararla con la obtenida con la báscula.
+\end{itemize}
+Las tres cuestiones se resuelven con la \cref{eq:lineal}, que relaciona
+linealmente $\lambda^{2}$ con $T$.
+
+\subsection{Material empleado}\label{sec:material}
+Hemos utilizado el siguiente instrumental~\cite{GUION-P2}:
+\begin{itemize}
+  \item Motor generador de ondas, con un dispositivo excéntrico.
+  \item Cuerda (simple y doble) y varilla vertical de apoyo.
+  \item Dinamómetro sobre un soporte desplazable.
+  \item Estroboscopio.
+  \item Regla milimetrada y báscula.
+\end{itemize}
+
+\subsection{Montaje experimental}\label{sec:montaje}
+Un extremo de la cuerda se ata a la excéntrica del motor, que la hace
+oscilar, y el otro, tras pasar por una varilla vertical, al dinamómetro
+(\cref{fig:montaje}). La distancia $L$ entre la excéntrica y la varilla es la
+longitud de cuerda que vibra, y la varilla puede fijarse en dos posiciones
+del banco, $L_1>L_2$. Desplazando lentamente el soporte del dinamómetro
+variamos la tensión hasta que aparece cada modo estacionario, y con el
+estroboscopio medimos la frecuencia de vibración: cuando la frecuencia de los
+destellos coincide con la del motor, la cuerda parece congelada.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
+  % -------- banco --------
+  \fill[grisclaro] (-2.2,-1.55) rectangle (12.6,-1.3);
+  \draw[grispizarra, line width=0.5pt] (-2.2,-1.55) rectangle (12.6,-1.3);
+  \foreach \x in {-1.8,-1.2,...,12.3}{\draw[grispizarra!50, line width=0.3pt] (\x,-1.55)--(\x,-1.3);}
+  % -------- motor con excéntrica --------
+  \draw[azulprof, fill=azulclaro!45, line width=0.7pt, rounded corners=2pt] (-1.95,-1.3) rectangle (-0.45,0.95);
+  \node[azulprof, font=\footnotesize] at (-1.2,-0.8) {motor};
+  \draw[azulprof, fill=white, line width=0.7pt] (-0.85,0.25) circle (0.38);
+  \fill[azulprof] (-0.85,0.25) circle (0.05);
+  \fill[acento] (-0.66,0.25) circle (0.07);
+  \draw[acento, line width=0.5pt, ->] (-0.85,0.25) ++(35:0.55) arc[start angle=35, end angle=150, radius=0.55];
+  \node[grispizarra, font=\scriptsize\itshape, anchor=south] at (-1.2,1.0) {excéntrica};
+  % -------- varilla de apoyo (L1) y posición alternativa (L2) --------
+  \draw[grispizarra, line width=1.6pt] (8.6,-1.3) -- (8.6,0.15);
+  \fill[grispizarra] (8.6,0.25) circle (0.1);
+  \draw[grispizarra!50, line width=1.2pt, densely dashed] (6.4,-1.3) -- (6.4,0.15);
+  \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (6.4,-1.62) {posición $L_2$};
+  \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (8.75,-1.62) {varilla (posición $L_1$)};
+  % -------- onda estacionaria n = 3 --------
+  \def\xa{-0.66}\def\xb{8.6}\def\yc{0.25}\def\amp{0.62}
+  \fill[azulclaro!35] plot[domain=0:1, samples=120, smooth] ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)})
+    -- plot[domain=1:0, samples=120, smooth] ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)}) -- cycle;
+  \draw[azulacero, line width=0.6pt, densely dashed] plot[domain=0:1, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)});
+  \draw[azulprof, line width=1.1pt] plot[domain=0:1, samples=120, smooth]
+      ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)});
+  \foreach \k in {0,1,2,3}{\fill[azulprof] ({\xa+(\xb-\xa)*\k/3},\yc) circle (1.6pt);}
+  \foreach \k in {1,3,5}{\draw[acento, line width=0.4pt, densely dotted]
+      ({\xa+(\xb-\xa)*\k/6},{\yc-\amp}) -- ({\xa+(\xb-\xa)*\k/6},{\yc+\amp});}
+  \draw[grispizarra!70, line width=0.35pt] ({\xa+(\xb-\xa)/3},\yc) -- ({\xa+(\xb-\xa)/3+0.35},{\yc-\amp-0.12});
+  \node[azulprof, font=\scriptsize, anchor=north west] at ({\xa+(\xb-\xa)/3+0.3},{\yc-\amp-0.08}) {nodo};
+  \node[acento, font=\scriptsize, anchor=south] at ({\xa+(\xb-\xa)/2},{\yc+\amp+0.02}) {vientre};
+  % -------- cuerda hasta el dinamómetro --------
+  \draw[azulprof, line width=1.1pt] (8.6,0.35) -- (10.0,0.35);
+  \draw[grispizarra, fill=white, line width=0.7pt, rounded corners=1.5pt] (10.0,0.12) rectangle (11.75,0.58);
+  \foreach \x in {10.2,10.4,...,11.6}{\draw[grispizarra!70, line width=0.3pt] (\x,0.12) -- (\x,0.27);}
+  \node[grispizarra, font=\scriptsize\itshape, anchor=south] at (10.88,0.62) {dinamómetro, $T$};
+  \draw[grispizarra, line width=1.4pt] (12.0,-1.3) -- (12.0,0.35) -- (11.75,0.35);
+  \draw[->, acento, line width=0.8pt] (12.2,-0.35) -- (12.85,-0.35);
+  \node[acento, font=\scriptsize\itshape, align=left, anchor=west] at (12.1,-0.85) {soporte\\móvil};
+  % -------- cota L --------
+  \draw[grispizarra, line width=0.45pt, |<->|] (\xa,-0.95) -- (\xb,-0.95)
+    node[midway, fill=white, inner sep=2pt, text=black!80] {$L$};
+  % -------- estroboscopio --------
+  \draw[azulprof, fill=azulclaro!45, line width=0.7pt, rounded corners=2pt] (4.9,1.75) rectangle (7.7,2.5);
+  \node[azulprof, font=\scriptsize] at (6.3,2.12) {estroboscopio, $f$};
+  \foreach \ang in {-125,-105,-85}{\draw[acento!80, line width=0.4pt] (6.3,1.75) -- ++(\ang:0.7);}
+\end{tikzpicture}
+\caption{Esquema del montaje, con la cuerda vibrando en el modo $n=3$. La
+excéntrica del motor hace oscilar la cuerda, que pasa por la varilla vertical
+y llega al dinamómetro, sujeto a un soporte que se desplaza para variar la
+tensión $T$. La longitud que vibra, $L$, va de la excéntrica a la varilla, que
+puede ocupar dos posiciones ($L_1>L_2$). Esquema sin escala.}
+\label{fig:montaje}
+\end{figure}
+
+\ornamento
+
+% =========================================================================
+\newpage
+\seccion{Fundamentos teóricos}{De la ecuación de ondas a los modos normales}\label{sec:fundamentos}
+% =========================================================================
+\subsection{Ondas transversales en una cuerda tensa}\label{sec:ecuacion}
+Consideremos una cuerda homogénea, de densidad lineal $\mu$, sometida a una
+tensión $T$ y desplazada ligeramente de su posición de equilibrio. Llamamos
+$y(x,t)$ al desplazamiento transversal del punto de abscisa $x$ en el instante
+$t$. Un elemento de longitud $\dif x$ está sometido a las tensiones de sus dos
+extremos, tangentes a la cuerda (\cref{fig:elemento}); para desplazamientos
+pequeños su módulo apenas cambia y sus componentes horizontales se
+compensan, pero no las verticales.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
+  % cuerda deformada: y = 1,6 sin(30 x) (grados); elemento entre xA y xB
+  \def\xA{0.9}\def\xB{4.3}\def\Am{1.6}
+  \pgfmathsetmacro{\yA}{\Am*sin(30*\xA)}
+  \pgfmathsetmacro{\yB}{\Am*sin(30*\xB)}
+  \pgfmathsetmacro{\aA}{atan(\Am*30*pi/180*cos(30*\xA))}
+  \pgfmathsetmacro{\aB}{atan(\Am*30*pi/180*cos(30*\xB))}
+  \draw[azulclaro, line width=0.7pt, domain=-0.6:7.2, samples=120, smooth] plot (\x,{\Am*sin(30*\x)});
+  \draw[azulprof, line width=1.8pt, domain=\xA:\xB, samples=60, smooth] plot (\x,{\Am*sin(30*\x)});
+  \draw[grispizarra!45, line width=0.4pt, dashed] (-0.6,0) -- (7.2,0);
+  \coordinate (A) at (\xA,\yA);
+  \coordinate (B) at (\xB,\yB);
+  % tensiones, tangentes a la cuerda
+  \draw[->, acento, line width=1.1pt] (A) -- ++({180+\aA}:1.7) node[anchor=north east, text=acento, inner sep=1pt] {$T$};
+  \draw[->, acento, line width=1.1pt] (B) -- ++(\aB:1.7) node[anchor=north west, text=acento, inner sep=1pt] {$T$};
+  % ángulos con la horizontal
+  \draw[grispizarra!70, line width=0.4pt, densely dotted] (A) -- ++(-1.55,0);
+  \draw[grispizarra, line width=0.6pt] (A) ++(180:1.05) arc[start angle=180, end angle={180+\aA}, radius=1.05];
+  \node[grispizarra, anchor=east, font=\footnotesize] at ($(A)+(-1.6,-0.05)$) {$\theta(x)$};
+  \draw[grispizarra!70, line width=0.4pt, densely dotted] (B) -- ++(1.55,0);
+  \draw[grispizarra, line width=0.6pt] (B) ++(0:1.05) arc[start angle=0, end angle=\aB, radius=1.05];
+  \node[grispizarra, anchor=west, font=\footnotesize] at ($(B)+(1.6,0.05)$) {$\theta(x+\dif x)$};
+  \fill[azulprof] (A) circle (2pt);
+  \fill[azulprof] (B) circle (2pt);
+  \node[azulprof, anchor=south] at (3.0,{\Am+0.12}) {$\dif m=\mu\,\dif x$};
+  % cotas
+  \draw[grispizarra, densely dotted, line width=0.4pt] (A) -- (\xA,-2.05);
+  \draw[grispizarra, densely dotted, line width=0.4pt] (B) -- (\xB,-2.05);
+  \draw[grispizarra, line width=0.45pt, |<->|] (\xA,-2.05) -- (\xB,-2.05)
+    node[midway, fill=white, inner sep=2pt, text=black!80] {$\dif x$};
+  \draw[->, grispizarra, line width=0.5pt] (-1.9,-2.6) -- (7.5,-2.6) node[right, text=black!80] {$x$};
+  \draw[->, grispizarra, line width=0.5pt] (-1.9,-2.6) -- (-1.9,2.3) node[above, text=black!80] {$y$};
+\end{tikzpicture}
+\caption{Elemento de cuerda de longitud $\dif x$ y masa $\mu\,\dif x$. Las
+tensiones en sus extremos son tangentes a la cuerda y forman ángulos
+$\theta(x)$ y $\theta(x+\dif x)$ con la horizontal; su resultante vertical es
+la que acelera el elemento. Desplazamientos exagerados.}
+\label{fig:elemento}
+\end{figure}
+
+Aplicando la segunda ley de Newton a la componente vertical, y usando que para
+ángulos pequeños $\sin\theta\simeq\tan\theta=\partial y/\partial x$,
+\begin{equation}\label{eq:newton}
+  \mu\,\dif x\,\pdd{y}{t}
+  =T\bigl[\sin\theta(x+\dif x)-\sin\theta(x)\bigr]
+  \simeq T\left[\pd{y}{x}\Big|_{x+\dif x}-\pd{y}{x}\Big|_{x}\right]
+  =T\,\pdd{y}{x}\,\dif x ,
+\end{equation}
+es decir, la ecuación de ondas~\cite{GUION-P2,FV6-ECJ}
+\begin{equation}\label{eq:ondas}
+  \pdd{y}{t}=\frac{T}{\mu}\,\pdd{y}{x}
+  \qquad\Longrightarrow\qquad
+  v=\sqrt{\frac{T}{\mu}} ,
+\end{equation}
+donde la comparación con la forma general
+$\partial^{2}y/\partial t^{2}=v^{2}\,\partial^{2}y/\partial x^{2}$ identifica
+la velocidad de propagación $v$. Tiene sentido: una cuerda más tensa responde
+con más fuerza a una deformación, y una cuerda más pesada, con más inercia.
+
+Para una onda armónica de frecuencia $f$, la longitud de onda es la distancia
+que recorre la perturbación en un periodo, $\lambda=v/f$, así que
+\begin{equation}\label{eq:lambda}
+  \lambda=\frac{1}{f}\sqrt{\frac{T}{\mu}} .
+\end{equation}
+
+\subsection{Ondas estacionarias}\label{sec:estacionarias}
+Una onda que viaja por la cuerda y se refleja en un extremo fijo da lugar a
+una onda reflejada de igual amplitud y longitud de onda que se propaga en
+sentido contrario. Su superposición es~\cite{GUION-P2,FV5-ECJ}
+\begin{equation}\label{eq:superposicion}
+  y(x,t)=A\sin(kx-\omega t)+A\sin(kx+\omega t)=2A\sin(kx)\cos(\omega t),
+\end{equation}
+con $k=2\pi/\lambda$ y $\omega=2\pi f$. La dependencia espacial y la temporal
+quedan separadas: todos los puntos oscilan en fase, cada uno con amplitud
+$\lvert2A\sin(kx)\rvert$ (\cref{fig:estacionaria}). Los puntos con
+$\sin(kx)=0$ no se mueven nunca, mientras que en los que cumplen
+$\lvert\sin(kx)\rvert=1$ la amplitud es máxima.
+
+\begin{referencia}[Nodos, vientres y cuantización]{GUION-P2}\label{ref:modos}
+Se denominan antinodos a los puntos de la onda estacionaria que tienen amplitud
+máxima [\dots] Por lo tanto, se puede decir que los modos de vibración están
+cuantizados, y son múltiplos del modo fundamental $k_1=\pi/L$, es decir,
+$k_n=n\,k_1$.
+\end{referencia}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
+  \def\Lw{12}\def\Aw{1.25}
+  \fill[azulclaro!25] plot[domain=0:\Lw, samples=160, smooth] (\x,{\Aw*sin(2*180*\x/\Lw)})
+    -- plot[domain=\Lw:0, samples=160, smooth] (\x,{-\Aw*sin(2*180*\x/\Lw)}) -- cycle;
+  \draw[grispizarra!45, line width=0.4pt, dashed] (-0.3,0) -- (\Lw+0.3,0);
+  \foreach \j in {0,...,8}{
+    \pgfmathsetmacro{\c}{cos(22.5*\j)}
+    \pgfmathsetmacro{\pc}{25+70*abs(\c)}
+    \draw[azulprof!\pc!azulclaro, line width=0.7pt] plot[domain=0:\Lw, samples=120, smooth] (\x,{\Aw*\c*sin(2*180*\x/\Lw)});}
+  \foreach \k in {0,1,2}{
+    \fill[white] ({\Lw*\k/2},0) circle (3pt); \fill[azulprof] ({\Lw*\k/2},0) circle (2.2pt);
+    \node[azulprof, anchor=north, font=\footnotesize] at ({\Lw*\k/2},-0.12) {N};}
+  \foreach \k in {1,3}{
+    \draw[acento, line width=0.4pt, densely dotted] ({\Lw*\k/4},{-\Aw-0.1}) -- ({\Lw*\k/4},{\Aw+0.1});
+    \node[acento, anchor=south, font=\footnotesize] at ({\Lw*\k/4},{\Aw+0.1}) {A};}
+  \draw[grispizarra, line width=0.45pt, |<->|] (0,{-\Aw-0.55}) -- ({\Lw/2},{-\Aw-0.55})
+    node[midway, fill=white, inner sep=2pt, text=black!80] {$\lambda/2$};
+  \draw[grispizarra, line width=0.45pt, |<->|] ({\Lw/4},{\Aw+0.75}) -- ({3*\Lw/4},{\Aw+0.75})
+    node[midway, fill=white, inner sep=2pt, text=black!80] {$\lambda/2$};
+  \draw[grispizarra, line width=0.45pt, <->] ({\Lw*3/4+0.35},{-\Aw}) -- ({\Lw*3/4+0.35},{\Aw})
+    node[midway, right, text=black!80] {$4A$};
+\end{tikzpicture}
+\caption{Onda estacionaria $y=2A\sin(kx)\cos(\omega t)$: instantáneas en
+distintos momentos de un periodo, como las que congela el estroboscopio. Los
+nodos (N) permanecen quietos y los vientres (A) oscilan con amplitud $2A$; dos
+nodos, o dos vientres, consecutivos distan $\lambda/2$.}
+\label{fig:estacionaria}
+\end{figure}
+
+\subsection{Modos de una cuerda con los extremos fijos}\label{sec:modos}
+Si la cuerda está sujeta en $x=0$ y $x=L$, ambos extremos han de ser nodos:
+$\sin(kL)=0$. Solo son posibles, por tanto, los números de onda
+$k_n=n\pi/L$ o, equivalentemente,
+\begin{equation}\label{eq:modos}
+  \lambda_n=\frac{2L}{n},\qquad n=1,2,3,\dots
+\end{equation}
+donde $n$ es el número de vientres (\cref{fig:modos}). Es la cuantización de
+la que habla la \cref{ref:modos}: entre los apoyos ha de caber un número
+entero de semilongitudes de onda~\cite{GUION-P2,FRENCH}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, font=\small]
+  \foreach \n/\y in {1/0,2/-1.1,3/-2.2,4/-3.3,5/-4.4}{
+    \fill[azulclaro!35] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.36*sin(\n*180*\x)})
+      -- plot[domain=1:0, samples=100, smooth] ({7*\x},{\y-0.36*sin(\n*180*\x)}) -- cycle;
+    \draw[azulprof, line width=0.9pt] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.36*sin(\n*180*\x)});
+    \draw[azulacero, line width=0.5pt, densely dashed] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y-0.36*sin(\n*180*\x)});
+    \fill[grispizarra] (0,\y) circle (1.5pt); \fill[grispizarra] (7,\y) circle (1.5pt);
+    \node[anchor=east, text=azulprof] at (-0.3,\y) {$n=\n$};
+    \pgfmathsetmacro{\Tn}{1/(\n*\n)}
+    \node[anchor=west, text=black!80] at (7.4,\y) {$\lambda_{\n}=\ifnum\n=1 2L\else\ifnum\n=2 L\else 2L/\n\fi\fi$};
+    \fill[acento!70] (9.9,\y-0.11) rectangle ({9.9+2.4*\Tn},\y+0.11);
+  }
+  \node[anchor=south west, text=grispizarra, font=\scriptsize\itshape] at (9.9,0.3) {tensión necesaria, $T_n\propto 1/n^{2}$};
+\end{tikzpicture}
+\caption{Primeros modos de una cuerda de longitud $L$ con los extremos fijos.
+A la derecha, la tensión que requiere cada modo a frecuencia fija,
+$T_n=\mu f^{2}(2L/n)^{2}$, en proporción a la del fundamental: el modo $n=2$
+necesita la cuarta parte de tensión que el $n=1$.}
+\label{fig:modos}
+\end{figure}
+
+\subsection{Linealización}\label{sec:linealizacion}
+En nuestro montaje la frecuencia es fija, la del motor, y lo que variamos es
+la tensión. Elevando al cuadrado la \cref{eq:lambda}:
+
+\begin{resultado}[Relación entre longitud de onda y tensión]\label{res:lineal}
+Para una cuerda de densidad lineal $\mu$ que vibra con frecuencia $f$, el
+cuadrado de la longitud de onda es proporcional a la tensión,
+\begin{equation}\label{eq:lineal}
+  \lambda^{2}=\frac{1}{\mu f^{2}}\,T
+  \qquad\Longleftrightarrow\qquad
+  \mu=\frac{1}{a\,f^{2}},
+\end{equation}
+donde $a=1/(\mu f^{2})$ es la pendiente de la recta $\lambda^{2}$ frente a $T$.
+\end{resultado}
+
+Con la \cref{eq:modos}, cada modo observado aporta un punto
+$(T_n,\lambda_n^{2})$ de esa recta. De la \cref{eq:lineal} se siguen las dos
+comparaciones que pide el guion~\cite{GUION-P2}:
+
+\begin{observacion}[Qué esperar de las pendientes]\label{obs:pendientes}
+(i)~Para la misma distancia $L$, la cuerda doble, de densidad $2\mu$, debe
+dar una pendiente que sea la \emph{mitad} que la de la cuerda simple.
+(ii)~Para la misma cuerda, la pendiente \emph{no depende} de $L$: cambiar la
+distancia entre apoyos solo desplaza los puntos a lo largo de la misma recta,
+porque modifica las longitudes de onda permitidas y, con ellas, las tensiones a
+las que aparecen los modos.
+\end{observacion}
+
+\ornamento
+
+% =========================================================================
+\newpage
+\seccion{Procedimiento experimental}{Cómo medimos}\label{sec:procedimiento}
+% =========================================================================
+Seguimos la metodología del guion~\cite{GUION-P2}:
+\begin{enumerate}
+  \item \emph{Preparación.} Fijamos la varilla en la posición $L_1$, atamos la
+        cuerda simple a la excéntrica y al dinamómetro, y comprobamos que este
+        marcaba cero sin tensión.
+  \item \emph{Frecuencia.} Con el motor en marcha, medimos su frecuencia con
+        el estroboscopio, buscando la frecuencia de destellos a la que la
+        cuerda aparecía inmóvil.
+  \item \emph{Barrido en tensión.} Desplazando lentamente el soporte del
+        dinamómetro, buscamos las tensiones a las que se formaban ondas
+        estacionarias con $n=1,2,3,\dots$ vientres, y anotamos cada una.
+  \item \emph{Resto de configuraciones.} Repetimos el barrido con la cuerda
+        doble en $L_1$, y con ambas cuerdas tras pasar la varilla a la
+        posición $L_2$.
+  \item \emph{Densidad.} Pesamos un trozo de cuerda de longitud conocida en la
+        báscula.
+\end{enumerate}
+
+\begin{observacion}[Sobre las lecturas]\label{obs:lecturas}
+El estroboscopio también deja la cuerda inmóvil a frecuencias submúltiplos de
+la del motor, $f/2$, $f/3$\ldots, por lo que tomamos la más alta a la que se
+veía una sola imagen quieta. Por otra parte, la tensión de los modos altos es
+muy pequeña (del orden de centésimas de newton) y queda cerca del límite de
+lo que el dinamómetro permite leer con fiabilidad; esas medidas son las más
+delicadas de la práctica.
+\end{observacion}
+
+\subsection{Tratamiento de incertidumbres}\label{sec:incertidumbres}
+Seguimos la \emph{Guide to the expression of uncertainty in
+measurement}~\cite{GUM}, tal como se recoge en las notas del
+laboratorio~\cite{NUM-ARG}. Para una magnitud $y=f(x_1,\dots,x_N)$ con
+entradas no correlacionadas, la incertidumbre típica se propaga como
+\begin{equation}\label{eq:propagacion}
+  u^{2}(y)=\sum_{k=1}^{N}\left(\frac{\partial f}{\partial x_k}\right)^{\!2}u^{2}(x_k),
+\end{equation}
+y la incertidumbre ampliada al \SI{95}{\percent} es $\ext{y}=\Tcoef\,u(y)$,
+con $\Tcoef$ el factor de cobertura de Student para $\nu$ grados de
+libertad~\cite{NUM-ARG}. Cuando una incertidumbre procede solo de la
+resolución $\Delta$ de un instrumento, la tomamos como
+$u=\Delta/\sqrt{12}$, con infinitos grados de libertad. Las incertidumbres se
+dan con una sola cifra significativa, salvo cuando la primera es un 1, en
+cuyo caso se conservan dos; el valor se redondea a la misma posición
+decimal~\cite{ERR-MP}, y en notación científica valor e incertidumbre
+comparten la misma potencia de diez.
+
+\begin{metodo}[Regresión lineal por mínimos cuadrados]\label{met:regresion}
+La \cref{eq:lineal} tiene la forma $y=a\,x+b$, con $y=\lambda^{2}$ y $x=T$.
+Para los $N$ pares $(x_i,y_i)$ de cada serie ajustamos la recta por mínimos
+cuadrados ordinarios, sin ponderar~\cite{NUM-ARG,HUGHES}. Con
+$S_{xx}=\sum_i(x_i-\mean{x})^{2}$ y $S_{xy}=\sum_i(x_i-\mean{x})(y_i-\mean{y})$,
+\begin{equation}\label{eq:regresion}
+  a=\frac{S_{xy}}{S_{xx}},
+  \qquad
+  b=\mean{y}-a\,\mean{x},
+  \qquad
+  s^{2}=\frac{1}{N-2}\sum_{i=1}^{N}\bigl(y_i-a\,x_i-b\bigr)^{2},
+\end{equation}
+y las incertidumbres típicas de los parámetros son
+\begin{equation}\label{eq:uregresion}
+  u(a)=\frac{s}{\sqrt{S_{xx}}},
+  \qquad
+  u(b)=u(a)\,\sqrt{\mean{x^{2}}},
+\end{equation}
+con $\nu=N-2$ grados de libertad. La ordenada $b$ debería ser compatible con
+cero, y la calidad del ajuste la juzgamos con el coeficiente de correlación
+$r$ y con los residuos. Los ajustes se han realizado con un pequeño programa
+en Python.
+\end{metodo}
+
+\begin{calculo}[Longitud de onda]\label{calc:lambda}
+Como $\lambda_n=2L/n$ con $n$ exacto, la única fuente de incertidumbre es la
+distancia entre apoyos:
+\begin{equation}\label{eq:ulambda}
+  \frac{u(\lambda_n^{2})}{\lambda_n^{2}}=2\,\frac{u(L)}{L}.
+\end{equation}
+\end{calculo}
+
+\begin{calculo}[Densidad lineal]\label{calc:mu}
+Aplicando la \cref{eq:propagacion} a $\mu=1/(af^{2})$ y a $\mub=m/\ell$,
+\begin{equation}\label{eq:umu}
+  \frac{u(\mus)}{\mus}=\sqrt{\left(\frac{u(a)}{a}\right)^{\!2}+\left(\frac{2\,u(f)}{f}\right)^{\!2}},
+  \qquad
+  \frac{u(\mub)}{\mub}=\sqrt{\left(\frac{u(m)}{m}\right)^{\!2}+\left(\frac{u(\ell)}{\ell}\right)^{\!2}} .
+\end{equation}
+Para $\mus$, el número efectivo de grados de libertad se calcula con la
+fórmula de Welch--Sat\-ter\-thwaite, teniendo en cuenta que la contribución de
+$f$ procede de una resolución, con $\nu\to\infty$~\cite{NUM-ARG}.
+\end{calculo}
+
+% =========================================================================
+\seccion{Análisis de datos y resultados}{Lo que dicen las medidas}\label{sec:analisis}
+% =========================================================================
+\subsection{Magnitudes de partida}\label{sec:partida}
+La frecuencia de los destellos con la que la cuerda aparecía congelada fue de
+\SI{43}{\hertz} en casi todas las configuraciones (y \SI{44}{\hertz} en
+algunos de los modos más altos, dentro de la resolución de \SI{1}{\hertz}
+del estroboscopio), de modo que tomamos $f=\SI{43,0 \pm 0,3}{\hertz}$.
+
+De cada distancia entre apoyos anotamos dos lecturas: \SI{38,8}{} y
+\SI{37,6}{\centi\meter} para $L_2$, y \SI{51,9}{} y \SI{49,8}{\centi\meter}
+para $L_1$. La diferencia, mucho mayor que la resolución de la regla, refleja
+que los extremos de la longitud que vibra no están perfectamente definidos,
+sobre todo en la excéntrica, que oscila. Tomamos la primera lectura como valor
+de $L$ y la semidiferencia como su incertidumbre típica
+(\cref{tab:partida}).
+
+Por último, la báscula dio $m=\SI{0,06}{\gram}$ para un trozo de cuerda de
+$\ell=\SI{49}{\centi\meter}$, con resoluciones de \SI{0,01}{\gram} y
+\SI{0,1}{\centi\meter}. Por la \cref{eq:umu}, la densidad lineal medida
+directamente es
+\begin{destacado}[Densidad lineal con la báscula]
+\vspace{-6pt}
+\begin{equation}\label{eq:mub}
+  \mub=\frac{m}{\ell}=\num{1,22 \pm 0,06 e-4}\ \si{\kilogram\per\meter}
+  \quad(\text{incertidumbre típica}),
+\end{equation}
+{\small con una incertidumbre ampliada al \SI{95}{\percent} de
+$\num{0,12e-4}\ \si{\kilogram\per\meter}$, dominada por la resolución de la
+pesada (\SI{0,01}{\gram} sobre \SI{0,06}{\gram}).}
+\end{destacado}
+
+\begin{table}[ht]
+\centering
+\caption{Magnitudes de partida con sus incertidumbres típicas.}
+\label{tab:partida}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Magnitud & Valor & Origen de la incertidumbre \\
+\midrule
+Frecuencia, $f$             & \SI{43,0 \pm 0,3}{\hertz}         & resolución del estroboscopio \\
+Distancia corta, $L_2$      & \SI{38,8 \pm 0,6}{\centi\meter}   & dispersión de dos lecturas \\
+Distancia larga, $L_1$      & \SI{51,9 \pm 1,0}{\centi\meter}   & dispersión de dos lecturas \\
+Masa del trozo, $m$         & \SI{0,060 \pm 0,003}{\gram}       & resolución de la báscula \\
+Longitud del trozo, $\ell$  & \SI{49,00 \pm 0,03}{\centi\meter} & resolución de la regla \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Tensiones de los modos}\label{sec:tensiones}
+La \cref{tab:datos} recoge las tensiones a las que se formó cada modo en las
+cuatro configuraciones, junto con $\lambda_n^{2}=(2L/n)^{2}$. Con la cuerda
+doble en $L_1$ solo pudimos distinguir con claridad los cuatro primeros
+modos; con la doble en $L_2$, en cambio, llegamos hasta seis vientres. Como
+predice la \cref{fig:modos}, la tensión cae rápidamente con el número de
+vientres: del modo $n=1$ al $n=2$ se reduce aproximadamente a la cuarta
+parte, y la cuerda doble necesita, para el mismo modo, aproximadamente el
+doble de tensión que la simple.
+
+\begin{table}[ht]
+\centering
+\caption{Tensión $T$ a la que aparece cada modo y cuadrado de la longitud de
+onda, $\lambda_n^{2}=(2L/n)^{2}$, con su incertidumbre típica.}
+\label{tab:datos}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}c c c c @{\hspace{1.2em}} c c c@{}}
+\toprule
+ & \multicolumn{3}{c}{\scshape\color{azulprof}$L_2=\SI{38,8}{\centi\meter}$} &
+   \multicolumn{3}{c@{}}{\scshape\color{azulprof}$L_1=\SI{51,9}{\centi\meter}$} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+$n$ & $\lambda_n^{2}$ (\si{\meter\squared}) & $T$ simple (\si{\newton}) & $T$ doble (\si{\newton}) &
+      $\lambda_n^{2}$ (\si{\meter\squared}) & $T$ simple (\si{\newton}) & $T$ doble (\si{\newton}) \\
+\midrule
+1 & \num{0,602 \pm 0,019}   & \num{0,15}  & \num{0,29}  & \num{1,08 \pm 0,04}    & \num{0,25}  & \num{0,5}   \\
+2 & \num{0,151 \pm 0,005}   & \num{0,04}  & \num{0,08}  & \num{0,269 \pm 0,011}  & \num{0,07}  & \num{0,14}  \\
+3 & \num{0,0669 \pm 0,0021} & \num{0,02}  & \num{0,04}  & \num{0,120 \pm 0,005}  & \num{0,03}  & \num{0,06}  \\
+4 & \num{0,0376 \pm 0,0012} & \num{0,01}  & \num{0,02}  & \num{0,067 \pm 0,003}  & \num{0,008} & \num{0,017} \\
+5 & \num{0,0241 \pm 0,0007} & \num{0,006} & \num{0,014} & \num{0,0431 \pm 0,0017}& \num{0,002} & ---         \\
+6 & \num{0,0167 \pm 0,0005} & ---         & \num{0,01}  & ---                    & ---         & ---         \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ajustes lineales}\label{sec:ajustes}
+La \cref{fig:ajustes} representa $\lambda^{2}$ frente a $T$ para las cuatro
+series, y la \cref{tab:ajustes} recoge los parámetros de los ajustes por
+mínimos cuadrados (\cref{met:regresion}). Las barras de error son las
+incertidumbres típicas de $\lambda^{2}$ de la \cref{tab:datos}; como los
+ajustes no están ponderados, no influyen en los parámetros.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \pgfplotstableread{
+    T      y       u
+    0.15   0.6022  0.019
+    0.04   0.1505  0.005
+    0.02   0.0669  0.0021
+    0.01   0.0376  0.0012
+    0.006  0.0241  0.0007
+  }\simpleLdos
+  \pgfplotstableread{
+    T      y       u
+    0.25   1.0774  0.044
+    0.07   0.2694  0.011
+    0.03   0.1197  0.005
+    0.008  0.0673  0.003
+    0.002  0.0431  0.0017
+  }\simpleLuno
+  \pgfplotstableread{
+    T      y       u
+    0.29   0.6022  0.019
+    0.08   0.1505  0.005
+    0.04   0.0669  0.0021
+    0.02   0.0376  0.0012
+    0.014  0.0241  0.0007
+    0.01   0.0167  0.0005
+  }\dobleLdos
+  \pgfplotstableread{
+    T      y       u
+    0.5    1.0774  0.044
+    0.14   0.2694  0.011
+    0.06   0.1197  0.005
+    0.017  0.0673  0.003
+  }\dobleLuno
+  \begin{groupplot}[group style={group size=2 by 2, horizontal sep=1.1cm,
+                                 vertical sep=0.35cm, x descriptions at=edge bottom},
+                    datos, width=0.505\textwidth,
+                    xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+                    yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2}]
+    % ---- cuerda simple ----
+    \nextgroupplot[height=6.2cm, xmin=0, xmax=0.27, ymin=0, ymax=1.2,
+                   ylabel={$\lambda^{2}$ (\si{\meter\squared})},
+                   title={\small\scshape\color{azulprof}cuerda simple},
+                   legend style={at={(0.03,0.97)}, anchor=north west}]
+      \addplot[ajuste, domain=0:0.27, samples=2] {4.0476*x-0.00668};
+      \addplot[ajusteB, domain=0:0.27, samples=2] {4.2144*x+0.01196};
+      \addplot[puntoA] table[x=T, y=y, y error=u] {\simpleLdos};
+      \addplot[puntoB] table[x=T, y=y, y error=u] {\simpleLuno};
+      \legend{ajuste $L_2$, ajuste $L_1$, datos $L_2$, datos $L_1$}
+    % ---- cuerda doble ----
+    \nextgroupplot[height=6.2cm, xmin=0, xmax=0.54, ymin=0, ymax=1.2,
+                   title={\small\scshape\color{azulprof}cuerda doble},
+                   legend style={at={(0.03,0.97)}, anchor=north west}]
+      \addplot[ajuste, domain=0:0.54, samples=2] {2.0987*x-0.00912};
+      \addplot[ajusteB, domain=0:0.54, samples=2] {2.1371*x+0.00038};
+      \addplot[puntoA] table[x=T, y=y, y error=u] {\dobleLdos};
+      \addplot[puntoB] table[x=T, y=y, y error=u] {\dobleLuno};
+      \legend{ajuste $L_2$, ajuste $L_1$, datos $L_2$, datos $L_1$}
+    % ---- residuos ----
+    \nextgroupplot[height=3.2cm, xmin=0, xmax=0.27, ymin=-0.05, ymax=0.05,
+                   ytick={-0.04,0,0.04},
+                   ylabel={residuo (\si{\meter\squared})}, xlabel={$T$ (\si{\newton})}]
+      \addplot[grispizarra, densely dashed, line width=0.6pt, domain=0:0.27, samples=2] {0};
+      \addplot[puntoA] table[x=T, y expr=\thisrow{y}-(4.0476*\thisrow{T}-0.00668), y error=u] {\simpleLdos};
+      \addplot[puntoB] table[x=T, y expr=\thisrow{y}-(4.2144*\thisrow{T}+0.01196), y error=u] {\simpleLuno};
+    \nextgroupplot[height=3.2cm, xmin=0, xmax=0.54, ymin=-0.05, ymax=0.05,
+                   ytick={-0.04,0,0.04}, xlabel={$T$ (\si{\newton})}]
+      \addplot[grispizarra, densely dashed, line width=0.6pt, domain=0:0.54, samples=2] {0};
+      \addplot[puntoA] table[x=T, y expr=\thisrow{y}-(2.0987*\thisrow{T}-0.00912), y error=u] {\dobleLdos};
+      \addplot[puntoB] table[x=T, y expr=\thisrow{y}-(2.1371*\thisrow{T}+0.00038), y error=u] {\dobleLuno};
+  \end{groupplot}
+\end{tikzpicture}
+\caption{$\lambda^{2}$ frente a $T$ para la cuerda simple (izquierda) y la
+doble (derecha), en las dos distancias entre apoyos. Círculos: $L_2$;
+cuadrados: $L_1$. Arriba, datos y rectas de regresión por mínimos cuadrados
+(continua para $L_2$, discontinua para $L_1$); abajo, residuos. Las barras son
+la incertidumbre típica $u(\lambda^{2})$. Obsérvese la diferencia de escala
+horizontal: la cuerda doble requiere el doble de tensión.}
+\label{fig:ajustes}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\caption{Parámetros de los ajustes $\lambda^{2}=a\,T+b$: valor con su
+incertidumbre típica y, entre corchetes, la ampliada al \SI{95}{\percent}
+($\nu=N-2$).}
+\label{tab:ajustes}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+Serie & $N$ & $a$ (\si{\meter\squared\per\newton}) & $b$ (\si{\meter\squared}) & $r$ \\
+\midrule
+Simple, $L_2$ & 5 & \num{4,05 \pm 0,06}\ [\num{0,18}] & \num{-0,007 \pm 0,004}\ [\num{0,013}] & \num{0,9997} \\
+Simple, $L_1$ & 5 & \num{4,21 \pm 0,15}\ [\num{0,5}]  & \num{0,012 \pm 0,018}\ [\num{0,06}]   & \num{0,998}  \\
+Doble, $L_2$  & 6 & \num{2,10 \pm 0,03}\ [\num{0,08}] & \num{-0,009 \pm 0,004}\ [\num{0,010}] & \num{0,9996} \\
+Doble, $L_1$  & 4 & \num{2,14 \pm 0,08}\ [\num{0,4}]  & \num{0,00 \pm 0,02}\ [\num{0,09}]     & \num{0,998}  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Las cuatro series son claramente lineales ($r\geq\num{0,998}$) y las cuatro
+ordenadas son compatibles con cero al \SI{95}{\percent}, como exige la
+\cref{eq:lineal}. Los residuos, sin embargo, no son del todo aleatorios: en
+las cuatro series los modos $n=2$ y $n=3$ quedan por debajo de la recta y los
+de menor tensión, por encima. Es lo que cabría esperar si las tensiones más
+pequeñas se leyeran algo por defecto, justo en la zona de la escala del
+dinamómetro donde la lectura es menos fiable (\cref{obs:lecturas}).
+
+\needspace{8\baselineskip}
+\subsection{Comparación de las pendientes}\label{sec:comparacion}
+\begin{estimacion}[Misma distancia, distinta densidad]\label{est:densidad}
+Según la \cref{obs:pendientes}, el cociente entre la pendiente de la cuerda
+simple y la de la doble debe valer 2. Propagando las incertidumbres de las
+pendientes,
+\begin{equation}\label{eq:cocientes}
+  \frac{a_{\text{simple}}}{a_{\text{doble}}}\bigg|_{L_2}=\num{1,93 \pm 0,04},
+  \qquad
+  \frac{a_{\text{simple}}}{a_{\text{doble}}}\bigg|_{L_1}=\num{1,97 \pm 0,10}.
+\end{equation}
+En $L_1$ el cociente es plenamente compatible con 2; en $L_2$ se queda a
+algo menos de dos incertidumbres típicas, en el límite de la compatibilidad
+al \SI{95}{\percent}. Doblar la cuerda reduce la pendiente a la mitad, como
+predice la teoría.
+\end{estimacion}
+
+\begin{estimacion}[Misma densidad, distinta distancia]\label{est:distancia}
+Con la cuerda simple, las pendientes en $L_2$ y $L_1$ (\num{4,05} y
+\num{4,21}) difieren en \num{0,17}, frente a una incertidumbre típica
+combinada de \num{0,16}; con la doble (\num{2,10} y \num{2,14}), en
+\num{0,04}, frente a \num{0,09}. En ambos casos las pendientes son
+compatibles: cambiar la distancia entre apoyos no altera la pendiente, y
+los puntos de ambas distancias caen sobre la misma recta.
+\end{estimacion}
+
+\subsection{Densidad lineal de la cuerda}\label{sec:densidad}
+De cada pendiente obtenemos la densidad lineal con la \cref{eq:lineal}, y su
+incertidumbre con la \cref{eq:umu}. Para compararlas entre sí y con la de la
+báscula, dividimos por dos las de la cuerda doble (\cref{tab:densidad,fig:densidad}).
+
+\begin{table}[ht]
+\centering
+\caption{Densidad lineal deducida de cada pendiente: valor con su
+incertidumbre típica y, entre corchetes, la ampliada al \SI{95}{\percent}. En
+la última columna, la densidad por hebra.}
+\label{tab:densidad}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+Serie & $\mus=1/(af^{2})$ (\si{\kilogram\per\meter}) & Por hebra (\si{\kilogram\per\meter}) \\
+\midrule
+Simple, $L_2$ & $\num{1,34 \pm 0,03 e-4}$\ [\num{0,06e-4}] & $\num{1,34e-4}$ \\
+Simple, $L_1$ & $\num{1,28 \pm 0,05 e-4}$\ [\num{0,14e-4}] & $\num{1,28e-4}$ \\
+Doble, $L_2$  & $\num{2,58 \pm 0,05 e-4}$\ [\num{0,11e-4}] & $\num{1,29e-4}$ \\
+Doble, $L_1$  & $\num{2,53 \pm 0,10 e-4}$\ [\num{0,4e-4}]  & $\num{1,27e-4}$ \\
+\midrule
+Media ponderada (por hebra) & & $\num{1,31 \pm 0,02 e-4}$ \\
+Báscula, $\mub$             & & $\num{1,22 \pm 0,06 e-4}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[datos, width=0.82\textwidth, height=5.4cm,
+               xmin=1.0, xmax=1.55, ymin=0.4, ymax=6.6,
+               ytick={1,...,6},
+               yticklabels={báscula, media ponderada, doble $L_1$, doble $L_2$, simple $L_1$, simple $L_2$},
+               yticklabel style={font=\small}, grid=major,
+               xlabel={densidad lineal por hebra ($10^{-4}$ \si{\kilogram\per\meter})},
+               xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2}]
+    % banda de la báscula (95 %)
+    \fill[acento!12] (axis cs:1.109,0.4) rectangle (axis cs:1.339,6.6);
+    \draw[acento, line width=0.8pt, densely dashed] (axis cs:1.224,0.4) -- (axis cs:1.224,6.6);
+    \addplot[only marks, mark=*, mark size=2.2pt, azulprof,
+             error bars/.cd, x dir=both, x explicit,
+             error bar style={line width=0.8pt, azulprof},
+             error mark options={rotate=90, mark size=3pt, line width=0.8pt, azulprof}]
+      coordinates {(1.336,6) +- (0.057,0) (1.283,5) +- (0.137,0)
+                   (1.289,4) +- (0.053,0) (1.265,3) +- (0.186,0)};
+    \addplot[only marks, mark=diamond*, mark size=3.2pt, azulacero,
+             error bars/.cd, x dir=both, x explicit,
+             error bar style={line width=0.8pt, azulacero},
+             error mark options={rotate=90, mark size=3pt, line width=0.8pt, azulacero}]
+      coordinates {(1.307,2) +- (0.043,0)};
+    \addplot[only marks, mark=square*, mark size=2.2pt, acento,
+             error bars/.cd, x dir=both, x explicit,
+             error bar style={line width=0.8pt, acento},
+             error mark options={rotate=90, mark size=3pt, line width=0.8pt, acento}]
+      coordinates {(1.224,1) +- (0.115,0)};
+  \end{axis}
+\end{tikzpicture}
+\caption{Densidad lineal por hebra obtenida de cada ajuste, su media
+ponderada y el valor de la báscula, con sus incertidumbres ampliadas al
+\SI{95}{\percent}. La banda sombreada es el intervalo al \SI{95}{\percent}
+de la báscula.}
+\label{fig:densidad}
+\end{figure}
+
+Las cuatro estimaciones son compatibles entre sí. Combinándolas con una media
+ponderada por el inverso del cuadrado de las incertidumbres de las
+pendientes, y añadiendo después la contribución de la frecuencia, común a
+todas, obtenemos
+\begin{destacado}[Densidad lineal a partir de las pendientes]
+\vspace{-6pt}
+\begin{equation}\label{eq:mumedia}
+  \mus=\num{1,31 \pm 0,02 e-4}\ \si{\kilogram\per\meter}
+  \quad(\text{incertidumbre típica}),
+\end{equation}
+{\small frente a $\mub=\num{1,22 \pm 0,06 e-4}\ \si{\kilogram\per\meter}$
+de la báscula: una diferencia del \SI{7}{\percent}, de unas $\num{1,3}$
+incertidumbres típicas combinadas, por lo que ambos valores son compatibles.}
+\end{destacado}
+
+% =========================================================================
+\newpage
+\seccion{Discusión y conclusiones}{Lo que aprendemos}\label{sec:discusion}
+% =========================================================================
+\begin{conclusion}[Linealidad y modos]\label{conc:lineal}
+En las cuatro configuraciones, $\lambda^{2}$ crece linealmente con la tensión
+($r\geq\num{0,998}$) y las ordenadas son compatibles con cero: las
+longitudes de onda que impone la geometría, $\lambda_n=2L/n$, y la velocidad
+de propagación $v=\sqrt{T/\mu}$ describen bien la cuerda. La tensión de cada
+modo cae como $1/n^{2}$, tal y como se espera a frecuencia fija.
+\end{conclusion}
+
+\begin{conclusion}[Comparación de las pendientes]\label{conc:pendientes}
+Para una misma cuerda, la pendiente no depende de la distancia entre apoyos
+(\num{4,05} y \num{4,21} con la simple; \num{2,10} y \num{2,14} con la doble,
+en \si{\meter\squared\per\newton}). Para una misma distancia, doblar la cuerda
+reduce la pendiente a la mitad: los cocientes valen \num{1,93 \pm 0,04} y
+\num{1,97 \pm 0,10}, compatibles con 2.
+\end{conclusion}
+
+\begin{conclusion}[Densidad lineal]\label{conc:densidad}
+Las pendientes dan una densidad por hebra de
+$\num{1,31 \pm 0,02 e-4}\ \si{\kilogram\per\meter}$, compatible con la de la
+báscula, $\num{1,22 \pm 0,06 e-4}\ \si{\kilogram\per\meter}$, aunque algo
+mayor. El método dinámico resulta, de hecho, más preciso que la pesada, cuya
+incertidumbre está dominada por la resolución de \SI{0,01}{\gram} sobre una
+masa de solo \SI{0,06}{\gram}.
+\end{conclusion}
+
+\begin{observacion}[Fuentes de error]\label{obs:errores}
+La diferencia sistemática entre ambas densidades y el patrón de los residuos
+apuntan a tres limitaciones: la lectura de las tensiones más pequeñas, en el
+límite de la escala del dinamómetro; la indefinición de la longitud que
+vibra, cuyas dos lecturas difieren hasta en \SI{2}{\centi\meter}, y la
+pesada de una masa tan pequeña. Pesar un trozo de cuerda más largo y emplear
+un dinamómetro de menor rango en los modos altos reduciría las tres.
+\end{observacion}
+
+En conjunto, la práctica cumple sus objetivos: con una regla, un dinamómetro
+y un estroboscopio hemos comprobado la cuantización de los modos de una
+cuerda y medido su densidad lineal con más precisión que pesándola.
+
+% =========================================================================
+\newpage
+%                              BIBLIOGRAFÍA
+% =========================================================================
+\printbibliography[title={Referencias}]
+
+\end{document}
