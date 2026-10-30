@@ -12,12 +12,16 @@ from scipy import stats
 
 F = 43.0                      # Hz, frecuencia leída en el estroboscopio
 U_F = 1.0 / np.sqrt(12)       # resolución de 1 Hz
-U_L = 0.001 / np.sqrt(12)     # regla milimetrada (m)
+U_T = 0.01 / np.sqrt(12)      # resolución supuesta del dinamómetro: 0,01 N
+# u(L): semidiferencia de las dos lecturas de cada distancia (38,8/37,6 cm y
+# 51,9/49,8 cm); el valor central es la primera lectura
+U_L2 = (0.388 - 0.376) / 2
+U_L1 = (0.519 - 0.498) / 2
 
 casos = {
-    "Cuerda simple, $L_2$": dict(L=0.388, T=[0.15, 0.04, 0.02, 0.01, 0.006]),
-    "Cuerda simple, $L_1$": dict(L=0.519, T=[0.25, 0.07, 0.03, 0.008, 0.002]),
-    "Cuerda doble, $L_2$":  dict(L=0.388, T=[0.29, 0.08, 0.04, 0.02, 0.014, 0.01]),
+    "Cuerda simple, $L_2$": dict(L=0.388, uL=U_L2, T=[0.15, 0.04, 0.02, 0.01, 0.006]),
+    "Cuerda simple, $L_1$": dict(L=0.519, uL=U_L1, T=[0.25, 0.07, 0.03, 0.008, 0.002]),
+    "Cuerda doble, $L_2$":  dict(L=0.388, uL=U_L2, T=[0.29, 0.08, 0.04, 0.02, 0.014, 0.01]),
 }
 
 # Densidad medida con la báscula: m = 0,06 g en l = 49 cm
@@ -45,7 +49,7 @@ for nombre, c in casos.items():
     n = np.arange(1, len(c["T"]) + 1)
     lam = 2 * c["L"] / n
     lam2 = lam ** 2
-    u_lam2 = 2 * lam2 * U_L / c["L"]
+    u_lam2 = 2 * lam2 * c["uL"] / c["L"]
     fit = ajuste(c["T"], lam2)
     mu = 1 / (fit["a"] * F ** 2)
     u_mu = mu * np.hypot(fit["ua"] / fit["a"], 2 * U_F / F)
@@ -76,8 +80,8 @@ def coma(x, fmt):
 
 def dibuja(ax, nombre, fit, mk, col, etiqueta_datos):
     T = casos[nombre]["T"]
-    ax.errorbar(T, fit["lam2"], yerr=fit["u_lam2"], fmt=mk, color=col, ms=5,
-                capsize=2, label=etiqueta_datos)
+    ax.errorbar(T, fit["lam2"], yerr=fit["u_lam2"], xerr=U_T, fmt=mk, color=col, ms=4,
+                capsize=2.5, elinewidth=0.9, label=etiqueta_datos)
     xs = np.linspace(0, max(T) * 1.05, 50)
     signo = "+" if fit["b"] >= 0 else "-"
     ax.plot(xs, fit["a"] * xs + fit["b"], color=col, lw=1.2,

@@ -36,6 +36,13 @@ $L_1=\SI{51,9}{\centi\meter}$, y, con la báscula, $m=\SI{0,06}{\gram}$ de
 cuerda en $\ell=\SI{49}{\centi\meter}$, es decir,
 $\mu=m/\ell=\SI{1,22 \pm 0,06 e-4}{\kilogram\per\meter}$.
 
+Para las barras de error tomamos $u(T)=\Delta/\sqrt{12}\approx\SI{0,003}{\newton}$,
+con una resolución del dinamómetro $\Delta=\SI{0,01}{\newton}$, y
+$u(\lambda^{2})=2\lambda^{2}u(L)/L$, con $u(L)$ igual a la semidiferencia de
+las dos lecturas de cada distancia (\SI{0,6}{\centi\meter} para $L_2$ y
+\SI{1,05}{\centi\meter} para $L_1$). Los ajustes no están ponderados, así que
+estas incertidumbres no modifican los parámetros.
+
 Se analizan los tres primeros casos: cuerda simple en $L_2$ y en $L_1$, y cuerda
 doble en $L_2$. La serie de la cuerda doble en $L_1$ no se ajusta, porque sus
 tensiones no son coherentes (la del modo $n=5$ es mayor que la del $n=4$).
@@ -80,8 +87,7 @@ Doble, $L_2$  & \num{2,10 \pm 0,03} \ [\num{0,08}] & \num{-0,009 \pm 0,004} \ [\
 \centering
 \includegraphics[width=0.82\textwidth]{ajustes_conjunto.pdf}
 \caption{$\lambda^{2}$ frente a $T$ para los tres casos, con sus rectas de
-ajuste. Las barras de incertidumbre de $\lambda^{2}$ son menores que los
-símbolos.}
+ajuste. Barras de error: incertidumbres típicas $u(T)$ y $u(\lambda^{2})$.}
 \end{figure}
 
 \section*{Comentario}
