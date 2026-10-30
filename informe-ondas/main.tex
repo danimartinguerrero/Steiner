@@ -43,7 +43,9 @@
 \definecolor{grispizarra}{HTML}{5B6770} % gris pizarra
 \definecolor{grisclaro}{HTML}{E4E8EC}   % gris perla
 \definecolor{azulfondo}{HTML}{F3F7FB}   % fondo tenue de referencias y resultados
-\definecolor{acento}{HTML}{B8800A}      % acento sobrio (ámbar oscuro) para comparaciones
+\definecolor{acento}{HTML}{A4262C}      % rojo carmín: contraste y vientres en oposición de fase
+\definecolor{rojoclaro}{HTML}{F2CDCF}   % rojo muy claro (rellenos)
+\definecolor{grismedio}{HTML}{8A949C}   % gris medio (elementos secundarios)
 \usepackage{tikz}
 \usetikzlibrary{babel, arrows.meta, calc, positioning, decorations.pathmorphing,
                 decorations.markings, patterns}
@@ -304,13 +306,18 @@
 
 % --- Estilo de gráficas de datos ----------------------------------------------
 \pgfplotsset{
+  % estilo de artículo: ejes en caja, marcas hacia dentro y marcas menores
   datos/.style={
     tick label style={font=\scriptsize}, label style={font=\small},
-    axis lines=left, axis line style={grispizarra},
-    grid=major, grid style={grisclaro, line width=0.4pt},
-    every tick/.style={grispizarra},
-    legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9,
-                  text opacity=1, cells={anchor=west}},
+    axis lines=box, axis line style={black!75, line width=0.5pt},
+    tick align=inside, xtick pos=both, ytick pos=both,
+    minor tick num=1,
+    major tick length=3.5pt, minor tick length=2pt,
+    every tick/.style={black!75, line width=0.45pt},
+    grid=major, grid style={grisclaro!70, line width=0.3pt},
+    legend style={font=\scriptsize, draw=black!40, line width=0.4pt, fill=white,
+                  fill opacity=0.92, text opacity=1, cells={anchor=west},
+                  inner xsep=3pt, inner ysep=2pt, rounded corners=0pt},
     legend cell align=left,
     /pgf/number format/use comma, /pgf/number format/1000 sep={\,},
     scaled ticks=false,
@@ -319,17 +326,35 @@
     mark options={fill=azulprof, draw=white, line width=0.3pt},
     error bars/.cd, y dir=both, y explicit,
     error bar style={line width=0.6pt, azulprof}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulprof}},
-  puntoB/.style={only marks, mark=square*, mark size=1.9pt, azulacero,
-    mark options={fill=azulclaro, draw=azulacero, line width=0.5pt},
+  puntoB/.style={only marks, mark=square*, mark size=1.9pt, acento,
+    mark options={fill=rojoclaro, draw=acento, line width=0.6pt},
     error bars/.cd, y dir=both, y explicit,
-    error bar style={line width=0.6pt, azulacero}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, azulacero}},
-  ajusteB/.style={azulacero, line width=1.1pt, densely dashed},
+    error bar style={line width=0.6pt, acento}, error mark options={rotate=90, mark size=2.2pt, line width=0.6pt, acento}},
+  ajusteB/.style={acento, line width=1.1pt, densely dashed},
   % leyenda en una fila sobre el gráfico, para que no tape los datos
   leyenda arriba/.style={legend columns=-1,
     legend style={at={(0.5,1.03)}, anchor=south,
       /tikz/every even column/.append style={column sep=9pt}}},
   ajuste/.style={azulprof, line width=1.1pt},
   teorica/.style={acento, line width=0.9pt, densely dashed},
+}
+
+% --- Modo estacionario con vientres alternos (azul / rojo) -------------------
+% Los vientres contiguos oscilan en oposición de fase; se distinguen por color.
+% \modo{x0}{y0}{longitud}{amplitud}{n}: envolvente, traza superior continua,
+% inferior discontinua y nodos.
+\newcommand{\modo}[5]{%
+  \foreach \j in {1,...,#5}{%
+    \pgfmathsetmacro{\xini}{(#1)+(#3)*(\j-1)/(#5)}%
+    \pgfmathsetmacro{\xfin}{(#1)+(#3)*\j/(#5)}%
+    \pgfmathtruncatemacro{\paridad}{mod(\j,2)}%
+    \ifnum\paridad=1 \def\cl{azulprof}\def\cf{azulclaro}\else\def\cl{acento}\def\cf{rojoclaro}\fi
+    \fill[\cf!55] plot[domain=\xini:\xfin, samples=40, smooth] (\x,{(#2)+(#4)*sin((#5)*180*(\x-(#1))/(#3))})
+      -- plot[domain=\xfin:\xini, samples=40, smooth] (\x,{(#2)-(#4)*sin((#5)*180*(\x-(#1))/(#3))}) -- cycle;
+    \draw[\cl, line width=0.9pt] plot[domain=\xini:\xfin, samples=40, smooth] (\x,{(#2)+(#4)*sin((#5)*180*(\x-(#1))/(#3))});
+    \draw[\cl!75, line width=0.5pt, densely dashed] plot[domain=\xini:\xfin, samples=40, smooth] (\x,{(#2)-(#4)*sin((#5)*180*(\x-(#1))/(#3))});
+  }%
+  \foreach \j in {0,...,#5}{\fill[black!80] ({(#1)+(#3)*\j/(#5)},{#2}) circle (1.4pt);}%
 }
 
 % Referencia a un panel de figura: «figura 2\,(a)», enlazada en bloque
@@ -397,7 +422,7 @@ siguiendo \emph{Notes on Uncertainty in Measurements}.
 \tableofcontents
 
 % =========================================================================
-\newpage
+\clearpage
 \seccion{Introducción}{La música de una cuerda tensa}\label{sec:introduccion}
 % =========================================================================
 Cuando pulsamos la cuerda de una guitarra no suena cualquier frecuencia: solo
@@ -450,6 +475,28 @@ destellos coincide con la del motor, la cuerda parece congelada.
 
 \begin{figure}[ht]
 \centering
+\begin{subfigure}[b]{0.655\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/foto-montaje.jpg}
+  \caption{Vista general del montaje.}
+  \label{fig:foto-montaje}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/foto-estroboscopio.jpg}
+  \caption{Estroboscopio.}
+  \label{fig:foto-estroboscopio}
+\end{subfigure}
+\caption{El montaje en el laboratorio. (a)~De izquierda a derecha: el
+estroboscopio, el motor con la excéntrica, la cuerda vibrando en el modo
+$n=2$ y, en la varilla vertical, el dinamómetro. (b)~El estroboscopio
+iluminando la cuerda: con la frecuencia de destellos adecuada, la cuerda
+parece inmóvil.}
+\label{fig:fotos}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
 \begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
   % -------- banco --------
   \fill[grisclaro] (-2.2,-1.55) rectangle (12.6,-1.3);
@@ -469,20 +516,12 @@ destellos coincide con la del motor, la cuerda parece congelada.
   \draw[grispizarra!50, line width=1.2pt, densely dashed] (6.4,-1.3) -- (6.4,0.15);
   \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (6.4,-1.62) {posición $L_2$};
   \node[grispizarra, font=\scriptsize\itshape, anchor=north] at (8.75,-1.62) {varilla (posición $L_1$)};
-  % -------- onda estacionaria n = 3 --------
+  % -------- onda estacionaria n = 3 (vientres contiguos en oposición de fase) --------
   \def\xa{-0.66}\def\xb{8.6}\def\yc{0.25}\def\amp{0.62}
-  \fill[azulclaro!35] plot[domain=0:1, samples=120, smooth] ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)})
-    -- plot[domain=1:0, samples=120, smooth] ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)}) -- cycle;
-  \draw[azulacero, line width=0.6pt, densely dashed] plot[domain=0:1, samples=120, smooth]
-      ({\xa+(\xb-\xa)*\x},{\yc-\amp*sin(3*180*\x)});
-  \draw[azulprof, line width=1.1pt] plot[domain=0:1, samples=120, smooth]
-      ({\xa+(\xb-\xa)*\x},{\yc+\amp*sin(3*180*\x)});
-  \foreach \k in {0,1,2,3}{\fill[azulprof] ({\xa+(\xb-\xa)*\k/3},\yc) circle (1.6pt);}
-  \foreach \k in {1,3,5}{\draw[acento, line width=0.4pt, densely dotted]
-      ({\xa+(\xb-\xa)*\k/6},{\yc-\amp}) -- ({\xa+(\xb-\xa)*\k/6},{\yc+\amp});}
-  \draw[grispizarra!70, line width=0.35pt] ({\xa+(\xb-\xa)/3},\yc) -- ({\xa+(\xb-\xa)/3+0.35},{\yc-\amp-0.12});
-  \node[azulprof, font=\scriptsize, anchor=north west] at ({\xa+(\xb-\xa)/3+0.3},{\yc-\amp-0.08}) {nodo};
-  \node[acento, font=\scriptsize, anchor=south] at ({\xa+(\xb-\xa)/2},{\yc+\amp+0.02}) {vientre};
+  \modo{\xa}{\yc}{\xb-\xa}{\amp}{3}
+  \draw[grismedio, line width=0.35pt] ({\xa+(\xb-\xa)/3},\yc) -- ({\xa+(\xb-\xa)/3+0.35},{\yc-\amp-0.12});
+  \node[black!80, font=\scriptsize, anchor=north west] at ({\xa+(\xb-\xa)/3+0.3},{\yc-\amp-0.08}) {nodo};
+  \node[azulprof, font=\scriptsize, anchor=south] at ({\xa+(\xb-\xa)/6},{\yc+\amp+0.02}) {vientre};
   % -------- cuerda hasta el dinamómetro --------
   \draw[azulprof, line width=1.1pt] (8.6,0.35) -- (10.0,0.35);
   \draw[grispizarra, fill=white, line width=0.7pt, rounded corners=1.5pt] (10.0,0.12) rectangle (11.75,0.58);
@@ -510,7 +549,7 @@ puede ocupar dos posiciones ($L_1>L_2$). Esquema sin escala.}
 \ornamento
 
 % =========================================================================
-\newpage
+\clearpage
 \seccion{Fundamentos teóricos}{De la ecuación de ondas a los modos normales}\label{sec:fundamentos}
 % =========================================================================
 \subsection{Ondas transversales en una cuerda tensa}\label{sec:ecuacion}
@@ -613,19 +652,21 @@ $k_n=n\,k_1$.
 \centering
 \begin{tikzpicture}[>=Stealth, x=1cm, y=1cm, font=\small]
   \def\Lw{12}\def\Aw{1.25}
-  \fill[azulclaro!25] plot[domain=0:\Lw, samples=160, smooth] (\x,{\Aw*sin(2*180*\x/\Lw)})
-    -- plot[domain=\Lw:0, samples=160, smooth] (\x,{-\Aw*sin(2*180*\x/\Lw)}) -- cycle;
-  \draw[grispizarra!45, line width=0.4pt, dashed] (-0.3,0) -- (\Lw+0.3,0);
-  \foreach \j in {0,...,8}{
-    \pgfmathsetmacro{\c}{cos(22.5*\j)}
-    \pgfmathsetmacro{\pc}{25+70*abs(\c)}
-    \draw[azulprof!\pc!azulclaro, line width=0.7pt] plot[domain=0:\Lw, samples=120, smooth] (\x,{\Aw*\c*sin(2*180*\x/\Lw)});}
+  \draw[grismedio!60, line width=0.4pt, dashed] (-0.3,0) -- (\Lw+0.3,0);
+  \foreach \k/\cl/\cf in {1/azulprof/azulclaro, 2/acento/rojoclaro}{
+    \pgfmathsetmacro{\xini}{\Lw*(\k-1)/2}\pgfmathsetmacro{\xfin}{\Lw*\k/2}
+    \fill[\cf!45] plot[domain=\xini:\xfin, samples=80, smooth] (\x,{\Aw*sin(2*180*\x/\Lw)})
+      -- plot[domain=\xfin:\xini, samples=80, smooth] (\x,{-\Aw*sin(2*180*\x/\Lw)}) -- cycle;
+    \foreach \j in {0,...,8}{
+      \pgfmathsetmacro{\c}{cos(22.5*\j)}
+      \pgfmathsetmacro{\pc}{25+75*abs(\c)}
+      \draw[\cl!\pc!white, line width=0.7pt] plot[domain=\xini:\xfin, samples=80, smooth] (\x,{\Aw*\c*sin(2*180*\x/\Lw)});}}
   \foreach \k in {0,1,2}{
-    \fill[white] ({\Lw*\k/2},0) circle (3pt); \fill[azulprof] ({\Lw*\k/2},0) circle (2.2pt);
-    \node[azulprof, anchor=north, font=\footnotesize] at ({\Lw*\k/2},-0.12) {N};}
-  \foreach \k in {1,3}{
-    \draw[acento, line width=0.4pt, densely dotted] ({\Lw*\k/4},{-\Aw-0.1}) -- ({\Lw*\k/4},{\Aw+0.1});
-    \node[acento, anchor=south, font=\footnotesize] at ({\Lw*\k/4},{\Aw+0.1}) {A};}
+    \fill[white] ({\Lw*\k/2},0) circle (3pt); \fill[black!80] ({\Lw*\k/2},0) circle (2.2pt);
+    \node[black!80, anchor=north, font=\footnotesize] at ({\Lw*\k/2},-0.14) {N};}
+  \foreach \k/\cl in {1/azulprof,3/acento}{
+    \draw[\cl, line width=0.4pt, densely dotted] ({\Lw*\k/4},{-\Aw-0.1}) -- ({\Lw*\k/4},{\Aw+0.1});
+    \node[\cl, anchor=south, font=\footnotesize] at ({\Lw*\k/4},{\Aw+0.1}) {A};}
   \draw[grispizarra, line width=0.45pt, |<->|] (0,{-\Aw-0.55}) -- ({\Lw/2},{-\Aw-0.55})
     node[midway, fill=white, inner sep=2pt, text=black!80] {$\lambda/2$};
   \draw[grispizarra, line width=0.45pt, |<->|] ({\Lw/4},{\Aw+0.75}) -- ({3*\Lw/4},{\Aw+0.75})
@@ -636,7 +677,9 @@ $k_n=n\,k_1$.
 \caption{Onda estacionaria $y=2A\sin(kx)\cos(\omega t)$: instantáneas en
 distintos momentos de un periodo, como las que congela el estroboscopio. Los
 nodos (N) permanecen quietos y los vientres (A) oscilan con amplitud $2A$; dos
-nodos, o dos vientres, consecutivos distan $\lambda/2$.}
+nodos, o dos vientres, consecutivos distan $\lambda/2$. Los colores distinguen
+dos vientres contiguos, que oscilan en oposición de fase: cuando uno está
+arriba, el otro está abajo.}
 \label{fig:estacionaria}
 \end{figure}
 
@@ -655,22 +698,20 @@ entero de semilongitudes de onda~\cite{GUION-P2,FRENCH}.
 \centering
 \begin{tikzpicture}[x=1cm, y=1cm, font=\small]
   \foreach \n/\y in {1/0,2/-1.1,3/-2.2,4/-3.3,5/-4.4}{
-    \fill[azulclaro!35] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.36*sin(\n*180*\x)})
-      -- plot[domain=1:0, samples=100, smooth] ({7*\x},{\y-0.36*sin(\n*180*\x)}) -- cycle;
-    \draw[azulprof, line width=0.9pt] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y+0.36*sin(\n*180*\x)});
-    \draw[azulacero, line width=0.5pt, densely dashed] plot[domain=0:1, samples=100, smooth] ({7*\x},{\y-0.36*sin(\n*180*\x)});
-    \fill[grispizarra] (0,\y) circle (1.5pt); \fill[grispizarra] (7,\y) circle (1.5pt);
-    \node[anchor=east, text=azulprof] at (-0.3,\y) {$n=\n$};
+    \modo{0}{\y}{7}{0.36}{\n}
+    \node[anchor=east, text=black!85] at (-0.3,\y) {$n=\n$};
     \pgfmathsetmacro{\Tn}{1/(\n*\n)}
     \node[anchor=west, text=black!80] at (7.4,\y) {$\lambda_{\n}=\ifnum\n=1 2L\else\ifnum\n=2 L\else 2L/\n\fi\fi$};
-    \fill[acento!70] (9.9,\y-0.11) rectangle ({9.9+2.4*\Tn},\y+0.11);
+    \fill[grispizarra!70] (9.9,\y-0.11) rectangle ({9.9+2.4*\Tn},\y+0.11);
   }
+  \draw[grismedio, line width=0.4pt] (9.9,0.25) -- (9.9,-4.65);
   \node[anchor=south west, text=grispizarra, font=\scriptsize\itshape] at (9.9,0.3) {tensión necesaria, $T_n\propto 1/n^{2}$};
 \end{tikzpicture}
 \caption{Primeros modos de una cuerda de longitud $L$ con los extremos fijos.
 A la derecha, la tensión que requiere cada modo a frecuencia fija,
 $T_n=\mu f^{2}(2L/n)^{2}$, en proporción a la del fundamental: el modo $n=2$
-necesita la cuarta parte de tensión que el $n=1$.}
+necesita la cuarta parte de tensión que el $n=1$. Los vientres contiguos,
+en azul y rojo, oscilan en oposición de fase.}
 \label{fig:modos}
 \end{figure}
 
@@ -705,7 +746,7 @@ las que aparecen los modos.
 \ornamento
 
 % =========================================================================
-\newpage
+\clearpage
 \seccion{Procedimiento experimental}{Cómo medimos}\label{sec:procedimiento}
 % =========================================================================
 Seguimos la metodología del guion~\cite{GUION-P2}:
@@ -798,6 +839,7 @@ $f$ procede de una resolución, con $\nu\to\infty$~\cite{NUM-ARG}.
 \end{calculo}
 
 % =========================================================================
+\clearpage
 \seccion{Análisis de datos y resultados}{Lo que dicen las medidas}\label{sec:analisis}
 % =========================================================================
 \subsection{Magnitudes de partida}\label{sec:partida}
@@ -849,9 +891,12 @@ Longitud del trozo, $\ell$  & \SI{49,00 \pm 0,03}{\centi\meter} & resolución de
 
 \subsection{Tensiones de los modos}\label{sec:tensiones}
 La \cref{tab:datos} recoge las tensiones a las que se formó cada modo en las
-cuatro configuraciones, junto con $\lambda_n^{2}=(2L/n)^{2}$. Con la cuerda
-doble en $L_1$ solo pudimos distinguir con claridad los cuatro primeros
-modos; con la doble en $L_2$, en cambio, llegamos hasta seis vientres. Como
+cuatro configuraciones, junto con $\lambda_n^{2}=(2L/n)^{2}$, y la
+\cref{fig:fotos-modos} muestra dos de los modos tal y como los vimos. Con la
+cuerda doble en $L_2$ llegamos hasta seis vientres. Con la doble en $L_1$
+también observamos el quinto modo, a $T=\SI{0,013}{\newton}$, pero
+descartamos esa medida: se aparta claramente del patrón de las demás y la
+tensión queda donde el dinamómetro ya apenas tiene resolución. Como
 predice la \cref{fig:modos}, la tensión cae rápidamente con el número de
 vientres: del modo $n=1$ al $n=2$ se reduce aproximadamente a la cuarta
 parte, y la cuerda doble necesita, para el mismo modo, aproximadamente el
@@ -875,11 +920,35 @@ $n$ & $\lambda_n^{2}$ (\si{\meter\squared}) & $T$ simple (\si{\newton}) & $T$ do
 2 & \num{0,151 \pm 0,005}   & \num{0,04}  & \num{0,08}  & \num{0,269 \pm 0,011}  & \num{0,07}  & \num{0,14}  \\
 3 & \num{0,0669 \pm 0,0021} & \num{0,02}  & \num{0,04}  & \num{0,120 \pm 0,005}  & \num{0,03}  & \num{0,06}  \\
 4 & \num{0,0376 \pm 0,0012} & \num{0,01}  & \num{0,02}  & \num{0,067 \pm 0,003}  & \num{0,008} & \num{0,017} \\
-5 & \num{0,0241 \pm 0,0007} & \num{0,006} & \num{0,014} & \num{0,0431 \pm 0,0017}& \num{0,002} & ---         \\
+5 & \num{0,0241 \pm 0,0007} & \num{0,006} & \num{0,014} & \num{0,0431 \pm 0,0017}& \num{0,002} & (\num{0,013})$^{\ast}$ \\
 6 & \num{0,0167 \pm 0,0005} & ---         & \num{0,01}  & ---                    & ---         & ---         \\
 \bottomrule
 \end{tabular}
+
+\smallskip
+{\footnotesize\color{grispizarra}$^{\ast}$\,Medida descartada: no se incluye en el ajuste.}
 \end{table}
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.8\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/foto-modo2.jpg}
+  \caption{Modo $n=2$.}
+  \label{fig:foto-n2}
+\end{subfigure}\\[6pt]
+\begin{subfigure}[b]{0.8\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figuras/foto-modo5.jpg}
+  \caption{Modo $n=5$.}
+  \label{fig:foto-n5}
+\end{subfigure}
+\caption{Dos de los modos estacionarios observados en el laboratorio, con la
+cuerda iluminada por el estroboscopio. Se distinguen con claridad los nodos,
+donde la cuerda apenas se mueve, y los vientres, donde la envolvente es más
+ancha.}
+\label{fig:fotos-modos}
+\end{figure}
 
 \subsection{Ajustes lineales}\label{sec:ajustes}
 La \cref{fig:ajustes} representa $\lambda^{2}$ frente a $T$ para las cuatro
@@ -1104,7 +1173,7 @@ incertidumbres típicas combinadas, por lo que ambos valores son compatibles.}
 \end{destacado}
 
 % =========================================================================
-\newpage
+\clearpage
 \seccion{Discusión y conclusiones}{Lo que aprendemos}\label{sec:discusion}
 % =========================================================================
 \begin{conclusion}[Linealidad y modos]\label{conc:lineal}
@@ -1146,7 +1215,7 @@ y un estroboscopio hemos comprobado la cuantización de los modos de una
 cuerda y medido su densidad lineal con más precisión que pesándola.
 
 % =========================================================================
-\newpage
+\clearpage
 %                              BIBLIOGRAFÍA
 % =========================================================================
 \printbibliography[title={Referencias}]
