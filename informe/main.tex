@@ -1437,100 +1437,51 @@ Cilindro macizo & $\tfrac{1}{2}M R^{2}$ & $\num{2,6 \pm 0,3 e-4}$   & $\num{3,40
 \seccion{Discusión y conclusiones}{Lo que aprendemos}\label{sec:discusion}
 % =========================================================================
 \begin{conclusion}[Constante de torsión]\label{conc:D}
-La calibración con la varilla y los cilindros móviles da
-$D=\num{32,9 \pm 0,6 e-3}\ \si{\newton\meter\per\radian}$ al
-\SI{95}{\percent}, una incertidumbre relativa inferior al \SI{2}{\percent}.
-La dependencia lineal de $T^{2}$ con $R^{2}$ es excelente ($r=\num{0,99993}$)
-y los residuos se reparten a ambos lados de la recta sin ninguna tendencia
-apreciable (\cref{fig:varilla}). Además, la ordenada del ajuste,
-$b=\SI{4,8 \pm 0,5}{\second\squared}$ al \SI{95}{\percent}, es compatible con
-la que predicen las dimensiones de la varilla y de los cilindros,
-$4\pi^{2}(\Ib+2\Ic)/D\simeq\SI{4,81}{\second\squared}$: el modelo de la
-\cref{eq:varilla} describe bien el sistema y la inercia del eje apenas
-contribuye en este montaje.
+La calibración da $D=\num{32,9 \pm 0,6 e-3}\ \si{\newton\meter\per\radian}$
+al \SI{95}{\percent}, con una dependencia lineal excelente
+($r=\num{0,99993}$) y residuos sin tendencia (\cref{fig:varilla}). La
+ordenada, $b=\SI{4,8 \pm 0,5}{\second\squared}$, es compatible con la que
+predicen las dimensiones, $4\pi^{2}(\Ib+2\Ic)/D\simeq\SI{4,81}{\second\squared}$:
+el modelo de la \cref{eq:varilla} describe bien el sistema.
 \end{conclusion}
 
 \begin{conclusion}[Teorema de Steiner]\label{conc:steiner}
-En las dos series del disco perforado, $T^{2}$ crece con $r^{2}$ tal y como
-predice la \cref{eq:steinerT}, aunque con bastante más dispersión que en la
-calibración ($r=\num{0,976}$ y $r=\num{0,988}$). Las diferencias que se
-aprecian a simple vista entre ambas series no son significativas: las
-pendientes difieren en unos \SI{63}{\second\squared\per\meter\squared}, algo
-más de una vez su incertidumbre típica combinada, y las ordenadas, en
-\SI{0,4}{\second\squared}, frente a una incertidumbre combinada de
-\SI{0,7}{\second\squared}. En consecuencia, también lo son las magnitudes que
-derivamos de ellas: $m=\SI{0,30 \pm 0,12}{\kilogram}$ y
-$m=\SI{0,24 \pm 0,07}{\kilogram}$ para la masa del disco, e
+En ambas series del disco, $T^{2}$ crece linealmente con $r^{2}$
+($r=\num{0,976}$ y $r=\num{0,988}$), y sus diferencias no son
+significativas: dan $m=\SI{0,30 \pm 0,12}{\kilogram}$ y
+$\SI{0,24 \pm 0,07}{\kilogram}$, e
 $\Icm=\num{1,31 \pm 0,17 e-2}$ y
-$\num{1,28 \pm 0,10 e-2}\ \si{\kilogram\meter\squared}$ para su
-momento de inercia respecto al centro de masas. Damos, por tanto, el teorema
-de Steiner por comprobado cualitativa y cuantitativamente dentro de nuestra
-precisión, que es modesta: la masa queda determinada solo al
-\SIrange{30}{40}{\percent}.
+$\num{1,28 \pm 0,10 e-2}\ \si{\kilogram\meter\squared}$, compatibles entre
+sí. Damos el teorema por comprobado, aunque con precisión modesta: el
+intervalo de $r^{2}$ es corto y el mínimo de $T^{2}$ no cae exactamente en
+$r=0$, coherente con la descompensación de masas que obligó a voltear el
+disco.
 \end{conclusion}
 
-\begin{observacion}[Sobre la precisión del disco]\label{obs:disco}
-Esa incertidumbre tan grande en la pendiente se debe a que el intervalo de
-$r^{2}$ es corto (hasta \SI{0,0256}{\meter\squared}) y a que los periodos
-apenas varían en los orificios centrales, de modo que pequeñas desviaciones
-pesan mucho en el ajuste. Es significativo que, en la serie~1, el punto
-$r=0$ quede por encima del de $r=\SI{4}{\centi\meter}$, y en la serie~2 el de
-$r=\SI{-2}{\centi\meter}$ por encima del de $r=\SI{-4}{\centi\meter}$, cuando
-el teorema predice el mínimo en el centro de masas: es coherente con la descompensación
-de masas del disco que motivó voltearlo, que desplaza su centro de masas
-fuera del orificio central. Como no pesamos el disco ni medimos su radio, no
-podemos contrastar directamente $m$ e $\Icm$; hacerlo sería la mejora más
-inmediata de esta parte.
-\end{observacion}
-
 \begin{conclusion}[Momentos de inercia de los sólidos]\label{conc:solidos}
-La esfera, que se monta directamente sobre el eje, da
-$I_{\text{din}}=\num{1,84 \pm 0,17 e-3}\ \si{\kilogram\meter\squared}$
-frente a un valor geométrico de
-$\num{2,033 \pm 0,017 e-3}\ \si{\kilogram\meter\squared}$: una diferencia
-del \SI{10}{\percent}, con los dos intervalos al \SI{95}{\percent} a punto de
-solaparse, de modo que el resultado queda en el límite de la compatibilidad.
-En los cilindros, una vez descontado el soporte, la discrepancia es mayor:
-$\num{6,9 \pm 0,7 e-4}$ frente a
-$\num{8,14 \pm 0,04 e-4}\ \si{\kilogram\meter\squared}$ en el hueco
-(un \SI{15}{\percent} menos) y $\num{2,6 \pm 0,3 e-4}$ frente a
-$\num{3,405 \pm 0,015 e-4}\ \si{\kilogram\meter\squared}$ en el macizo
-(un \SI{23}{\percent} menos), sin solapamiento de los intervalos. Que los tres
-valores dinámicos queden por debajo de los geométricos apunta a un error
-sistemático, y no a la dispersión de las medidas.
+La esfera queda en el límite de la compatibilidad
+($\num{1,84 \pm 0,17 e-3}$ frente a
+$\num{2,033 \pm 0,017 e-3}\ \si{\kilogram\meter\squared}$), mientras que en
+los cilindros, descontado el soporte, el valor dinámico es un
+\SI{15}{\percent} (hueco) y un \SI{23}{\percent} (macizo) menor que el
+geométrico. Que los tres queden por debajo apunta a un error sistemático.
 \end{conclusion}
 
 \begin{observacion}[Origen de la discrepancia]\label{obs:sistematico}
-El cronometraje manual no lo explica: como advertimos en el procedimiento,
-tiende a alargar los periodos y, por tanto, a sobrestimar los momentos de
-inercia, justo al contrario de lo observado. Tampoco la constante de
-torsión, cuya incertidumbre relativa no llega al \SI{2}{\percent}.
-Atribuimos el defecto, sobre todo, a dos causas:
-\begin{itemize}
-  \item los modelos geométricos idealizan los cuerpos. El de pared delgada,
-    $MR^{2}$, es una cota superior para un cilindro hueco con paredes de
-    espesor finito, para el que $\tfrac{1}{2}M(R_{1}^{2}+R_{2}^{2})<MR^{2}$, y
-    no medimos su diámetro interior. Además, cualquier pieza metálica de
-    fijación junto al eje concentra masa donde menos contribuye, lo que
-    reduce el momento de inercia real frente al de un sólido homogéneo;
-  \item la resta del soporte. Su periodo procede de los tiempos más cortos de
-    toda la práctica ($t_{5}\approx\SI{2,7}{\second}$), donde el tiempo de
-    reacción pesa más: un error de una décima en $t_{5}$ altera $I_{\mathrm{s}}$
-    en torno a un \SI{8}{\percent}, que al restarse afecta sobre todo al
-    cilindro macizo, el de menor momento de inercia y, precisamente, el de
-    mayor discrepancia.
-\end{itemize}
-Medir el diámetro interior del cilindro hueco, cronometrar más oscilaciones
-(sobre todo las del soporte) o emplear una barrera fotoeléctrica permitiría
-reducir ambos efectos.
+No lo explica el cronometraje manual, que alargaría los periodos, sino
+sobre todo dos causas: la idealización de los modelos geométricos ($MR^{2}$
+es una cota superior para un cilindro hueco de pared finita, y no medimos su
+diámetro interior) y la resta del soporte, cuyo periodo procede de los
+tiempos más cortos de la práctica ($t_{5}\approx\SI{2,7}{\second}$) y afecta
+sobre todo al cilindro macizo, precisamente el de mayor discrepancia.
+Cronometrar más oscilaciones o usar una barrera fotoeléctrica reduciría
+ambos efectos.
 \end{observacion}
 
 En conjunto, la práctica cumple sus objetivos: el péndulo de torsión permite
-calibrar el muelle con una precisión notable y comprobar el teorema de
-Steiner, mientras que la medida de momentos de inercia de sólidos concretos
-pone de manifiesto la importancia de los errores sistemáticos que no aparecen
-en la dispersión de los datos: las idealizaciones de los modelos geométricos
-y la inercia de las piezas que giran con el cuerpo.
+calibrar el muelle con notable precisión y comprobar el teorema de Steiner, y
+la medida de sólidos concretos pone de manifiesto el peso de los errores
+sistemáticos que no aparecen en la dispersión de los datos.
 
 % =========================================================================
 \newpage
