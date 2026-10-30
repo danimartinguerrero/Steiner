@@ -12,7 +12,6 @@ from scipy import stats
 
 F = 43.0                      # Hz, frecuencia leída en el estroboscopio
 U_F = 1.0 / np.sqrt(12)       # resolución de 1 Hz
-U_T = 0.01 / np.sqrt(12)      # resolución supuesta del dinamómetro: 0,01 N
 # u(L): semidiferencia de las dos lecturas de cada distancia (38,8/37,6 cm y
 # 51,9/49,8 cm); el valor central es la primera lectura
 U_L2 = (0.388 - 0.376) / 2
@@ -22,6 +21,7 @@ casos = {
     "Cuerda simple, $L_2$": dict(L=0.388, uL=U_L2, T=[0.15, 0.04, 0.02, 0.01, 0.006]),
     "Cuerda simple, $L_1$": dict(L=0.519, uL=U_L1, T=[0.25, 0.07, 0.03, 0.008, 0.002]),
     "Cuerda doble, $L_2$":  dict(L=0.388, uL=U_L2, T=[0.29, 0.08, 0.04, 0.02, 0.014, 0.01]),
+    "Cuerda doble, $L_1$":  dict(L=0.519, uL=U_L1, T=[0.5, 0.14, 0.06, 0.017]),
 }
 
 # Densidad medida con la báscula: m = 0,06 g en l = 49 cm
@@ -70,8 +70,8 @@ print(f"pendiente esperada (cuerda simple) 1/(mu f^2) = {1/(mu_bascula*F**2):.3f
 plt.rcParams.update({"font.family": "serif", "mathtext.fontset": "dejavuserif",
                      "font.size": 10, "axes.spines.top": False,
                      "axes.spines.right": False})
-estilos = [("o", "#1B365D"), ("s", "#3B6EA8"), ("^", "#B8800A")]
-archivos = ["ajuste_simple_L2", "ajuste_simple_L1", "ajuste_doble_L2"]
+estilos = [("o", "#1B365D"), ("s", "#3B6EA8"), ("^", "#B8800A"), ("D", "#8C3B2E")]
+archivos = ["ajuste_simple_L2", "ajuste_simple_L1", "ajuste_doble_L2", "ajuste_doble_L1"]
 
 
 def coma(x, fmt):
@@ -80,7 +80,7 @@ def coma(x, fmt):
 
 def dibuja(ax, nombre, fit, mk, col, etiqueta_datos):
     T = casos[nombre]["T"]
-    ax.errorbar(T, fit["lam2"], yerr=fit["u_lam2"], xerr=U_T, fmt=mk, color=col, ms=4,
+    ax.errorbar(T, fit["lam2"], yerr=fit["u_lam2"], fmt=mk, color=col, ms=4,
                 capsize=2.5, elinewidth=0.9, label=etiqueta_datos)
     xs = np.linspace(0, max(T) * 1.05, 50)
     signo = "+" if fit["b"] >= 0 else "-"

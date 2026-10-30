@@ -36,35 +36,35 @@ $L_1=\SI{51,9}{\centi\meter}$, y, con la báscula, $m=\SI{0,06}{\gram}$ de
 cuerda en $\ell=\SI{49}{\centi\meter}$, es decir,
 $\mu=m/\ell=\SI{1,22 \pm 0,06 e-4}{\kilogram\per\meter}$.
 
-Para las barras de error tomamos $u(T)=\Delta/\sqrt{12}\approx\SI{0,003}{\newton}$,
-con una resolución del dinamómetro $\Delta=\SI{0,01}{\newton}$, y
-$u(\lambda^{2})=2\lambda^{2}u(L)/L$, con $u(L)$ igual a la semidiferencia de
+Las barras de error representan $u(\lambda^{2})=2\lambda^{2}u(L)/L$, con $u(L)$ igual a la semidiferencia de
 las dos lecturas de cada distancia (\SI{0,6}{\centi\meter} para $L_2$ y
 \SI{1,05}{\centi\meter} para $L_1$). Los ajustes no están ponderados, así que
-estas incertidumbres no modifican los parámetros.
+esta incertidumbre no modifica los parámetros.
 
-Se analizan los tres primeros casos: cuerda simple en $L_2$ y en $L_1$, y cuerda
-doble en $L_2$. La serie de la cuerda doble en $L_1$ no se ajusta, porque sus
-tensiones no son coherentes (la del modo $n=5$ es mayor que la del $n=4$).
+Se analizan los cuatro casos: cuerda simple y doble, en $L_2$ y en $L_1$. En
+la cuerda doble en $L_1$ solo se emplean los modos $n=1$ a $4$.
 
 \section*{Datos}
 \begin{table}[H]
 \centering
 \caption{Tensión $T$ a la que aparece cada modo y $\lambda_n^{2}=(2L/n)^{2}$.}
-\begin{tabular}{c cc cc cc}
+\begin{tabular}{c c c c c c}
 \toprule
- & \multicolumn{2}{c}{Simple, $L_2$} & \multicolumn{2}{c}{Simple, $L_1$} & \multicolumn{2}{c}{Doble, $L_2$} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
-$n$ & $T$ (N) & $\lambda^{2}$ (\si{\meter\squared}) & $T$ (N) & $\lambda^{2}$ (\si{\meter\squared}) & $T$ (N) & $\lambda^{2}$ (\si{\meter\squared}) \\
+ & \multicolumn{2}{c}{$L_2=\SI{38,8}{\centi\meter}$} & & \multicolumn{2}{c}{$L_1=\SI{51,9}{\centi\meter}$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){5-6}
+$n$ & $T$ simple (N) & $T$ doble (N) & $\lambda_n^{2}$ (\si{\meter\squared}) & $T$ simple (N) & $T$ doble (N) \\
 \midrule
-1 & 0,15  & 0,6022 & 0,25  & 1,0774 & 0,29  & 0,6022 \\
-2 & 0,04  & 0,1505 & 0,07  & 0,2694 & 0,08  & 0,1505 \\
-3 & 0,02  & 0,0669 & 0,03  & 0,1197 & 0,04  & 0,0669 \\
-4 & 0,01  & 0,0376 & 0,008 & 0,0673 & 0,02  & 0,0376 \\
-5 & 0,006 & 0,0241 & 0,002 & 0,0431 & 0,014 & 0,0241 \\
-6 &       &        &       &        & 0,01  & 0,0167 \\
+1 & 0,15  & 0,29  & 0,6022 / 1,0774 & 0,25  & 0,5   \\
+2 & 0,04  & 0,08  & 0,1505 / 0,2694 & 0,07  & 0,14  \\
+3 & 0,02  & 0,04  & 0,0669 / 0,1197 & 0,03  & 0,06  \\
+4 & 0,01  & 0,02  & 0,0376 / 0,0673 & 0,008 & 0,017 \\
+5 & 0,006 & 0,014 & 0,0241 / 0,0431 & 0,002 &       \\
+6 &       & 0,01  & 0,0167 / ---    &       &       \\
 \bottomrule
 \end{tabular}
+
+\smallskip
+{\footnotesize En la columna central, $\lambda_n^{2}$ para $L_2$ / para $L_1$.}
 \end{table}
 
 \section*{Resultados}
@@ -79,31 +79,34 @@ Caso & $a$ (\si{\meter\squared\per\newton}) & $b$ (\si{\meter\squared}) & $r$ & 
 Simple, $L_2$ & \num{4,05 \pm 0,06} \ [\num{0,18}] & \num{-0,007 \pm 0,004} \ [\num{0,013}] & \num{0,9997} & \num{1,34 \pm 0,03 e-4} \\
 Simple, $L_1$ & \num{4,21 \pm 0,15} \ [\num{0,5}]  & \num{0,012 \pm 0,018} \ [\num{0,06}]   & \num{0,998}  & \num{1,28 \pm 0,05 e-4} \\
 Doble, $L_2$  & \num{2,10 \pm 0,03} \ [\num{0,08}] & \num{-0,009 \pm 0,004} \ [\num{0,010}] & \num{0,9996} & \num{2,58 \pm 0,05 e-4} \\
+Doble, $L_1$  & \num{2,14 \pm 0,08} \ [\num{0,4}]  & \num{0,00 \pm 0,02} \ [\num{0,09}]     & \num{0,998}  & \num{2,53 \pm 0,10 e-4} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{ajustes_conjunto.pdf}
-\caption{$\lambda^{2}$ frente a $T$ para los tres casos, con sus rectas de
-ajuste. Barras de error: incertidumbres típicas $u(T)$ y $u(\lambda^{2})$.}
+\includegraphics[width=0.7\textwidth]{ajustes_conjunto.pdf}
+\caption{$\lambda^{2}$ frente a $T$ para los cuatro casos, con sus rectas de
+ajuste. Barras de error: incertidumbre típica $u(\lambda^{2})$.}
 \end{figure}
 
 \section*{Comentario}
-Los tres ajustes son muy buenos ($r\geq\num{0,998}$) y las ordenadas son
+Los cuatro ajustes son muy buenos ($r\geq\num{0,998}$) y las ordenadas son
 compatibles con cero al \SI{95}{\percent}, como predice el modelo.
 \begin{itemize}
-  \item \emph{Distinta $L$, misma cuerda:} las pendientes de la cuerda simple en
-    $L_2$ y $L_1$ (\num{4,05} y \num{4,21}) son compatibles, como se espera,
-    porque la pendiente no depende de $L$.
-  \item \emph{Misma $L$, distinta cuerda:} el cociente de pendientes en $L_2$ es
-    $\num{4,05}/\num{2,10}=\num{1,93}$, muy próximo al valor 2 que corresponde a
-    doblar la densidad.
+  \item \emph{Distinta $L$, misma cuerda:} las pendientes en $L_2$ y $L_1$ son
+    compatibles tanto con la cuerda simple (\num{4,05} y \num{4,21}) como con la
+    doble (\num{2,10} y \num{2,14}), como se espera, porque la pendiente no
+    depende de $L$.
+  \item \emph{Misma $L$, distinta cuerda:} el cociente de pendientes entre la
+    cuerda simple y la doble es $\num{4,05}/\num{2,10}=\num{1,93}$ en $L_2$ y
+    $\num{4,21}/\num{2,14}=\num{1,97}$ en $L_1$, muy próximos al valor 2 que
+    corresponde a doblar la densidad.
   \item \emph{Densidad:} la cuerda simple da
     $\mu=\num{1,34 e-4}$ y $\num{1,28 e-4}\ \si{\kilogram\per\meter}$, y la doble,
-    $\num{2,58 e-4}\ \si{\kilogram\per\meter}$, es decir,
-    $\num{1,29 e-4}\ \si{\kilogram\per\meter}$ por hebra. Son algo mayores que
+    $\num{2,58 e-4}$ y $\num{2,53 e-4}\ \si{\kilogram\per\meter}$, es decir,
+    unos $\num{1,28 e-4}\ \si{\kilogram\per\meter}$ por hebra. Son algo mayores que
     el valor de la báscula, $\num{1,22 \pm 0,06 e-4}\ \si{\kilogram\per\meter}$,
     pero compatibles con él dentro de la incertidumbre, dominada por la escasa
     resolución de la pesada (\SI{0,01}{\gram} sobre \SI{0,06}{\gram}).
