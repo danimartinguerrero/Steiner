@@ -84,18 +84,24 @@
 % =========================================================================
 %        CABECERAS, PIE DE PÁGINA, SECCIONES E ÍNDICE (aire de Cosmosofía)
 % =========================================================================
-% Pequeña espiral: viñeta de la paginación y ornamento entre secciones
-\newcommand{\espiralita}[1][0.9]{%
-  \tikz[baseline=-0.6ex, scale=#1]{%
-    \draw[azulacero, line width=0.45pt]
-      plot[domain=0:15.7, samples=70, variable=\t, smooth]
-      ({0.0105*\t*cos(\t r)},{0.0105*\t*sin(\t r)});
-    \fill[azulprof] (0,0) circle (0.55pt);}}
+% Pequeña onda estacionaria (modo n = 2): viñeta de la paginación y ornamento
+% entre secciones. Un vientre azul y otro rojo, en oposición de fase, y los
+% nodos en negro, como en las figuras del informe.
+% \ondita[escala]
+\newcommand{\ondita}[1][1]{%
+  \tikz[baseline=-0.55ex, scale=#1]{%
+    \fill[azulclaro!70] plot[domain=0:0.25, samples=24, smooth] (\x,{0.075*sin(\x*720)})
+      -- plot[domain=0.25:0, samples=24, smooth] (\x,{-0.075*sin(\x*720)}) -- cycle;
+    \fill[rojoclaro] plot[domain=0.25:0.5, samples=24, smooth] (\x,{0.075*sin(\x*720)})
+      -- plot[domain=0.5:0.25, samples=24, smooth] (\x,{-0.075*sin(\x*720)}) -- cycle;
+    \draw[azulprof, line width=0.5pt] plot[domain=0:0.25, samples=24, smooth] (\x,{0.075*sin(\x*720)});
+    \draw[acento, line width=0.5pt] plot[domain=0.25:0.5, samples=24, smooth] (\x,{0.075*sin(\x*720)});
+    \foreach \x in {0,0.25,0.5}{\fill[black!85] (\x,0) circle (0.5pt);}}}
 \newcommand{\ornamento}{%
   \par\vspace{10pt}{\centering
-  \tikz{\draw[azulclaro, line width=0.4pt] (-1.6,0) -- (-0.32,0);
-        \draw[azulclaro, line width=0.4pt] (0.32,0) -- (1.6,0);
-        \node at (0,0) {\espiralita[1.6]};}\par}\vspace{6pt}}
+  \tikz{\draw[azulclaro, line width=0.4pt] (-1.75,0) -- (-0.55,0);
+        \draw[azulclaro, line width=0.4pt] (0.55,0) -- (1.75,0);
+        \node at (0,0) {\ondita[1.8]};}\par}\vspace{6pt}}
 
 \makeatletter
 \def\ps@headings{%
@@ -105,11 +111,11 @@
     \textls[60]{Ondas estacionarias en una cuerda}}%
   \let\@oddhead\@evenhead
   \def\@evenfoot{\hfil\normalfont\small\color{azulacero}%
-    \espiralita\enspace\thepage\enspace\espiralita\hfil}%
+    \ondita[1.3]\enspace\thepage\enspace\ondita[1.3]\hfil}%
   \let\@oddfoot\@evenfoot}
 \def\ps@firstpage{\ps@plain\def\@oddhead{}\let\@evenhead\@oddhead
   \def\@oddfoot{\hfil\normalfont\small\color{azulacero}%
-    \espiralita\enspace\thepage\enspace\espiralita\hfil}%
+    \ondita[1.3]\enspace\thepage\enspace\ondita[1.3]\hfil}%
   \let\@evenfoot\@oddfoot}
 \pagestyle{headings}
 
